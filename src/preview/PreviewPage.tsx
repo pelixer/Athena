@@ -33,8 +33,8 @@ const DOCENT = {
 }
 const TAKEN = new Date(2026, 9, 17, 14, 32, 18).getTime()
 
-type Status = 'review' | 'design'
-const STATUS_LABEL: Record<Status, string> = { review: '검토 대기 · 단계 2', design: '디자인 대기 · 단계 3' }
+type Status = 'proposed' | 'design'
+const STATUS_LABEL: Record<Status, string> = { proposed: '검토 대기 · 단계 2', design: '디자인 대기 · 단계 3' }
 
 export function PreviewPage() {
   return (
@@ -46,7 +46,7 @@ export function PreviewPage() {
           이 페이지의 모든 화면과 컴포넌트는 앱의 실제 코드와 <code>design/tokens.css</code>로 그렸습니다. 제목은 코드 이름과 같습니다. 시안에 없어서 코드가 먼저 만든 것은 표시가 붙어 있습니다.
         </p>
         <div className={styles.legend}>
-          <Mark status="review" />
+          <Mark status="proposed" />
           <span>원칙으로 유추해 만듦 — 승인 / 수정 / 재디자인 중 하나로 답해 주세요</span>
           <Mark status="design" />
           <span>시안이 먼저 필요함</span>
@@ -60,11 +60,11 @@ export function PreviewPage() {
           <Frame label="02 오브제 상세 · ObjePage" path={`/obje/${SAMPLE.objeId}`} />
           <Frame label="03 관람 보기 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
           <Frame label="04 공유 카드 · CardPage" path={`/obje/${SAMPLE.objeId}/card`} />
-          <Frame label="홈 · HomePage" path="/" status="review" refs="R1" />
+          <Frame label="홈 · HomePage" path="/" status="proposed" refs="R1" />
         </div>
       </Section>
 
-      <Section no="02" title="토큰" note="design/tokens.css — 아래 '요청 중'은 T 번호로 REVIEW.md에 있음">
+      <Section no="02" title="토큰" note="design/tokens.css — '요청 중'은 검토 목록의 T 번호">
         <Tokens />
       </Section>
 
@@ -128,7 +128,7 @@ export function PreviewPage() {
             <DocentBlock docent={DOCENT} onShowPhoto={() => {}} />
           </Item>
 
-          <Item name="NoteBlock — 해석" note="아래: 비어 있을 때" status="review" refs="R3">
+          <Item name="NoteBlock — 해석" note="아래: 비어 있을 때" status="proposed" refs="R3">
             <NoteBlock note={NOTE} updatedAt={new Date(2026, 9, 17, 14, 36).getTime()} />
             <NoteBlock onWrite={() => {}} />
           </Item>
@@ -137,7 +137,7 @@ export function PreviewPage() {
             <ShutterDemo />
           </Item>
 
-          <Item name="MetaTable" note="오브제 상세의 자동 기록 표 · 이름은 코드가 붙임" status="review" refs="R4">
+          <Item name="MetaTable" note="오브제 상세의 자동 기록 표 · 이름은 코드가 붙임" status="proposed" refs="R4">
             <MetaTable
               rows={[
                 ['시각', '2026.10.17 14:32:18'],
@@ -147,7 +147,7 @@ export function PreviewPage() {
             />
           </Item>
 
-          <Item name="StatRow · TabBar" note="관람 보기 상단 · 이름은 코드가 붙임" status="review" refs="R4">
+          <Item name="StatRow · TabBar" note="관람 보기 상단 · 이름은 코드가 붙임" status="proposed" refs="R4">
             <StatRow
               stats={[
                 ['오브제', 12],
@@ -158,14 +158,14 @@ export function PreviewPage() {
             <TabDemo />
           </Item>
 
-          <Item name="Toast" note="촬영 화면의 안내 · 이름은 코드가 붙임" status="review" refs="R4 R7">
+          <Item name="Toast" note="촬영 화면의 안내 · 이름은 코드가 붙임" status="proposed" refs="R4 R7">
             <div className={styles.onPhoto}>
               <Toast>설명문이 인식되었어요 · No.07에 붙입니다</Toast>
               <Toast>먼저 오브제를 찍어 주세요</Toast>
             </div>
           </Item>
 
-          <Item name="TextField · Sheet" note="노트 · 제목 · 라벨 편집 시트" status="review" refs="R2">
+          <Item name="TextField · Sheet" note="노트 · 제목 · 라벨 편집 시트" status="proposed" refs="R2">
             <div className={styles.sheet}>
               <span className={styles.sheetLabel}>나의 노트</span>
               <TextArea variant="note" rows={3} defaultValue={NOTE} />
@@ -175,7 +175,7 @@ export function PreviewPage() {
           </Item>
         </div>
 
-        <Item name="Card · CardStylePicker · OptionChip" note="하늘 · 대리석 · 사진 / 도슨트·라벨을 켰을 때의 배치는 코드가 정함" status="review" refs="R4 R6" wide>
+        <Item name="Card · CardStylePicker · OptionChip" note="하늘 · 대리석 · 사진 / 도슨트·라벨을 켰을 때의 배치는 코드가 정함" status="proposed" refs="R4 R6" wide>
           <CardDemo />
         </Item>
       </Section>

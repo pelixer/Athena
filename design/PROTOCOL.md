@@ -34,7 +34,7 @@ Claude Design과 Claude Code가 Athena를 함께 만들 때의 약속. 두 쪽 �
 3. `REVIEW.md` 항목에 답할 때는 항목 번호와 함께: **승인** / **수정**(바꿀 값·스펙) / **재디자인**(새 시안 첨부).
 
 ## 5. Code → Design (구현 결과 전달)
-1. **컴포넌트 갤러리** 링크 (Artifact). 실제 코드로 렌더링한 토큰·컴포넌트·화면. 주소는 고정이고 내용만 갱신된다.
+1. **갤러리** — 실제 코드로 렌더링한 화면·토큰·컴포넌트를 담은 단일 HTML 파일 (`npm run build:preview` → `dist-preview/preview.html`). 사용자가 Design에 첨부한다.
 2. `design/REVIEW.md` — 이번 라운드에 검토할 항목, 토큰 요청.
 3. `design/DEVIATIONS.md` — 시안과 달라진 부분.
 

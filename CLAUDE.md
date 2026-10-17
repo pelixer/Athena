@@ -21,7 +21,7 @@
    - 단계 2: 새 컴포넌트·변형이 필요하지만 원칙으로 유추 가능 → 구현하고 `design/REVIEW.md`에 올린다. 갤러리에서 "검토 대기"로 표시.
    - 단계 3: 템플릿, 카드 변형, 첫 실행, 새 형식의 화면 → 디자인 시안을 먼저 받는다. 기능만 꾸밈 없이 둔다.
 6. 디자인 검토는 기능마다 하지 않고, REVIEW.md가 쌓이면 라운드 단위로 한 번에 한다.
-   구현 결과는 컴포넌트 갤러리(`npm run build:preview` → `dist-preview/athena-gallery.html`을 Artifact로 게시)로 전달한다.
+   구현 결과는 갤러리(`npm run build:preview` → `dist-preview/preview.html`, 단일 HTML 파일)로 전달한다.
 
 ## 코드 구조
 - `src/domain` 용어집 타입과 순수 로직 (태그 파싱, 관람 내 순번, 관람 통계) — 테스트: `src/domain/*.test.ts`
