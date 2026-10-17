@@ -1,0 +1,25 @@
+.field {
+  width: 100%;
+  min-height: var(--control-h);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-vein);
+  border-radius: var(--radius-sm);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font: var(--type-body);
+  transition: border-color var(--dur-quick) var(--ease-move);
+}
+.field::placeholder {
+  color: var(--text-disabled);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--accent-bright);
+}
+.area {
+  padding: var(--space-3) var(--space-4);
+  resize: none;
+}
+.note {
+  font: var(--type-note);
+}

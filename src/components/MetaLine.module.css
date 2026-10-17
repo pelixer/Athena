@@ -1,0 +1,7 @@
+.meta {
+  margin: 0;
+  font: var(--type-label);
+  line-height: 1.6;
+  letter-spacing: var(--tracking-label);
+  color: var(--text-secondary);
+}

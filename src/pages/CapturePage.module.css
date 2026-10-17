@@ -1,0 +1,202 @@
+.screen {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg-inverse);
+  color: var(--text-on-dark);
+}
+.viewfinder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fallback,
+.missing {
+  position: absolute;
+  left: var(--space-8);
+  right: var(--space-8);
+  top: 40%;
+  margin: 0;
+  text-align: center;
+  font: var(--type-body-s);
+  color: var(--text-on-dark-muted);
+}
+
+/* 오브제 모드: 네 모서리 프레임 */
+.frame {
+  position: absolute;
+  left: 36px;
+  right: 36px;
+  top: calc(var(--safe-top) + 106px);
+  bottom: 300px;
+}
+.cornerTL,
+.cornerTR,
+.cornerBL,
+.cornerBR {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 0 solid var(--text-on-dark);
+}
+.cornerTL {
+  left: 0;
+  top: 0;
+  border-left-width: 2px;
+  border-top-width: 2px;
+}
+.cornerTR {
+  right: 0;
+  top: 0;
+  border-right-width: 2px;
+  border-top-width: 2px;
+}
+.cornerBL {
+  left: 0;
+  bottom: 0;
+  border-left-width: 2px;
+  border-bottom-width: 2px;
+}
+.cornerBR {
+  right: 0;
+  bottom: 0;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+
+/* 도슨트 모드: 설명문 인식 영역 */
+.docentFrame {
+  position: absolute;
+  left: 62px;
+  right: 62px;
+  top: 32%;
+  height: 150px;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 2000px var(--scrim-dim);
+  transition: opacity var(--dur-base) var(--ease-settle);
+}
+.toast {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(32% + 170px);
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-4);
+}
+.flash {
+  position: absolute;
+  inset: 0;
+  background: var(--text-on-dark);
+  pointer-events: none;
+  animation: flash var(--dur-quick) var(--ease-settle) forwards;
+}
+@keyframes flash {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.top {
+  position: absolute;
+  left: var(--space-4);
+  right: var(--space-4);
+  top: calc(var(--safe-top) + var(--space-3));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.visitPill {
+  composes: dark from '../components/glass.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  height: 36px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 300px;
+  background: var(--scrim-bottom);
+  pointer-events: none;
+}
+.bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: 0 var(--space-6) calc(var(--safe-bottom) + var(--space-6));
+}
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-on-dark-muted);
+  text-align: center;
+}
+.clock {
+  font: var(--type-tab);
+  color: var(--text-on-dark);
+}
+.controls {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.last,
+.lastEmpty {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: var(--radius-xs);
+}
+.last {
+  border: 1.5px solid var(--text-on-dark);
+  background: var(--bg-inverse) center / cover no-repeat;
+  animation: settle var(--dur-slow) var(--ease-settle);
+}
+.lastBadge {
+  position: absolute;
+  right: -8px;
+  top: -8px;
+}
+@keyframes settle {
+  from {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,23 @@
+.switch {
+  composes: dark from './glass.module.css';
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-pill);
+}
+.option {
+  height: 34px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-on-dark);
+  font: var(--type-tab);
+  letter-spacing: var(--tracking-control);
+  cursor: pointer;
+  transition: background var(--dur-base) var(--ease-move), color var(--dur-base) var(--ease-move);
+}
+.active {
+  background: var(--text-on-dark);
+  color: var(--text-primary);
+}

@@ -1,0 +1,83 @@
+@import '../design/tokens.css';
+
+/* Pretendard — 가변 글꼴 하나로 400–600을 모두 덮는다 */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+  font-weight: 45 920;
+  font-display: swap;
+}
+
+/* Monoplex KR — 시안과 같은 CDN을 먼저, 실패하면 내장 Regular로 */
+@font-face {
+  font-family: 'Monoplex KR';
+  src: url('./assets/fonts/MonoplexKR-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monoplex KR';
+  src:
+    url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Medium.woff2') format('woff2'),
+    url('./assets/fonts/MonoplexKR-Regular.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monoplex KR';
+  src:
+    url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-SemiBold.woff2') format('woff2'),
+    url('./assets/fonts/MonoplexKR-Regular.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+/* 기기 안전 영역. 갤러리의 휴대폰 프레임은 이 값을 시안의 상태바·홈 인디케이터 높이로 바꾼다. */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font: var(--type-body);
+  -webkit-font-smoothing: antialiased;
+  /* 한국어는 어절 단위로 줄을 바꾼다 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+#root {
+  min-height: 100dvh;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}

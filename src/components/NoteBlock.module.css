@@ -1,0 +1,43 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 0 2px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+}
+.label {
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent-text);
+}
+.text,
+.empty {
+  margin: 0;
+  font: var(--type-note);
+  color: var(--text-primary);
+  text-wrap: pretty;
+  white-space: pre-wrap;
+}
+.empty {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: var(--text-disabled);
+  cursor: pointer;
+}
+.time {
+  font: var(--type-label);
+  letter-spacing: var(--tracking-badge);
+  color: var(--text-disabled);
+}

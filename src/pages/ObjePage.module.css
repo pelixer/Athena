@@ -1,0 +1,75 @@
+.hero {
+  height: min(460px, 56dvh);
+  background: var(--bg-sunken) center / cover no-repeat;
+}
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-5) calc(var(--safe-bottom) + var(--control-h) + var(--space-16));
+}
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.index {
+  font: var(--type-tab);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-secondary);
+}
+.title {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font: var(--type-display-l);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.untitled {
+  color: var(--text-disabled);
+}
+.visit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-vein);
+}
+.visitText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.visitLabel {
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-secondary);
+}
+.visitTitle {
+  font: var(--type-item);
+}
+.arrow {
+  font: var(--type-title);
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+.secondary {
+  flex: 0 0 124px;
+  padding: 0;
+}
+.primary {
+  flex: 1;
+}
+.docentPhoto {
+  width: 100%;
+  max-height: 60dvh;
+  object-fit: contain;
+  border-radius: var(--radius-xs);
+}
+.missing {
+  padding: var(--space-16) var(--space-5);
+  text-align: center;
+  color: var(--text-secondary);
+}

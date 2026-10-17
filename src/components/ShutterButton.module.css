@@ -1,0 +1,30 @@
+.shutter {
+  width: 78px;
+  height: 78px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 3px solid var(--text-on-dark);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.fill {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--text-on-dark);
+  transition: transform var(--dur-quick) var(--ease-settle), background var(--dur-base) var(--ease-move);
+}
+.docent {
+  background: var(--accent);
+}
+.shutter:active:not(:disabled) .fill {
+  transform: scale(0.9);
+}
+.shutter:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

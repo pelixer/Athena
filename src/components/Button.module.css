@@ -1,0 +1,32 @@
+.button {
+  height: var(--control-h);
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-pill);
+  font: var(--type-label-l);
+  letter-spacing: var(--tracking-control);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform var(--dur-quick) var(--ease-settle), opacity var(--dur-quick) var(--ease-settle);
+}
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.accent {
+  composes: accent from './glass.module.css';
+}
+.neutral {
+  composes: neutral from './glass.module.css';
+}
+.dark {
+  composes: dark from './glass.module.css';
+}
+.ghost {
+  height: var(--hit-min);
+  border: 0;
+  background: transparent;
+  color: var(--on-accent);
+}

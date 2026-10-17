@@ -1,0 +1,70 @@
+.card {
+  width: 280px;
+  height: 420px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lift);
+  background-position: center;
+  background-size: cover;
+  transition: background var(--dur-base) var(--ease-settle), color var(--dur-base) var(--ease-settle);
+}
+.sky {
+  background-image: var(--gradient-sky);
+  color: var(--text-on-dark);
+}
+.marble {
+  background-position: 40% 50%;
+  color: var(--text-primary);
+}
+.photo {
+  background-color: var(--bg-inverse);
+  color: var(--text-on-dark);
+}
+.inset {
+  height: 190px;
+  flex: none;
+  border-radius: var(--radius-xs);
+  background: var(--bg-sunken) center / cover no-repeat;
+}
+.spacer {
+  flex: 1;
+}
+.note {
+  margin: 0;
+  font: var(--type-card-note);
+  text-wrap: pretty;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: none;
+}
+.docent {
+  margin: 0;
+  font: var(--type-label);
+  letter-spacing: var(--tracking-badge);
+}
+.tags {
+  margin: 0;
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+.meta {
+  font: var(--type-label);
+  line-height: 1.6;
+  letter-spacing: var(--tracking-badge);
+}
+.wordmark {
+  font: var(--type-wordmark);
+  letter-spacing: var(--tracking-wordmark);
+}

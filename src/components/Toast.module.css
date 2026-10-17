@@ -1,0 +1,15 @@
+.toast {
+  composes: accent from './glass.module.css';
+  display: inline-block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+  animation: rise var(--dur-base) var(--ease-settle);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+}

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&display=swap">
+<style>
+@font-face{font-family:'Monoplex KR';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Monoplex KR';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Monoplex KR';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+body{margin:0;background:#F3F1EC;color:#17181B;font-family:"Pretendard",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1F4FA3;text-decoration:none}a:hover{color:#163A7A;text-decoration:underline}
+</style>
+</helmet>
+<div style="max-width:1280px;margin:0 auto;padding:72px 64px 120px;display:flex;flex-direction:column;gap:96px">
+
+  <header style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:end">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;text-transform:uppercase;color:#6B6964">Design System · v0 · 2026.10.17</div>
+      <div style="font:600 72px/1 'Noto Serif KR',serif;letter-spacing:-.02em">Athena</div>
+      <p style="margin:0;max-width:440px;font:400 16px/1.7 'Pretendard',sans-serif;color:#2E2F33;text-wrap:pretty">흰 대리석의 표면과 맑은 하늘의 파랑. 사진(오브제)이 주인공이고, UI는 미술관 벽과 작품 라벨처럼 조용하게 물러섭니다.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:8px;height:220px">
+      <div style="background:url(assets/cliff-sky.jpg) 30% 40%/cover;border-radius:2px"></div>
+      <div style="background:url(assets/marble.jpg) center/cover;border-radius:2px"></div>
+      <div style="background:url(assets/cliff-dover.jpg) 60% 30%/cover;border-radius:2px"></div>
+    </div>
+  </header>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #17181B;padding-top:14px">
+      <span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">01</span>
+      <span style="font:600 26px/1.3 'Noto Serif KR',serif">원칙</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font:600 17px/1.4 'Pretendard',sans-serif">벽은 대리석, 작품은 사진</div><div style="font:400 14px/1.6 'Pretendard',sans-serif;color:#6B6964;text-wrap:pretty">배경은 따뜻한 흰색 계열만 씁니다. 색은 사진에서 나오고, UI는 채도를 갖지 않습니다.</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font:600 17px/1.4 'Pretendard',sans-serif">파랑은 하늘 하나</div><div style="font:400 14px/1.6 'Pretendard',sans-serif;color:#6B6964;text-wrap:pretty">강조색은 Sky 계열 하나뿐. 버튼은 연한 하늘(sky-300) 유리, 텍스트 강조는 깊은 하늘(sky-700)로 대비를 지킵니다.</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font:600 17px/1.4 'Pretendard',sans-serif">기록은 산세리프, 해석은 세리프</div><div style="font:400 14px/1.6 'Pretendard',sans-serif;color:#6B6964;text-wrap:pretty">도슨트(기록)는 Pretendard, 나의 노트(해석)는 Noto Serif KR. 시간·순번·장소·좌표, 버튼과 탭은 모노로 작품 라벨처럼.</div></div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #17181B;padding-top:14px">
+      <span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">02</span>
+      <span style="font:600 26px/1.3 'Noto Serif KR',serif">색</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px">
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;background:#FBFAF7;border:1px solid #D6D3CD"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">marble-0<br><span style="color:#6B6964">#FBFAF7 · bg-base</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;background:#F3F1EC;border:1px solid #D6D3CD"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">marble-50<br><span style="color:#6B6964">#F3F1EC · bg-sunken</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;background:#E8E5DF"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">marble-100<br><span style="color:#6B6964">#E8E5DF</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;background:#D6D3CD"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">marble-200<br><span style="color:#6B6964">#D6D3CD · border-vein</span></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px">
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#A3A09A"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">stone-400<br><span style="color:#6B6964">#A3A09A · text-disabled</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#6B6964"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">stone-600<br><span style="color:#6B6964">#6B6964 · text-secondary</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#2E2F33"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">ink-800<br><span style="color:#6B6964">#2E2F33</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#17181B"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">ink-900<br><span style="color:#6B6964">#17181B · text-primary</span></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) minmax(0,1.4fr);gap:2px">
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#163A7A"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">sky-900<br><span style="color:#6B6964">#163A7A</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#1F4FA3"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">sky-700<br><span style="color:#6B6964">#1F4FA3 · 강조 텍스트</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#2E6BD1"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">sky-500<br><span style="color:#6B6964">#2E6BD1 · accent-bright</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#8DB6EC"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">sky-300<br><span style="color:#6B6964">#8DB6EC · accent (버튼 유리 틴트)</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:#E3EDFA"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">sky-100<br><span style="color:#6B6964">#E3EDFA · accent-soft</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="height:88px;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%)"></div><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#2E2F33">gradient-sky<br><span style="color:#6B6964">카드 배경 전용</span></div></div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #17181B;padding-top:14px">
+      <span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">03</span>
+      <span style="font:600 26px/1.3 'Noto Serif KR',serif">타이포그래피</span>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">display-xl<br>Serif 600 · 34/1.22</div><div style="font:600 34px/1.22 'Noto Serif KR',serif;letter-spacing:-.01em">흰 절벽 — 한서윤 사진전</div></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">display-l<br>Serif 600 · 26/1.3</div><div style="font:600 26px/1.3 'Noto Serif KR',serif">남쪽 해안, 오후 세 시</div></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">title<br>Sans 600 · 19/1.4</div><div style="font:600 19px/1.4 'Pretendard',sans-serif">관람 마무리하고 템플릿 만들기</div></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">body<br>Sans 400 · 16/1.6</div><div style="font:400 16px/1.6 'Pretendard',sans-serif;max-width:620px">작가는 같은 절벽을 일 년 동안 같은 시각에 촬영했다. 백악질 절벽은 계절과 빛에 따라 회색에서 푸른빛까지 색을 바꾼다.</div></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">body-s<br>Sans 400 · 14/1.6</div><div style="font:400 14px/1.6 'Pretendard',sans-serif;color:#6B6964">도슨트 원문은 설명문 사진에서 자동으로 추출됩니다.</div></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">note<br>Serif 400 · 17/1.8</div><div style="font:400 17px/1.8 'Noto Serif KR',serif;max-width:620px">절벽은 하얗다기보다, 하늘을 오래 비춰서 푸르게 바랜 것 같았다.</div></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">label<br>Mono 500 · 11 · +0.08em</div><div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;text-transform:uppercase">No.07 · 2026.10.17 14:32 · 국립현대미술관 서울</div></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">label-l<br>Mono 500 · 13–15 · +0.04em</div><div style="font:500 15px/1.4 'Monoplex KR',monospace;letter-spacing:.04em">카드 만들기 · 순번 · 라벨 · 37.5788°N 126.9800°E</div></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:baseline;padding:20px 0;border-bottom:1px solid #D6D3CD"><div style="font:500 11px/1.5 'Monoplex KR',monospace;color:#6B6964">numeral<br>Mono 500 · 28/1.1</div><div style="font:500 28px/1.1 'Monoplex KR',monospace">12 · 05 · 04 · 14:32:18</div></div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px">
+    <div style="grid-column:1/-1;display:flex;align-items:baseline;gap:16px;border-top:1px solid #17181B;padding-top:14px">
+      <span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">04</span>
+      <span style="font:600 26px/1.3 'Noto Serif KR',serif">간격 · 반경 · 그림자 · 모션</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">SPACE · 4PT</div>
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:4px;height:12px;background:#2E6BD1"></div><span style="font:400 12px 'Monoplex KR',monospace">1 · 4</span></div>
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:8px;height:12px;background:#2E6BD1"></div><span style="font:400 12px 'Monoplex KR',monospace">2 · 8</span></div>
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:12px;height:12px;background:#2E6BD1"></div><span style="font:400 12px 'Monoplex KR',monospace">3 · 12</span></div>
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:16px;height:12px;background:#2E6BD1"></div><span style="font:400 12px 'Monoplex KR',monospace">4 · 16</span></div>
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:24px;height:12px;background:#2E6BD1"></div><span style="font:400 12px 'Monoplex KR',monospace">6 · 24</span></div>
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:32px;height:12px;background:#2E6BD1"></div><span style="font:400 12px 'Monoplex KR',monospace">8 · 32</span></div>
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:48px;height:12px;background:#2E6BD1"></div><span style="font:400 12px 'Monoplex KR',monospace">12 · 48</span></div>
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:64px;height:12px;background:#2E6BD1"></div><span style="font:400 12px 'Monoplex KR',monospace">16 · 64</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">RADIUS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:56px;background:#FBFAF7;border:1px solid #17181B;border-radius:2px"></div><span style="font:400 12px 'Monoplex KR',monospace">xs · 2 · 오브제</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:56px;background:#FBFAF7;border:1px solid #17181B;border-radius:6px"></div><span style="font:400 12px 'Monoplex KR',monospace">sm · 6 · 입력</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:56px;background:#FBFAF7;border:1px solid #17181B;border-radius:12px"></div><span style="font:400 12px 'Monoplex KR',monospace">md · 12 · 시트</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:56px;background:#FBFAF7;border:1px solid #17181B;border-radius:999px"></div><span style="font:400 12px 'Monoplex KR',monospace">pill · 버튼·라벨</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">SHADOW · GALLERY LIGHT · GLASS</div>
+      <div style="display:flex;flex-direction:column;gap:20px;padding-top:4px">
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;background:#FBFAF7;border-radius:2px;box-shadow:0 1px 2px rgba(23,24,27,.06)"></div><span style="font:400 12px 'Monoplex KR',monospace">rest</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;background:#FBFAF7;border-radius:2px;box-shadow:0 1px 2px rgba(23,24,27,.06),0 16px 36px -14px rgba(22,58,122,.28)"></div><span style="font:400 12px 'Monoplex KR',monospace">lift · 카드·떠 있는 요소</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;padding:10px;box-sizing:border-box;background:url(assets/marble.jpg) 60% 40%/cover;border-radius:2px"><div style="height:100%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 55%),rgba(141,182,236,.62);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 -1px 1px rgba(22,58,122,.12),0 10px 28px -12px rgba(22,58,122,.45);color:#163A7A"></div></div><span style="font:400 12px 'Monoplex KR',monospace">glass · blur 20 · saturate 180 · 내부 하이라이트</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">MOTION</div>
+      <div style="display:flex;flex-direction:column;gap:12px;font:400 12px/1.55 'Monoplex KR',monospace">
+        <div><b style="font-weight:500">settle</b> cubic-bezier(.2,.7,.2,1)<br><span style="color:#6B6964">등장 · 시트 · 카드 전환</span></div>
+        <div><b style="font-weight:500">move</b> cubic-bezier(.4,0,.2,1)<br><span style="color:#6B6964">위치 이동 · 탭</span></div>
+        <div><b style="font-weight:500">quick 120 · base 240 · slow 480ms</b><br><span style="color:#6B6964">셔터 플래시는 quick, 오브제가 관람에 쌓이는 순간은 slow</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #17181B;padding-top:14px">
+      <span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">05</span>
+      <span style="font:600 26px/1.3 'Noto Serif KR',serif">컴포넌트</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">Button · Liquid Glass</div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:24px;background:url(assets/marble.jpg) 30% 50%/cover">
+          <button style="height:54px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 55%),rgba(141,182,236,.62);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 -1px 1px rgba(22,58,122,.12),0 10px 28px -12px rgba(22,58,122,.45);color:#163A7A;font:500 15px/1 'Monoplex KR',monospace;letter-spacing:.04em;cursor:pointer">카드 만들기</button>
+          <button style="height:54px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.65) 0%,rgba(255,255,255,.1) 60%),rgba(243,241,236,.55);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 1px rgba(23,24,27,.06),0 8px 24px -12px rgba(23,24,27,.28);color:#17181B;font:500 15px/1 'Monoplex KR',monospace;letter-spacing:.04em;cursor:pointer">노트 쓰기</button>
+          <button style="height:44px;border:0;background:transparent;color:#163A7A;font:500 15px/1 'Monoplex KR',monospace;letter-spacing:.04em;cursor:pointer">나중에</button>
+        </div>
+        <div style="display:flex;gap:12px;padding:20px 24px;background:url(assets/cliff-sky.jpg) 20% 30%/cover">
+          <button style="flex:1;height:54px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 60%),rgba(23,24,27,.28);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 6px 18px -8px rgba(0,0,0,.35);color:#FBFAF7;font:500 15px/1 'Monoplex KR',monospace;letter-spacing:.04em">다시 찍기</button>
+          <button style="flex:1;height:54px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 55%),rgba(141,182,236,.62);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 -1px 1px rgba(22,58,122,.12),0 10px 28px -12px rgba(22,58,122,.45);color:#163A7A;font:500 15px/1 'Monoplex KR',monospace;letter-spacing:.04em">저장</button>
+        </div>
+        <div style="font:400 12px/1.5 'Monoplex KR',monospace;color:#6B6964">glass-accent · glass-neutral · ghost · glass-dark(사진 위) — h54, pill, Mono 15</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">Tag</div>
+        <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:#FBFAF7">
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;border:1px solid #D6D3CD;border-radius:999px;font:500 14px 'Pretendard',sans-serif;color:#2E2F33"><span style="color:#2E6BD1">#</span>흰절벽</span>
+            <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;border:1px solid #D6D3CD;border-radius:999px;font:500 14px 'Pretendard',sans-serif;color:#2E2F33"><span style="color:#2E6BD1">#</span>하늘</span>
+            <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;border:1px solid #8DB6EC;background:#E3EDFA;border-radius:999px;font:500 14px 'Pretendard',sans-serif;color:#1F4FA3">#한서윤</span>
+            <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;border:1px dashed #A3A09A;border-radius:999px;font:500 14px 'Pretendard',sans-serif;color:#6B6964">+ 라벨</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:linear-gradient(180deg,#163A7A,#2E6BD1)">
+            <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;background:rgba(23,24,27,.32);border-radius:999px;font:500 14px 'Pretendard',sans-serif;color:#FBFAF7">#흰절벽</span>
+            <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;background:rgba(23,24,27,.32);border-radius:999px;font:500 14px 'Pretendard',sans-serif;color:#FBFAF7">#바다</span>
+          </div>
+          <div style="font:400 12px/1.5 'Monoplex KR',monospace;color:#6B6964">default · selected · add · on-photo</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">IndexBadge · MetaLine</div>
+        <div style="display:flex;flex-direction:column;gap:18px;padding:24px;background:#FBFAF7">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;background:#17181B;color:#FBFAF7;font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em">No.07</span>
+            <span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid #17181B;color:#17181B;font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em">No.08</span>
+          </div>
+          <div style="font:500 11px/1.6 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">2026.10.17 · 14:32<br>국립현대미술관 서울</div>
+          <div style="font:400 12px/1.5 'Monoplex KR',monospace;color:#6B6964">순번 = Visit.index. 자동 기록 값은 항상 모노.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr) minmax(0,1fr);gap:40px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">ObjeCard</div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:24px;background:#FBFAF7">
+          <div style="aspect-ratio:4/5;background:url(assets/cliff-sky.jpg) 72% 40%/240%;border-radius:2px;position:relative">
+            <span style="position:absolute;left:8px;top:8px;display:inline-flex;align-items:center;height:22px;padding:0 7px;background:#17181B;color:#FBFAF7;font:500 10px 'Monoplex KR',monospace;letter-spacing:.06em">No.07</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964"><span>14:32</span><span style="color:#1F4FA3">도슨트 ✓</span></div>
+          <div style="font:500 14px/1.4 'Pretendard',sans-serif;color:#17181B">남쪽 해안, 오후 세 시</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">DocentBlock — 기록</div>
+        <div style="padding:24px;background:#FBFAF7">
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px;background:#F3F1EC;border-radius:2px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">도슨트 · 원문</span>
+              <span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964">OCR · 사진 보기</span>
+            </div>
+            <div style="font:600 15px/1.5 'Pretendard',sans-serif">한서윤, 〈남쪽 해안, 오후 3시〉, 2019</div>
+            <div style="font:400 14px/1.65 'Pretendard',sans-serif;color:#2E2F33;text-wrap:pretty">피그먼트 프린트. 작가는 같은 절벽을 일 년 동안 같은 시각에 촬영했다. 백악질 절벽은 계절과 빛에 따라 회색에서 푸른빛까지 색을 바꾼다.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">NoteBlock — 해석</div>
+        <div style="padding:24px;background:#FBFAF7">
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px 4px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="width:6px;height:6px;border-radius:50%;background:#2E6BD1"></span>
+              <span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#1F4FA3">나의 노트</span>
+            </div>
+            <div style="font:400 17px/1.8 'Noto Serif KR',serif;color:#17181B;text-wrap:pretty">절벽은 하얗다기보다, 하늘을 오래 비춰서 푸르게 바랜 것 같았다. 사진 앞에 서 있으니 바닷바람 소리가 들리는 듯했다.</div>
+            <div style="font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#A3A09A">14:36 작성</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">ShutterButton</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:40px;height:180px;background:#2E2F33">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+            <div style="width:76px;height:76px;border-radius:50%;border:3px solid #FBFAF7;box-sizing:border-box;display:flex;align-items:center;justify-content:center"><div style="width:60px;height:60px;border-radius:50%;background:#FBFAF7"></div></div>
+            <span style="font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#E8E5DF">오브제</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+            <div style="width:76px;height:76px;border-radius:50%;border:3px solid #FBFAF7;box-sizing:border-box;display:flex;align-items:center;justify-content:center"><div style="width:60px;height:60px;border-radius:50%;background:#8DB6EC"></div></div>
+            <span style="font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#E8E5DF">도슨트</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">ModeSwitch</div>
+        <div style="display:flex;align-items:center;justify-content:center;height:180px;background:#2E2F33">
+          <div style="display:flex;gap:2px;padding:3px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 60%),rgba(23,24,27,.28);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 6px 18px -8px rgba(0,0,0,.35)">
+            <span style="height:34px;padding:0 18px;display:flex;align-items:center;border-radius:999px;background:#FBFAF7;color:#17181B;font:500 13px 'Monoplex KR',monospace;letter-spacing:.04em">오브제</span>
+            <span style="height:34px;padding:0 18px;display:flex;align-items:center;border-radius:999px;color:#FBFAF7;font:500 13px 'Monoplex KR',monospace;letter-spacing:.04em">도슨트</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">IconButton · on-photo / on-marble</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;height:180px">
+          <div style="display:flex;align-items:center;justify-content:center;gap:12px;background:url(assets/cliff-sky.jpg) 20% 30%/cover">
+            <span style="width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 60%),rgba(23,24,27,.28);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 6px 18px -8px rgba(0,0,0,.35);color:#FBFAF7;display:flex;align-items:center;justify-content:center;font:400 20px 'Pretendard',sans-serif">←</span>
+            <span style="width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 60%),rgba(23,24,27,.28);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 6px 18px -8px rgba(0,0,0,.35);color:#FBFAF7;display:flex;align-items:center;justify-content:center;font:400 18px 'Pretendard',sans-serif">↗</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:12px;background:#FBFAF7">
+            <span style="width:44px;height:44px;border-radius:50%;box-sizing:border-box;background:linear-gradient(180deg,rgba(255,255,255,.65) 0%,rgba(255,255,255,.1) 60%),rgba(243,241,236,.55);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 1px rgba(23,24,27,.06),0 8px 24px -12px rgba(23,24,27,.28);color:#17181B;display:flex;align-items:center;justify-content:center;font:400 20px 'Pretendard',sans-serif">←</span>
+            <span style="width:44px;height:44px;border-radius:50%;box-sizing:border-box;background:linear-gradient(180deg,rgba(255,255,255,.65) 0%,rgba(255,255,255,.1) 60%),rgba(243,241,236,.55);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 1px rgba(23,24,27,.06),0 8px 24px -12px rgba(23,24,27,.28);color:#17181B;display:flex;align-items:center;justify-content:center;font:400 18px 'Pretendard',sans-serif">↗</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="display:flex;justify-content:space-between;gap:24px;border-top:1px solid #D6D3CD;padding-top:16px;font:500 11px/1.5 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964">
+    <span>토큰 원본: design/tokens.css</span>
+    <a href="Athena Screens v0.dc.html">대표 화면 4종 →</a>
+  </footer>
+</div>
+</x-dc>
+</body>
+</html>

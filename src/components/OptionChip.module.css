@@ -1,0 +1,19 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-vein);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-body);
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+  cursor: pointer;
+  transition: background var(--dur-quick) var(--ease-move), border-color var(--dur-quick) var(--ease-move);
+}
+.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}

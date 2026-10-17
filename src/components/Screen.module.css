@@ -1,0 +1,58 @@
+.screen {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.marble {
+  background: var(--bg-base);
+}
+.sunken {
+  background: var(--bg-sunken);
+}
+.dark {
+  background: var(--bg-inverse);
+  color: var(--text-on-dark);
+}
+.top {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: calc(var(--safe-top) + var(--space-3)) var(--space-4) 0;
+  pointer-events: none;
+}
+.top > * {
+  pointer-events: auto;
+}
+.fade {
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: calc(var(--safe-top) + var(--space-3) + var(--hit-min) + var(--space-4));
+  background: var(--fade-top);
+  pointer-events: none;
+}
+.bottom {
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5) calc(var(--safe-bottom) + var(--space-4));
+}

@@ -1,0 +1,121 @@
+/* Athena Design System v0 — tokens (contract between Design ↔ Code)
+   Fonts: Pretendard (sans), Noto Serif KR (serif), Monoplex KR (mono · jsDelivr noonfonts_Monoplex-kr@1.0) */
+:root {
+  /* color / primitives — Marble */
+  --color-marble-0:   #FBFAF7;
+  --color-marble-50:  #F3F1EC;
+  --color-marble-100: #E8E5DF;
+  --color-marble-200: #D6D3CD;
+  /* color / primitives — Stone & Ink */
+  --color-stone-400: #A3A09A;
+  --color-stone-600: #6B6964;
+  --color-ink-800:   #2E2F33;
+  --color-ink-900:   #17181B;
+  /* color / primitives — Sky */
+  --color-sky-900: #163A7A;
+  --color-sky-700: #1F4FA3;
+  --color-sky-500: #2E6BD1;
+  --color-sky-300: #8DB6EC;
+  --color-sky-100: #E3EDFA;
+
+  /* color / semantic */
+  --bg-base:        var(--color-marble-0);
+  --bg-sunken:      var(--color-marble-50);
+  --bg-inverse:     var(--color-ink-900);
+  --border-vein:    var(--color-marble-200);
+  --border-strong:  var(--color-ink-900);
+  --text-primary:   var(--color-ink-900);
+  --text-secondary: var(--color-stone-600);
+  --text-disabled:  var(--color-stone-400);
+  --text-on-dark:   var(--color-marble-0);
+  --accent:         var(--color-sky-300);   /* 버튼 유리 틴트 */
+  --accent-text:    var(--color-sky-700);   /* 텍스트 강조(대비 확보) */
+  --on-accent:      var(--color-sky-900);
+  --accent-bright:  var(--color-sky-500);
+  --accent-soft:    var(--color-sky-100);
+  --scrim:          rgba(23, 24, 27, 0.55);
+  --glass:          rgba(23, 24, 27, 0.32);
+  --gradient-sky:   linear-gradient(180deg, #163A7A 0%, #1F4FA3 55%, #2E6BD1 100%); /* white text stays ≥4.5:1 */
+
+  /* type */
+  --font-sans:  "Pretendard", system-ui, sans-serif;
+  --font-serif: "Noto Serif KR", serif;
+  --font-mono:  "Monoplex KR", ui-monospace, monospace;
+  --type-display-xl: 600 34px/1.22 var(--font-serif);  /* letter-spacing -0.01em */
+  --type-display-l:  600 26px/1.3  var(--font-serif);
+  --type-title:      600 19px/1.4  var(--font-sans);
+  --type-body:       400 16px/1.6  var(--font-sans);
+  --type-body-s:     400 14px/1.6  var(--font-sans);
+  --type-note:       400 17px/1.8  var(--font-serif);
+  --type-label:      500 11px/1.4  var(--font-mono);   /* letter-spacing 0.08em, uppercase */
+  --type-label-l:    500 15px/1   var(--font-mono);   /* 버튼·탭·내비 제목, letter-spacing 0.04em */
+  --type-numeral:    500 28px/1.1 var(--font-mono);
+
+  /* space (4pt) */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
+
+  /* radius — plinth (sharp) by default, pill for tags */
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+
+  /* shadow — gallery light */
+  --shadow-rest:  0 1px 2px rgba(23, 24, 27, 0.06);
+  --shadow-lift:  0 1px 2px rgba(23, 24, 27, 0.06), 0 16px 36px -14px rgba(22, 58, 122, 0.28);
+
+  /* glass — liquid glass 버튼/칩 (backdrop-filter: var(--glass-blur)) */
+  --glass-blur: blur(20px) saturate(180%);
+  --glass-accent-bg:  linear-gradient(180deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,0) 55%), rgba(141,182,236,.62);
+  --glass-accent-border: 1px solid rgba(255,255,255,.6);
+  --glass-accent-shadow: inset 0 1px 0 rgba(255,255,255,.8), inset 0 -1px 1px rgba(22,58,122,.12), 0 10px 28px -12px rgba(22,58,122,.45);
+  --glass-neutral-bg: linear-gradient(180deg, rgba(255,255,255,.65) 0%, rgba(255,255,255,.1) 60%), rgba(243,241,236,.55);
+  --glass-neutral-border: 1px solid rgba(255,255,255,.75);
+  --glass-neutral-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 1px rgba(23,24,27,.06), 0 8px 24px -12px rgba(23,24,27,.28);
+  --glass-dark-bg: linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 60%), rgba(23,24,27,.28);
+  --glass-dark-border: 1px solid rgba(255,255,255,.24);
+  --glass-dark-shadow: inset 0 1px 0 rgba(255,255,255,.32), 0 6px 18px -8px rgba(0,0,0,.35);
+
+  /* motion */
+  --ease-settle: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-move:   cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-quick: 120ms;
+  --dur-base:  240ms;
+  --dur-slow:  480ms;
+
+  /* size */
+  --hit-min: 44px;
+  --control-h: 54px;   /* 버튼: radius-pill */
+}
+
+/* ───────────────────────────────────────────────────────────────
+   요청 중 — Code → Design (design/REVIEW.md "토큰 요청")
+   시안(v0) 화면에 리터럴로 쓰였지만 이름이 없던 값. 값은 시안 그대로.
+   Design이 승인·개명·수정하면 위 본문으로 옮기고 이 블록에서 지운다.
+   ─────────────────────────────────────────────────────────────── */
+:root {
+  --text-body:           var(--color-ink-800);   /* T1 도슨트 본문, 라벨 텍스트, 표 값 */
+  --text-on-dark-muted:  var(--color-marble-100); /* T2 사진 위 보조 텍스트 (촬영 메타) */
+  --glass-dark-blur:     blur(16px) saturate(160%); /* T3 glass-dark 계열은 시안에서 16/160 */
+  --scrim-bottom:        linear-gradient(180deg, rgba(23,24,27,0) 0%, rgba(23,24,27,.72) 45%, rgba(23,24,27,.86) 100%); /* T4 촬영 하단 */
+  --scrim-dim:           rgba(23, 24, 27, 0.35); /* T5 도슨트 인식 프레임 바깥 */
+  --fade-top:            linear-gradient(180deg, var(--bg-base) 70%, rgba(251,250,247,0)); /* T6 관람 보기 상단 */
+  --gradient-photo:      linear-gradient(180deg, rgba(23,24,27,0) 35%, rgba(23,24,27,.78) 100%); /* T7 카드 '사진' 스타일 */
+
+  --type-badge:     500 10px/1 var(--font-mono);    /* T8 ObjeCard 위 순번 · ls .06em */
+  --type-meta:      500 12px/1.5 var(--font-mono);  /* T9 오브제 상세 표, 옵션 칩, 토스트 · ls .04em */
+  --type-tab:       500 13px/1 var(--font-mono);    /* T10 탭, ModeSwitch, "No.07 / 12" · ls .04em */
+  --type-item:      500 14px/1.4 var(--font-sans);  /* T11 Tag, ObjeCard 제목 */
+  --type-heading-s: 600 15px/1.5 var(--font-sans);  /* T12 도슨트 첫 줄(작가 · 작품 · 연도) */
+  --type-card-note: 400 19px/1.6 var(--font-serif); /* T13 카드 위 나의 노트 */
+  --type-wordmark:  600 15px/1 var(--font-serif);   /* T14 카드 'Athena' · ls .02em */
+
+  /* T15 자간 — 본문 타입 토큰의 주석으로만 있던 값 */
+  --tracking-display: -0.01em; /* display-xl */
+  --tracking-label:    0.08em; /* label (대문자) */
+  --tracking-badge:    0.06em; /* IndexBadge, 작은 모노 */
+  --tracking-control:  0.04em; /* label-l, 버튼·탭 */
+  --tracking-wordmark: 0.02em;
+}

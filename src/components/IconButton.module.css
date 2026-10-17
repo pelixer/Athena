@@ -1,0 +1,42 @@
+.icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform var(--dur-quick) var(--ease-settle);
+}
+.icon:active:not(:disabled) {
+  transform: scale(0.94);
+}
+.icon:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.photo {
+  composes: dark from './glass.module.css';
+}
+.marble {
+  composes: neutral from './glass.module.css';
+}
+.s44 {
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+}
+.s52 {
+  width: 52px;
+  height: 52px;
+  font-size: 22px;
+}
+.s54 {
+  width: 54px;
+  height: 54px;
+  font-size: 26px;
+  font-weight: 300;
+}

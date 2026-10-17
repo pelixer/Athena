@@ -1,0 +1,39 @@
+.card {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xs);
+  background: var(--bg-sunken) center / cover no-repeat;
+}
+.badge {
+  position: absolute;
+  left: var(--space-2);
+  top: var(--space-2);
+}
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-badge);
+  color: var(--text-secondary);
+}
+.attached {
+  color: var(--accent-text);
+}
+.title {
+  font: var(--type-item);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}

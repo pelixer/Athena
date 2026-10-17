@@ -1,0 +1,25 @@
+/* Liquid glass 표면 — 디자인 시스템 05 Button · Liquid Glass. 다른 모듈에서 composes로 쓴다. */
+.accent {
+  background: var(--glass-accent-bg);
+  border: var(--glass-accent-border);
+  box-shadow: var(--glass-accent-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: var(--on-accent);
+}
+.neutral {
+  background: var(--glass-neutral-bg);
+  border: var(--glass-neutral-border);
+  box-shadow: var(--glass-neutral-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: var(--text-primary);
+}
+.dark {
+  background: var(--glass-dark-bg);
+  border: var(--glass-dark-border);
+  box-shadow: var(--glass-dark-shadow);
+  backdrop-filter: var(--glass-dark-blur);
+  -webkit-backdrop-filter: var(--glass-dark-blur);
+  color: var(--text-on-dark);
+}

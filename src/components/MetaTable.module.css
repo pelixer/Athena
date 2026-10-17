@@ -1,0 +1,23 @@
+.table {
+  margin: 0;
+  border-top: 1px solid var(--border-strong);
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+}
+.row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  border-bottom: 1px solid var(--border-vein);
+}
+.row dt,
+.row dd {
+  margin: 0;
+  padding: var(--space-2) 0;
+}
+.row dt {
+  color: var(--text-secondary);
+}
+.row dd {
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
