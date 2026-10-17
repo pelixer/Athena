@@ -1,0 +1,85 @@
+/*
+ * Athena design tokens — 디자인과 코드의 계약서.
+ *
+ * 소유: Claude Design (값)  /  Claude Code (이름과 사용처)
+ * 상태: v0-draft — 값은 design/references 의 무드보드 사진에서 뽑은 임시값이다.
+ *       Claude Design의 v0 디자인이 오면 값만 교체한다. 이름을 바꾸거나 추가하려면 HANDOFF.md 참고.
+ *
+ * 코드에서는 semantic 토큰(--color-*, --font-*, --space-* ...)만 쓴다.
+ * primitive(--marble-*, --sky-*)는 이 파일 안에서만 참조한다.
+ */
+
+:root {
+  /* ── Primitives: 대리석 (03-white-marble) ───────────── */
+  --marble-0: #f8f7f4;
+  --marble-50: #f0efec;
+  --marble-100: #e4e3e0;
+  --marble-200: #cfcecb;
+  --marble-300: #bab9b5; /* 결(vein) */
+  --marble-500: #9a9894; /* 그늘진 석회암 (01) */
+  --marble-700: #5f5e5a;
+
+  /* ── Primitives: 하늘 (01-chalk-cliff-sky, 02-cliff-sea) ── */
+  --sky-100: #dfe9f1;
+  --sky-300: #a1bfd3; /* 수평선 근처의 옅은 하늘 */
+  --sky-500: #548acc;
+  --sky-700: #2d4c80; /* 천정의 깊은 파랑 */
+  --sky-900: #18294a;
+
+  /* ── Semantic: color ───────────────────────────────── */
+  --color-bg: var(--marble-0);
+  --color-surface: #ffffff;
+  --color-surface-sunken: var(--marble-50);
+  --color-border: var(--marble-100);
+  --color-border-strong: var(--marble-200);
+  --color-text: var(--sky-900);
+  --color-text-muted: var(--marble-700);
+  --color-text-faint: var(--marble-500);
+  --color-accent: var(--sky-700);
+  --color-accent-soft: var(--sky-100);
+  --color-on-accent: var(--marble-0);
+  --color-tag-bg: var(--sky-100);
+  --color-tag-text: var(--sky-700);
+
+  /* ── Semantic: type ────────────────────────────────── */
+  --font-display: 'Cormorant Garamond', 'Noto Serif KR', serif; /* 작품명, 관람 제목 */
+  --font-body: 'Noto Serif KR', serif;                          /* 도슨트, 나의 노트 */
+  --font-ui: 'Pretendard', -apple-system, 'Apple SD Gothic Neo', sans-serif; /* 버튼, 메타 */
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;         /* 순번, 좌표, 날짜 */
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.5rem;
+
+  --leading-tight: 1.15;
+  --leading-body: 1.7;
+  --tracking-caps: 0.12em;
+
+  /* ── Semantic: space / shape / elevation / motion ─── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-pill: 999px;
+
+  --shadow-1: 0 1px 2px rgb(24 41 74 / 0.06);
+  --shadow-2: 0 8px 24px rgb(24 41 74 / 0.08);
+
+  --duration-fast: 120ms;
+  --duration-base: 240ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ── Layout ────────────────────────────────────────── */
+  --page-max: 480px;
+  --page-gutter: var(--space-4);
+}
