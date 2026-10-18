@@ -2,13 +2,13 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { db } from '../data/db'
 import { useLive, usePhotoUrl } from '../data/hooks'
-import { addObje, attachDocent, latestObje } from '../data/repo'
+import { addObje, attachDocent, latestObje, setDocentText } from '../data/repo'
 import { sequenceOf } from '../domain/sequence'
 import type { GeoPoint } from '../domain/types'
 import { useCamera } from '../lib/camera'
 import { ViewfinderStill } from '../lib/viewfinder'
 import { currentPosition, readPhotoMeta } from '../lib/photoMeta'
-import { extractText } from '../lib/ocr'
+import { extractText, warmUpOcr } from '../lib/ocr'
 import { formatGeo, formatIndex, formatTimeSeconds } from '../lib/format'
 import { IconButton } from '../components/IconButton'
 import { IndexBadge } from '../components/IndexBadge'
@@ -47,6 +47,10 @@ export function CapturePage() {
   }, [])
 
   useEffect(() => {
+    if (mode === 'docent') warmUpOcr()
+  }, [mode])
+
+  useEffect(() => {
     if (!toast) return
     const t = setTimeout(() => setToast(undefined), 2600)
     return () => clearTimeout(t)
@@ -65,10 +69,16 @@ export function CapturePage() {
           setToast('먼저 오브제를 찍어 주세요')
           return
         }
-        const text = await extractText(photo)
-        await attachDocent(target.id, photo, text)
+        await attachDocent(target.id, photo)
         const n = formatIndex(data.latestIndex ?? data.count)
-        setToast(text ? `설명문이 인식되었어요 · ${n}에 붙입니다` : `설명문 사진을 ${n}에 붙였어요`)
+        setToast(`설명문을 읽는 중 · ${n}`)
+        // 글자 읽기는 촬영을 막지 않는다. 화면을 떠나도 끝까지 읽고 저장한다.
+        extractText(photo)
+          .then(async (text) => {
+            await setDocentText(target.id, text)
+            setToast(text.trim() ? `설명문이 인식되었어요 · ${n}에 붙입니다` : `글자를 읽지 못했어요 · 사진은 ${n}에 붙였어요`)
+          })
+          .catch(() => setToast(`글자를 읽지 못했어요 · 사진은 ${n}에 붙였어요`))
       }
     } finally {
       setBusy(false)

@@ -2,9 +2,10 @@ import { useCallback, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { db } from '../data/db'
 import { useLive, usePhotoUrl } from '../data/hooks'
-import { updateNote, updateObje } from '../data/repo'
+import { setDocentText, updateNote, updateObje } from '../data/repo'
 import { sequenceOf } from '../domain/sequence'
 import { parseTagInput } from '../domain/tags'
+import { docentToText } from '../domain/docent'
 import { formatDate, formatGeo, formatIndex, formatTimeSeconds } from '../lib/format'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
@@ -17,7 +18,7 @@ import { Sheet } from '../components/Sheet'
 import { TextArea, TextField } from '../components/TextField'
 import styles from './ObjePage.module.css'
 
-type Editing = 'note' | 'tags' | 'title' | 'docentPhoto' | undefined
+type Editing = 'note' | 'tags' | 'title' | 'docent' | 'docentPhoto' | undefined
 
 /** 02 오브제 상세 · ObjePage */
 export function ObjePage() {
@@ -47,6 +48,7 @@ export function ObjePage() {
   }
   async function save() {
     if (editing === 'note') await updateNote(obje.id, draft)
+    if (editing === 'docent') await setDocentText(obje.id, draft)
     if (editing === 'title') await updateObje(obje.id, { title: draft.trim() || undefined })
     if (editing === 'tags') await updateObje(obje.id, { tags: [...new Set([...obje.tags, ...parseTagInput(draft)])] })
     close()
@@ -92,7 +94,13 @@ export function ObjePage() {
           <TagList tags={obje.tags} onAdd={() => edit('tags', '')} />
         </section>
 
-        {obje.docent && <DocentBlock docent={obje.docent} onShowPhoto={docentSrc ? () => setEditing('docentPhoto') : undefined} />}
+        {obje.docent && (
+          <DocentBlock
+            docent={obje.docent}
+            onEdit={() => edit('docent', docentToText(obje.docent!))}
+            onShowPhoto={docentSrc ? () => setEditing('docentPhoto') : undefined}
+          />
+        )}
         <NoteBlock note={obje.note} updatedAt={obje.noteUpdatedAt} onWrite={() => edit('note', '')} />
 
         {visit && (
@@ -117,6 +125,10 @@ export function ObjePage() {
       <Sheet open={editing === 'tags'} title="라벨 추가" onClose={close}>
         <TextField id="tags" autoFocus value={draft} placeholder="#흰절벽 #바다" onChange={(e) => setDraft(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && save()} />
         <Button onClick={save}>추가</Button>
+      </Sheet>
+      <Sheet open={editing === 'docent'} title="도슨트 · 원문 고치기" onClose={close}>
+        <TextArea id="docent" rows={8} autoFocus value={draft} placeholder={'작가, 〈작품명〉, 연도\n\n설명문'} onChange={(e) => setDraft(e.target.value)} />
+        <Button onClick={save}>저장</Button>
       </Sheet>
       <Sheet open={editing === 'docentPhoto'} title="도슨트 · 사진" onClose={close}>
         {docentSrc && <img className={styles.docentPhoto} src={docentSrc} alt="설명문 사진" />}

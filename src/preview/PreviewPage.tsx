@@ -125,7 +125,7 @@ export function PreviewPage() {
           </Item>
 
           <Item name="DocentBlock — 기록">
-            <DocentBlock docent={DOCENT} onShowPhoto={() => {}} />
+            <DocentBlock docent={DOCENT} onEdit={() => {}} onShowPhoto={() => {}} />
           </Item>
 
           <Item name="NoteBlock — 해석" note="아래: 비어 있을 때" status="proposed" refs="R3">

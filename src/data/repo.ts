@@ -31,14 +31,21 @@ export async function addObje(input: {
   return obje
 }
 
-/** 도슨트 사진 + 추출 텍스트를 오브제에 붙인다. 오브제 제목이 비어 있으면 작품명으로 채운다. */
-export async function attachDocent(objeId: ID, photo: Blob, rawText: string): Promise<void> {
+/** 도슨트 사진을 오브제에 붙인다. 글자는 비워 두고, 읽히면 setDocentText로 채운다. */
+export async function attachDocent(objeId: ID, photo: Blob): Promise<void> {
   const photoId = newId()
-  const docent = toDocent(rawText, photoId)
   await db.transaction('rw', db.objes, db.photos, async () => {
-    const obje = await db.objes.get(objeId)
-    if (!obje) throw new Error(`obje ${objeId} not found`)
     await db.photos.add({ id: photoId, blob: photo })
+    await db.objes.update(objeId, { docent: { photoId, text: '' } })
+  })
+}
+
+/** 도슨트 글(OCR 결과 또는 직접 고친 글)을 정리해 저장한다. 오브제 제목이 비어 있으면 작품명으로 채운다. */
+export async function setDocentText(objeId: ID, raw: string): Promise<void> {
+  await db.transaction('rw', db.objes, async () => {
+    const obje = await db.objes.get(objeId)
+    if (!obje) return
+    const docent = toDocent(raw, obje.docent?.photoId)
     await db.objes.update(objeId, { docent, title: obje.title ?? workTitle(docent) })
   })
 }

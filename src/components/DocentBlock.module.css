@@ -16,6 +16,10 @@
   letter-spacing: var(--tracking-label);
   color: var(--text-secondary);
 }
+.actions {
+  display: flex;
+  gap: var(--space-3);
+}
 .action {
   padding: 0;
   border: 0;

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { parseTagInput, parseTags } from './tags'
 import { sequenceOf } from './sequence'
 import { attachmentLabel, visitSpan, visitStats } from './visitStats'
-import { toDocent, workTitle } from './docent'
+import { docentToText, toDocent, workTitle } from './docent'
 import type { Obje } from './types'
 
 const obje = (id: string, takenAt: number, extra: Partial<Obje> = {}): Obje => ({
@@ -67,5 +67,18 @@ describe('toDocent', () => {
 
   it('keeps plain text whole', () => {
     expect(toDocent('그냥 설명문')).toEqual({ photoId: undefined, text: '그냥 설명문' })
+  })
+
+  it('cleans Tesseract output: <> titles, wrapped lines, blank-line paragraphs', () => {
+    const ocr = '한서윤, <남쪽 해안, 오후 3시>, 2019\n피그먼트 프린트, 120 × 180 cm\n\n작가는 같은 절벽을 일 년 동안   같은 시각에 촬영했다.\n백악질 절벽은 계절과 빛에 따라 회색에서\n푸른빛까지 색을 바꾼다.\n'
+    const d = toDocent(ocr, 'p1')
+    expect(d.heading).toBe('한서윤, 〈남쪽 해안, 오후 3시〉, 2019')
+    expect(d.text).toBe('피그먼트 프린트, 120 × 180 cm\n작가는 같은 절벽을 일 년 동안 같은 시각에 촬영했다. 백악질 절벽은 계절과 빛에 따라 회색에서 푸른빛까지 색을 바꾼다.')
+    expect(workTitle(d)).toBe('남쪽 해안, 오후 3시')
+    expect(toDocent(docentToText(d), 'p1')).toEqual(d)
+  })
+
+  it('returns empty text for empty OCR output', () => {
+    expect(toDocent('  \n\n ')).toEqual({ photoId: undefined, text: '' })
   })
 })

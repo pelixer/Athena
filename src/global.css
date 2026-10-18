@@ -8,7 +8,7 @@
   font-display: swap;
 }
 
-/* Monoplex KR — 시안과 같은 CDN을 먼저, 실패하면 내장 Regular로 */
+/* Monoplex KR — v1.1.0 TTF를 WOFF2로 변환해 내장 (오프라인에서도 시안과 같은 굵기) */
 @font-face {
   font-family: 'Monoplex KR';
   src: url('./assets/fonts/MonoplexKR-Regular.woff2') format('woff2');
@@ -17,17 +17,13 @@
 }
 @font-face {
   font-family: 'Monoplex KR';
-  src:
-    url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Medium.woff2') format('woff2'),
-    url('./assets/fonts/MonoplexKR-Regular.woff2') format('woff2');
+  src: url('./assets/fonts/MonoplexKR-Medium.woff2') format('woff2');
   font-weight: 500;
   font-display: swap;
 }
 @font-face {
   font-family: 'Monoplex KR';
-  src:
-    url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-SemiBold.woff2') format('woff2'),
-    url('./assets/fonts/MonoplexKR-Regular.woff2') format('woff2');
+  src: url('./assets/fonts/MonoplexKR-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-display: swap;
 }
