@@ -9,7 +9,7 @@ import { useCamera } from '../lib/camera'
 import { ViewfinderStill } from '../lib/viewfinder'
 import { currentPosition, readPhotoMeta } from '../lib/photoMeta'
 import { extractText, warmUpOcr } from '../lib/ocr'
-import { formatGeo, formatIndex, formatTimeSeconds } from '../lib/format'
+import { formatIndex, formatTime } from '../lib/format'
 import { IconButton } from '../components/IconButton'
 import { IndexBadge } from '../components/IndexBadge'
 import { ModeSwitch } from '../components/ModeSwitch'
@@ -152,11 +152,11 @@ export function CapturePage() {
       <div className={styles.scrimTop} />
       <div className={styles.top}>
         <IconButton icon="close" surface="photo" aria-label="닫기" onClick={() => navigate(`/visit/${visitId}`)} />
-        {/* 지금 관람 중인 전시와 이번에 찍힐 순번. 누르는 버튼이 아니라 안내다. */}
+        {/* 지금 관람 중인 전시, 이번에 찍힐 순번과 시각. 누르는 버튼이 아니라 안내다. */}
         <div className={styles.status}>
           <span className={styles.eyebrow}>
             <span className={styles.dot} />
-            {attached ? '첨부한 사진' : `관람 중 · 다음 ${formatIndex(nextIndex)}`}
+            {attached ? '첨부한 사진' : `다음 ${formatIndex(nextIndex)} · ${formatTime(now)}`}
           </span>
           <span className={styles.visitTitle}>{data.visit.title}</span>
         </div>
@@ -179,10 +179,6 @@ export function CapturePage() {
 
       <div className={styles.scrim} />
       <div className={styles.bottom}>
-        <div className={styles.meta}>
-          <span className={styles.clock}>{formatTimeSeconds(now)}</span>
-          <span>{[data.visit.venue, position && formatGeo(position)].filter(Boolean).join(' · ')}</span>
-        </div>
         {attached ? (
           <AttachConfirm onConfirm={confirm} disabled={busy ? ['obje', 'docent'] : data.latest ? [] : ['docent']} />
         ) : (

@@ -36,7 +36,7 @@ export function HomePage() {
   async function start() {
     if (!title.trim()) return
     const visit = await createVisit({ title: title.trim(), venue: venue.trim() || undefined })
-    navigate(`/visit/${visit.id}/capture`)
+    navigate(`/visit/${visit.id}`)
   }
 
   return (

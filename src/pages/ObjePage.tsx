@@ -63,12 +63,7 @@ export function ObjePage() {
 
   return (
     <Screen
-      top={
-        <>
-          <IconButton icon="back" surface="photo" aria-label="뒤로" onClick={() => navigate(visit ? `/visit/${visit.id}` : '/')} />
-          <IconButton icon="card" surface="photo" aria-label="카드 만들기" onClick={() => navigate(`/obje/${obje.id}/card`)} />
-        </>
-      }
+      top={<IconButton icon="back" surface="photo" aria-label="뒤로" onClick={() => navigate(visit ? `/visit/${visit.id}` : '/')} />}
       bottom={
         <>
           <IconButton icon="write" size={54} aria-label={obje.note ? '노트 수정' : '노트 쓰기'} onClick={() => edit('note', obje.note ?? '')} />
@@ -105,7 +100,7 @@ export function ObjePage() {
             onShowPhoto={docentSrc ? () => setEditing('docentPhoto') : undefined}
           />
         )}
-        <NoteBlock note={obje.note} updatedAt={obje.noteUpdatedAt} onWrite={() => edit('note', '')} />
+        <NoteBlock roomy note={obje.note} updatedAt={obje.noteUpdatedAt} onWrite={() => edit('note', obje.note ?? '')} />
 
         {visit && (
           <Link to={`/visit/${visit.id}`} className={styles.visit}>
