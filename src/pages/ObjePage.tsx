@@ -105,7 +105,7 @@ export function ObjePage() {
         {visit && (
           <Link to={`/visit/${visit.id}`} className={styles.visit}>
             <span className={styles.visitText}>
-              <span className={styles.visitLabel}>관람</span>
+              <span className={styles.visitLabel}>컬렉션</span>
               <span className={styles.visitTitle}>{visit.title}</span>
             </span>
             <span className={styles.arrow}>
@@ -131,7 +131,7 @@ export function ObjePage() {
         onConfirm={save}
         aside={docentSrc && <img className={styles.docentThumb} src={docentSrc} alt="캡션 사진" />}
       >
-        <TextField id="docent-heading" variant="heading" value={draftHeading} placeholder="작가, 〈작품명〉, 연도" onChange={(e) => setDraftHeading(e.target.value)} />
+        <TextField id="docent-heading" variant="heading" value={draftHeading} placeholder="작가·만든 이, 〈제목〉, 연도" onChange={(e) => setDraftHeading(e.target.value)} />
         <TextArea id="docent" rows={8} autoFocus value={draft} placeholder="설명문 · 문단 사이는 빈 줄" onChange={(e) => setDraft(e.target.value)} />
       </Sheet>
       {editing === 'docentPhoto' && docentSrc && <PhotoViewer src={docentSrc} caption={`캡션 원본 · ${formatIndex(index)}`} onClose={close} />}

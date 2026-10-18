@@ -128,7 +128,7 @@ export function CapturePage() {
   }
 
   if (!data) return null
-  if (!data.visit) return <p className={styles.missing}>관람을 찾을 수 없어요.</p>
+  if (!data.visit) return <p className={styles.missing}>컬렉션을 찾을 수 없어요.</p>
   const live = !still && camera.status === 'live'
   const targetLabel = data.target ? formatIndex(data.targetIndex ?? data.count) : undefined
   const canAdd = mode === 'obje' || !!data.target

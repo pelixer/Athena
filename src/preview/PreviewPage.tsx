@@ -64,7 +64,7 @@ export function PreviewPage() {
           <Frame label="01 촬영 · CapturePage" status="proposed" refs="R13 R14" path={`/visit/${SAMPLE.visitId}/capture`} still={samplePhotos.cliffSky} />
           <Frame label="01 촬영 · 캡션 모드" path={`/visit/${SAMPLE.visitId}/capture?mode=docent`} still={samplePhotos.marble} />
           <Frame label="02 오브제 상세 · ObjePage" path={`/obje/${SAMPLE.objeId}`} />
-          <Frame label="03 관람 보기 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
+          <Frame label="03 컬렉션 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
           <Frame label="04 공유 카드 · CardPage" path={`/obje/${SAMPLE.objeId}/card`} />
           <Frame label="05 템플릿 · TemplatePage (1b 입장권)" path={`/visit/${SAMPLE.visitId}/template`} />
           <Frame label="홈 · HomePage" path="/" />
@@ -172,7 +172,7 @@ export function PreviewPage() {
             />
           </Item>
 
-          <Item name="StatRow · TabBar" note="관람 보기 상단">
+          <Item name="StatRow · TabBar" note="컬렉션 상단">
             <StatRow
               stats={[
                 ['오브제', 12],

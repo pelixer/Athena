@@ -1,0 +1,27 @@
+.row {
+  position: relative;
+  overflow: hidden;
+}
+.actions {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.start {
+  left: 0;
+}
+.end {
+  right: 0;
+}
+.content {
+  position: relative;
+  background: var(--bg-base);
+  touch-action: pan-y;
+  transition: transform var(--dur-base) var(--ease-settle);
+}
+.dragging {
+  transition: none;
+}

@@ -1,0 +1,25 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-vein);
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--hit-min);
+  padding: var(--space-2) var(--space-1);
+  border: 0;
+  border-bottom: 1px solid var(--border-vein);
+  background: none;
+  color: var(--text-primary);
+  font: var(--type-item);
+  text-align: left;
+  cursor: pointer;
+}
+.option[aria-checked='true'] {
+  color: var(--accent-text);
+}
+.name {
+  flex: 1;
+}

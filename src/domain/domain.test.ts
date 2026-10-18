@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { parseTagInput, parseTags, typeTagInput } from './tags'
 import { sequenceOf } from './sequence'
+import { orderCollections } from './collections'
 import { attachmentLabel, visitSpan, visitStats } from './visitStats'
 import { bodyToText, docentToText, textToBody, toDocent, workTitle } from './docent'
 import { defaultTemplateSelection, selectedInOrder } from './template'
@@ -117,5 +118,18 @@ describe('template selection', () => {
 
   it('keeps chosen objes in capture order', () => {
     expect(selectedInOrder(objes, ['c', 'a']).map((o) => o.id)).toEqual(['a', 'c'])
+  })
+})
+
+describe('orderCollections', () => {
+  it('고정 → 모으는 중 → 나머지, 각각 최근 것부터', () => {
+    const vs = [
+      { id: 'old', startedAt: 1, endedAt: 2 },
+      { id: 'live', startedAt: 3 },
+      { id: 'pinOld', startedAt: 4, endedAt: 5, pinnedAt: 10 },
+      { id: 'new', startedAt: 6, endedAt: 7 },
+      { id: 'pinNew', startedAt: 0, endedAt: 1, pinnedAt: 20 },
+    ]
+    expect(orderCollections(vs).map((v) => v.id)).toEqual(['pinNew', 'pinOld', 'live', 'new', 'old'])
   })
 })

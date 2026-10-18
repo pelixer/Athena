@@ -23,7 +23,7 @@ export const TemplateTicket = forwardRef<HTMLDivElement, TemplateTicketProps>(fu
     <div ref={ref} className={styles.ticket}>
       <div className={styles.main}>
         <div className={styles.eyebrow}>
-          <span>입장권 · 관람 기록</span>
+          <span>입장권 · 미감 기록</span>
           <span>{p.range}</span>
         </div>
         <div className={styles.title}>{p.title}</div>

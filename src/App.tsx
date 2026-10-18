@@ -5,11 +5,13 @@ import { ObjePage } from './pages/ObjePage'
 import { VisitPage } from './pages/VisitPage'
 import { CardPage } from './pages/CardPage'
 import { TemplatePage } from './pages/TemplatePage'
+import { FolderPage } from './pages/FolderPage'
 
 export function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/folder/:folderId" element={<FolderPage />} />
       <Route path="/visit/:visitId" element={<VisitPage />} />
       <Route path="/visit/:visitId/capture" element={<CapturePage />} />
       <Route path="/visit/:visitId/template" element={<TemplatePage />} />

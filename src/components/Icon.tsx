@@ -3,7 +3,7 @@
  * 1.5 선, 90° 꺾임(곡선·둥근 모서리 없음, 2026-10-18 사용자 요청) + 하늘색 점 하나. 점은 "나의 노트" 앞 점, 촬영 화면 관람 알약의 점과 같은 서명이다.
  * 선 색은 글자색(currentColor)을, 점 색은 --icon-dot을 따른다 (표면마다 glass.module.css가 정한다).
  */
-export type IconName = 'back' | 'forward' | 'close' | 'add' | 'share' | 'save' | 'flip' | 'write' | 'card' | 'ticket' | 'photo' | 'tag' | 'check' | 'delete'
+export type IconName = 'back' | 'forward' | 'close' | 'add' | 'share' | 'save' | 'flip' | 'write' | 'card' | 'ticket' | 'photo' | 'tag' | 'check' | 'delete' | 'pin' | 'folder'
 
 const dot = (cx: number, cy: number, r = 1.6) => <circle className="icon-dot" cx={cx} cy={cy} r={r} />
 
@@ -28,6 +28,18 @@ const PATHS: Record<IconName, React.ReactNode> = {
     </>
   ),
   add: <path d="M12 5v14M5 12h14" />,
+  pin: (
+    <>
+      <path d="M9 4h6l-1 6 3.5 3.5h-11L10 10zM12 13.5V20" />
+      {dot(12, 7, 1.4)}
+    </>
+  ),
+  folder: (
+    <>
+      <path d="M3.5 6h6l2 2.5h9V18.5h-17z" />
+      {dot(16.5, 13.5, 1.6)}
+    </>
+  ),
   delete: (
     <>
       <path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 12.5h9l1-12.5" />

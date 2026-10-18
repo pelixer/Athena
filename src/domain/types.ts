@@ -4,7 +4,7 @@ export type ID = string
 
 export type VisitKind = 'exhibition' | 'concert' | 'daily'
 
-/** 하나의 전시/공연/하루 경험. 오브제들의 묶음. */
+/** 컬렉션 — 하나의 전시·공연·여행·하루처럼 함께 모은 오브제들의 묶음. 화면 이름은 "컬렉션", 코드 이름은 Visit. */
 export interface Visit {
   id: ID
   title: string
@@ -12,6 +12,17 @@ export interface Visit {
   venue?: string
   startedAt: number
   endedAt?: number
+  /** 홈·폴더 목록 맨 위에 고정한 시각 (없으면 고정 안 함) */
+  pinnedAt?: number
+  /** 들어 있는 폴더 (없으면 홈에 바로) */
+  folderId?: ID
+}
+
+/** 폴더 — 컬렉션을 묶어 두는 곳. */
+export interface Folder {
+  id: ID
+  name: string
+  createdAt: number
 }
 
 export interface GeoPoint {

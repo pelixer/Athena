@@ -31,8 +31,10 @@ export function VisitPage() {
 
   if (!data) return null
   const { visit, objes } = data
-  if (!visit) return <p className={styles.missing}>관람을 찾을 수 없어요.</p>
+  if (!visit) return <p className={styles.missing}>컬렉션을 찾을 수 없어요.</p>
 
+  // 폴더 안의 컬렉션이면 뒤로·지운 뒤에 그 폴더로
+  const home = visit.folderId ? `/folder/${visit.folderId}` : '/'
   const index = sequenceOf(objes)
   const newestFirst = [...objes].sort((a, b) => index.get(b.id)! - index.get(a.id)!)
   const stats = visitStats(objes)
@@ -56,23 +58,23 @@ export function VisitPage() {
       fade
       top={
         <>
-          <IconButton icon="back" surface="marble" aria-label="뒤로" onClick={() => navigate('/')} />
+          <IconButton icon="back" surface="marble" aria-label="뒤로" onClick={() => navigate(home)} />
           <span className={styles.topActions}>
             {visit.endedAt && <IconButton icon="ticket" surface="marble" aria-label="템플릿 만들기" onClick={toTemplate} />}
-            <IconButton icon="delete" surface="marble" aria-label="관람 지우기" onClick={() => setConfirmDelete(true)} />
+            <IconButton icon="delete" surface="marble" aria-label="컬렉션 지우기" onClick={() => setConfirmDelete(true)} />
           </span>
         </>
       }
       bottom={
         <>
           <IconButton icon="add" surface="marble" size={54} aria-label="오브제 추가" onClick={() => navigate(`/visit/${visit.id}/capture`)} />
-          <IconButton icon="ticket" surface="accent" size={54} aria-label={visit.endedAt ? '템플릿 만들기' : '관람 마무리 · 템플릿 만들기'} onClick={toTemplate} />
+          <IconButton icon="ticket" surface="accent" size={54} aria-label={visit.endedAt ? '템플릿 만들기' : '컬렉션 마무리 · 템플릿 만들기'} onClick={toTemplate} />
         </>
       }
     >
       <main className={styles.page}>
         <header className={styles.header}>
-          <span className={styles.eyebrow}>관람 · {formatDateWeekday(visit.startedAt)}</span>
+          <span className={styles.eyebrow}>컬렉션 · {formatDateWeekday(visit.startedAt)}</span>
           <h1 className={styles.title}>{visit.title}</h1>
           <p className={styles.where}>
             {visit.venue}
@@ -124,12 +126,12 @@ export function VisitPage() {
       </main>
       <Sheet
         open={confirmDelete}
-        title="관람을 지울까요?"
+        title="컬렉션을 지울까요?"
         confirmLabel="지우기"
         onClose={() => setConfirmDelete(false)}
         onConfirm={async () => {
           await deleteVisit(visit.id)
-          navigate('/', { replace: true })
+          navigate(home, { replace: true })
         }}
       >
         <p className={styles.deleteNote}>

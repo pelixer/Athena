@@ -29,35 +29,57 @@
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--border-strong);
 }
-.row {
+.folderRow {
   display: grid;
   grid-template-columns: 56px 1fr;
   gap: var(--space-4);
   align-items: center;
-  padding: var(--space-4) 0;
+  padding: var(--space-3) 0;
   border-bottom: 1px solid var(--border-vein);
 }
-.thumb {
+.folderIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 56px;
-  height: 70px;
+  height: 44px;
   border-radius: var(--radius-xs);
-  background: var(--bg-sunken) center / cover no-repeat;
+  background: var(--bg-sunken);
+  color: var(--text-secondary);
 }
-.text {
+.folderText {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
   min-width: 0;
 }
-.title {
-  font: var(--type-display-l);
+.folderName {
+  font: var(--type-title);
 }
-.dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin-right: var(--space-1);
-  border-radius: 50%;
-  background: var(--accent-bright);
-  vertical-align: middle;
+.tagline {
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-secondary);
+}
+.folderTitle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-primary);
+  font: var(--type-display-xl);
+  letter-spacing: var(--tracking-display);
+  text-align: left;
+  cursor: pointer;
+}
+.empty,
+.note {
+  margin: 0;
+  font: var(--type-body-s);
+  color: var(--text-secondary);
+  word-break: keep-all;
+}
+.missing {
+  padding: var(--space-8);
+  font: var(--type-body-s);
+  color: var(--text-secondary);
 }

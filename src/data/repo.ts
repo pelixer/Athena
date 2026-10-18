@@ -1,10 +1,10 @@
 import { db } from './db'
 import { bodyToText, toDocent, workTitle } from '../domain/docent'
-import type { GeoPoint, ID, Obje, Visit, VisitKind } from '../domain/types'
+import type { Folder, GeoPoint, ID, Obje, Visit, VisitKind } from '../domain/types'
 
 const newId = () => crypto.randomUUID()
 
-export async function createVisit(input: { title: string; venue?: string; kind?: VisitKind }): Promise<Visit> {
+export async function createVisit(input: { title: string; venue?: string; kind?: VisitKind; folderId?: ID }): Promise<Visit> {
   const visit: Visit = { id: newId(), kind: 'exhibition', startedAt: Date.now(), ...input }
   await db.visits.add(visit)
   return visit
@@ -12,6 +12,42 @@ export async function createVisit(input: { title: string; venue?: string; kind?:
 
 export async function endVisit(id: ID): Promise<void> {
   await db.visits.update(id, { endedAt: Date.now() })
+}
+
+/** 목록 맨 위에 고정 / 해제 */
+export async function setPinned(id: ID, pinned: boolean): Promise<void> {
+  await db.visits.where('id').equals(id).modify((v) => {
+    if (pinned) v.pinnedAt = Date.now()
+    else delete v.pinnedAt
+  })
+}
+
+/** 폴더로 옮긴다. folderId가 없으면 폴더에서 빼서 홈으로. */
+export async function moveToFolder(visitId: ID, folderId: ID | undefined): Promise<void> {
+  await db.visits.where('id').equals(visitId).modify((v) => {
+    if (folderId) v.folderId = folderId
+    else delete v.folderId
+  })
+}
+
+export async function createFolder(name: string): Promise<Folder> {
+  const folder: Folder = { id: newId(), name: name.trim(), createdAt: Date.now() }
+  await db.folders.add(folder)
+  return folder
+}
+
+export async function renameFolder(id: ID, name: string): Promise<void> {
+  await db.folders.update(id, { name: name.trim() })
+}
+
+/** 폴더를 지운다. 안의 컬렉션은 지우지 않고 홈으로 꺼낸다. */
+export async function deleteFolder(id: ID): Promise<void> {
+  await db.transaction('rw', db.visits, db.folders, async () => {
+    await db.visits.where('folderId').equals(id).modify((v) => {
+      delete v.folderId
+    })
+    await db.folders.delete(id)
+  })
 }
 
 export async function addObje(input: {

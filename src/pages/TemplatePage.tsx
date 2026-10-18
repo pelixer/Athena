@@ -59,7 +59,7 @@ export function TemplatePage() {
 
   if (!data) return null
   const { visit } = data
-  if (!visit) return <p className={styles.missing}>관람을 찾을 수 없어요.</p>
+  if (!visit) return <p className={styles.missing}>컬렉션을 찾을 수 없어요.</p>
 
   const stats = visitStats(objes)
   const span = visitSpan(objes, visit.endedAt)
