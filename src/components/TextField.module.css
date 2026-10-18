@@ -3,7 +3,7 @@
   min-height: var(--control-h);
   padding: 0 var(--space-4);
   border: 1px solid var(--border-vein);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: var(--bg-base);
   color: var(--text-primary);
   font: var(--type-body);
@@ -22,4 +22,7 @@
 }
 .note {
   font: var(--type-note);
+}
+.heading {
+  font: var(--type-heading-s);
 }

@@ -6,7 +6,7 @@ import { endVisit } from '../data/repo'
 import { sequenceOf } from '../domain/sequence'
 import { attachmentLabel, visitSpan, visitStats } from '../domain/visitStats'
 import type { Obje } from '../domain/types'
-import { formatDateWeekday, formatDuration, formatIndex, formatTime } from '../lib/format'
+import { formatCount, formatDateWeekday, formatDuration, formatIndex, formatTime } from '../lib/format'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
 import { Button } from '../components/Button'
@@ -105,7 +105,12 @@ export function VisitPage() {
         ) : (
           groups.map(([tag, list]) => (
             <section key={tag ?? 'all'} className={styles.group}>
-              {view === 'tags' && <h2 className={styles.groupLabel}>{tag ? `#${tag}` : '라벨 없음'}</h2>}
+              {view === 'tags' && (
+                <h2 className={styles.groupLabel}>
+                  <span>{tag ? `#${tag}` : '라벨 없음'}</span>
+                  <span className={styles.groupCount}>{formatCount(list.length)}</span>
+                </h2>
+              )}
               {list.length === 0 ? (
                 <p className={styles.empty}>노트를 쓴 오브제가 아직 없어요.</p>
               ) : (

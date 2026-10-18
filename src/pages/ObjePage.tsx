@@ -2,10 +2,10 @@ import { useCallback, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { db } from '../data/db'
 import { useLive, usePhotoUrl } from '../data/hooks'
-import { setDocentText, updateNote, updateObje } from '../data/repo'
+import { editDocent, updateNote, updateObje } from '../data/repo'
 import { sequenceOf } from '../domain/sequence'
 import { parseTagInput } from '../domain/tags'
-import { docentToText } from '../domain/docent'
+import { textToBody } from '../domain/docent'
 import { formatDate, formatGeo, formatIndex, formatTimeSeconds } from '../lib/format'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
@@ -16,9 +16,10 @@ import { DocentBlock } from '../components/DocentBlock'
 import { NoteBlock } from '../components/NoteBlock'
 import { Sheet } from '../components/Sheet'
 import { TextArea, TextField } from '../components/TextField'
+import { PhotoViewer } from '../components/PhotoViewer'
 import styles from './ObjePage.module.css'
 
-type Editing = 'note' | 'tags' | 'title' | 'docent' | 'docentPhoto' | undefined
+type Editing = 'note' | 'tags' | 'title' | 'docent' | 'docentPhoto' | 'photo' | undefined
 
 /** 02 오브제 상세 · ObjePage */
 export function ObjePage() {
@@ -26,6 +27,7 @@ export function ObjePage() {
   const navigate = useNavigate()
   const [editing, setEditing] = useState<Editing>()
   const [draft, setDraft] = useState('')
+  const [draftHeading, setDraftHeading] = useState('')
   const close = useCallback(() => setEditing(undefined), [])
 
   const data = useLive(async () => {
@@ -48,7 +50,7 @@ export function ObjePage() {
   }
   async function save() {
     if (editing === 'note') await updateNote(obje.id, draft)
-    if (editing === 'docent') await setDocentText(obje.id, draft)
+    if (editing === 'docent') await editDocent(obje.id, draftHeading, draft)
     if (editing === 'title') await updateObje(obje.id, { title: draft.trim() || undefined })
     if (editing === 'tags') await updateObje(obje.id, { tags: [...new Set([...obje.tags, ...parseTagInput(draft)])] })
     close()
@@ -81,7 +83,13 @@ export function ObjePage() {
         </>
       }
     >
-      <div className={styles.hero} style={src ? { backgroundImage: `url(${src})` } : undefined} />
+      <button
+        type="button"
+        className={styles.hero}
+        style={src ? { backgroundImage: `url(${src})` } : undefined}
+        aria-label="사진 크게 보기"
+        onClick={() => src && setEditing('photo')}
+      />
       <main className={styles.body}>
         <section className={styles.head}>
           <span className={styles.index}>
@@ -97,7 +105,10 @@ export function ObjePage() {
         {obje.docent && (
           <DocentBlock
             docent={obje.docent}
-            onEdit={() => edit('docent', docentToText(obje.docent!))}
+            onEdit={() => {
+              setDraftHeading(obje.docent!.heading ?? '')
+              edit('docent', textToBody(obje.docent!.text))
+            }}
             onShowPhoto={docentSrc ? () => setEditing('docentPhoto') : undefined}
           />
         )}
@@ -114,25 +125,27 @@ export function ObjePage() {
         )}
       </main>
 
-      <Sheet open={editing === 'note'} title="나의 노트" onClose={close}>
+      <Sheet open={editing === 'note'} title="나의 노트" onClose={close} onConfirm={save}>
         <TextArea id="note" variant="note" rows={6} autoFocus value={draft} placeholder="이 앞에서 무엇을 느꼈나요?" onChange={(e) => setDraft(e.target.value)} />
-        <Button onClick={save}>저장</Button>
       </Sheet>
-      <Sheet open={editing === 'title'} title="제목" onClose={close}>
+      <Sheet open={editing === 'title'} title="제목" onClose={close} onConfirm={save}>
         <TextField id="title" autoFocus value={draft} placeholder="남쪽 해안, 오후 세 시" onChange={(e) => setDraft(e.target.value)} />
-        <Button onClick={save}>저장</Button>
       </Sheet>
-      <Sheet open={editing === 'tags'} title="라벨 추가" onClose={close}>
+      <Sheet open={editing === 'tags'} title="라벨 추가" onClose={close} onConfirm={save} confirmLabel="추가">
         <TextField id="tags" autoFocus value={draft} placeholder="#흰절벽 #바다" onChange={(e) => setDraft(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && save()} />
-        <Button onClick={save}>추가</Button>
       </Sheet>
-      <Sheet open={editing === 'docent'} title="도슨트 · 원문 고치기" onClose={close}>
-        <TextArea id="docent" rows={8} autoFocus value={draft} placeholder={'작가, 〈작품명〉, 연도\n\n설명문'} onChange={(e) => setDraft(e.target.value)} />
-        <Button onClick={save}>저장</Button>
+      <Sheet
+        open={editing === 'docent'}
+        title="도슨트 · 원문 고치기"
+        onClose={close}
+        onConfirm={save}
+        aside={docentSrc && <img className={styles.docentThumb} src={docentSrc} alt="설명문 사진" />}
+      >
+        <TextField id="docent-heading" variant="heading" value={draftHeading} placeholder="작가, 〈작품명〉, 연도" onChange={(e) => setDraftHeading(e.target.value)} />
+        <TextArea id="docent" rows={8} autoFocus value={draft} placeholder="설명문 · 문단 사이는 빈 줄" onChange={(e) => setDraft(e.target.value)} />
       </Sheet>
-      <Sheet open={editing === 'docentPhoto'} title="도슨트 · 사진" onClose={close}>
-        {docentSrc && <img className={styles.docentPhoto} src={docentSrc} alt="설명문 사진" />}
-      </Sheet>
+      {editing === 'docentPhoto' && docentSrc && <PhotoViewer src={docentSrc} caption={`도슨트 원본 · ${formatIndex(index)}`} onClose={close} />}
+      {editing === 'photo' && src && <PhotoViewer src={src} caption={`${formatIndex(index)}${obje.title ? ` · ${obje.title}` : ''}`} onClose={close} />}
     </Screen>
   )
 }

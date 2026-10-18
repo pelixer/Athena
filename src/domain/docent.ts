@@ -8,7 +8,31 @@ const WORK_TITLE = /[〈<「『](.+?)[〉>」』]/
  * - 설명문은 사진 속 줄바꿈대로 읽히므로, 빈 줄로 나뉜 문단 안의 줄은 한 줄로 잇는다.
  */
 export function toDocent(raw: string, photoId?: string): Docent {
-  const paragraphs = raw
+  const paragraphs = paragraphsOf(raw)
+
+  let heading: string | undefined
+  const first = paragraphs[0]?.[0]
+  const hasBody = paragraphs.length > 1 || (paragraphs[0]?.length ?? 0) > 1
+  if (first && hasBody && WORK_TITLE.test(first)) {
+    heading = first.replace(/<(.+?)>/, '〈$1〉')
+    paragraphs[0] = paragraphs[0].slice(1)
+  }
+  const text = joinParagraphs(paragraphs)
+  return heading ? { photoId, heading, text } : { photoId, text }
+}
+
+/** 고치기 시트의 본문 칸 → 저장할 글. 빈 줄로 문단을 나누고, 문단 안의 줄은 잇는다. */
+export function bodyToText(body: string): string {
+  return joinParagraphs(paragraphsOf(body))
+}
+
+/** 저장된 글 → 고치기 시트의 본문 칸 (문단 사이 빈 줄) */
+export function textToBody(text: string): string {
+  return text.split('\n').join('\n\n')
+}
+
+function paragraphsOf(raw: string): string[][] {
+  return raw
     .replace(/\r/g, '')
     .split(/\n\s*\n/)
     .map((p) =>
@@ -18,22 +42,16 @@ export function toDocent(raw: string, photoId?: string): Docent {
         .filter(Boolean),
     )
     .filter((p) => p.length > 0)
+}
 
-  let heading: string | undefined
-  const first = paragraphs[0]?.[0]
-  const hasBody = paragraphs.length > 1 || (paragraphs[0]?.length ?? 0) > 1
-  if (first && hasBody && WORK_TITLE.test(first)) {
-    heading = first.replace(/<(.+?)>/, '〈$1〉')
-    paragraphs[0] = paragraphs[0].slice(1)
-  }
-  const text = paragraphs
+function joinParagraphs(paragraphs: string[][]): string {
+  return paragraphs
     .filter((p) => p.length > 0)
     .map((p) => p.join(' '))
     .join('\n')
-  return heading ? { photoId, heading, text } : { photoId, text }
 }
 
-/** 도슨트를 편집칸에 펼친 글: heading과 문단을 빈 줄로 나눈다 (toDocent로 다시 읽으면 같은 도슨트). */
+/** 도슨트를 한 덩어리 글로 펼친다: heading과 문단을 빈 줄로 나눈다 (toDocent로 다시 읽으면 같은 도슨트). */
 export function docentToText(docent: Docent): string {
   return [docent.heading, ...docent.text.split('\n')].filter(Boolean).join('\n\n')
 }

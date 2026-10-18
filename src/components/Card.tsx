@@ -20,7 +20,7 @@ export interface CardProps {
 /**
  * Card — 공유 카드 (280×420). 이 DOM이 그대로 이미지로 내보내진다.
  * 하늘·대리석: 사진을 위에 넣고 아래에 글. 사진: 사진을 배경으로 깔고 글을 아래로.
- * 도슨트·라벨 항목의 배치는 단계 2 (시안에는 칩만 있음).
+ * 도슨트·라벨 항목의 배치는 라운드 1 R6에서 확정.
  */
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(p, ref) {
   const inset = p.style !== 'photo'
@@ -39,14 +39,15 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(p, ref) 
     <div ref={ref} className={`${styles.card} ${styles[p.style]}`} style={background}>
       {inset && <div className={styles.inset} style={p.photo ? { backgroundImage: `url(${p.photo})` } : undefined} />}
       {!inset && <div className={styles.spacer} />}
-      {show('docent') && p.docentHeading && <p className={styles.docent}>{p.docentHeading}</p>}
       {show('note') && p.note && (
         <p className={styles.note} style={{ WebkitLineClamp: noteLines }}>
           {p.note}
         </p>
       )}
-      {show('tags') && p.tags.length > 0 && <p className={styles.tags}>{p.tags.map((t) => `#${t}`).join(' ')}</p>}
+      {/* R6: 도슨트 첫 줄은 노트 바로 아래에 출처처럼, 라벨은 footer 바로 위 */}
+      {show('docent') && p.docentHeading && <p className={styles.docent}>— {p.docentHeading}</p>}
       {inset && <div className={styles.spacer} />}
+      {show('tags') && p.tags.length > 0 && <p className={styles.tags}>{p.tags.map((t) => `#${t}`).join(' ')}</p>}
       <footer className={styles.footer}>
         <span className={styles.meta}>
           {show('meta') && (

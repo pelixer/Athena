@@ -1,6 +1,11 @@
 .hero {
+  display: block;
+  width: 100%;
   height: min(460px, 56dvh);
+  padding: 0;
+  border: 0;
   background: var(--bg-sunken) center / cover no-repeat;
+  cursor: zoom-in;
 }
 .body {
   display: flex;
@@ -62,10 +67,11 @@
 .primary {
   flex: 1;
 }
-.docentPhoto {
-  width: 100%;
-  max-height: 60dvh;
-  object-fit: contain;
+.docentThumb {
+  width: 56px;
+  height: 70px;
+  flex: none;
+  object-fit: cover;
   border-radius: var(--radius-xs);
 }
 .missing {

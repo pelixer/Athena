@@ -226,10 +226,28 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-6) var(--space-5);
-  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-5) var(--space-5);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   background: var(--bg-base);
   box-shadow: var(--shadow-lift);
+}
+.sheetHandle {
+  align-self: center;
+  width: 36px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--border-vein);
+}
+.sheetActions {
+  display: flex;
+  gap: var(--space-3);
+}
+.sheetActions > :first-child {
+  flex: 0 0 124px;
+  padding: 0;
+}
+.sheetActions > :last-child {
+  flex: 1;
 }
 .sheetLabel {
   font: var(--type-label);

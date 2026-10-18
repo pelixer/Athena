@@ -1,0 +1,45 @@
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: var(--bg-inverse);
+  animation: fade var(--dur-base) var(--ease-settle);
+}
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+}
+.photo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  transition: transform var(--dur-quick) var(--ease-move);
+}
+.close {
+  position: absolute;
+  left: var(--space-4);
+  top: calc(var(--safe-top) + var(--space-3));
+}
+.caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--safe-bottom) + var(--space-6));
+  margin: 0;
+  text-align: center;
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+  color: var(--text-on-dark-muted);
+  pointer-events: none;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}

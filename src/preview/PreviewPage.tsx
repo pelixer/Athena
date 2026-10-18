@@ -60,7 +60,7 @@ export function PreviewPage() {
           <Frame label="02 오브제 상세 · ObjePage" path={`/obje/${SAMPLE.objeId}`} />
           <Frame label="03 관람 보기 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
           <Frame label="04 공유 카드 · CardPage" path={`/obje/${SAMPLE.objeId}/card`} />
-          <Frame label="홈 · HomePage" path="/" status="proposed" refs="R1" />
+          <Frame label="홈 · HomePage" path="/" />
         </div>
       </Section>
 
@@ -128,7 +128,7 @@ export function PreviewPage() {
             <DocentBlock docent={DOCENT} onEdit={() => {}} onShowPhoto={() => {}} />
           </Item>
 
-          <Item name="NoteBlock — 해석" note="아래: 비어 있을 때" status="proposed" refs="R3">
+          <Item name="NoteBlock — 해석" note="아래: 비어 있을 때">
             <NoteBlock note={NOTE} updatedAt={new Date(2026, 9, 17, 14, 36).getTime()} />
             <NoteBlock onWrite={() => {}} />
           </Item>
@@ -137,7 +137,7 @@ export function PreviewPage() {
             <ShutterDemo />
           </Item>
 
-          <Item name="MetaTable" note="오브제 상세의 자동 기록 표 · 이름은 코드가 붙임" status="proposed" refs="R4">
+          <Item name="MetaTable" note="오브제 상세의 자동 기록 표">
             <MetaTable
               rows={[
                 ['시각', '2026.10.17 14:32:18'],
@@ -147,7 +147,7 @@ export function PreviewPage() {
             />
           </Item>
 
-          <Item name="StatRow · TabBar" note="관람 보기 상단 · 이름은 코드가 붙임" status="proposed" refs="R4">
+          <Item name="StatRow · TabBar" note="관람 보기 상단">
             <StatRow
               stats={[
                 ['오브제', 12],
@@ -158,24 +158,28 @@ export function PreviewPage() {
             <TabDemo />
           </Item>
 
-          <Item name="Toast" note="촬영 화면의 안내 · 이름은 코드가 붙임" status="proposed" refs="R4 R7">
+          <Item name="Toast" note="촬영 화면의 안내">
             <div className={styles.onPhoto}>
               <Toast>설명문이 인식되었어요 · No.07에 붙입니다</Toast>
               <Toast>먼저 오브제를 찍어 주세요</Toast>
             </div>
           </Item>
 
-          <Item name="TextField · Sheet" note="노트 · 제목 · 라벨 편집 시트" status="proposed" refs="R2">
+          <Item name="TextField · Sheet" note="radius-lg 시트 · 손잡이 · 취소/확인 (R2) · 도슨트 고치기 (R10)">
             <div className={styles.sheet}>
-              <span className={styles.sheetLabel}>나의 노트</span>
-              <TextArea variant="note" rows={3} defaultValue={NOTE} />
-              <TextField placeholder="#흰절벽 #바다" />
-              <Button>저장</Button>
+              <span className={styles.sheetHandle} />
+              <span className={styles.sheetLabel}>도슨트 · 원문 고치기</span>
+              <TextField variant="heading" defaultValue={DOCENT.heading} />
+              <TextArea rows={3} defaultValue={DOCENT.text} />
+              <div className={styles.sheetActions}>
+                <Button variant="neutral">취소</Button>
+                <Button>저장</Button>
+              </div>
             </div>
           </Item>
         </div>
 
-        <Item name="Card · CardStylePicker · OptionChip" note="하늘 · 대리석 · 사진 / 도슨트·라벨을 켰을 때의 배치는 코드가 정함" status="proposed" refs="R4 R6" wide>
+        <Item name="Card · CardStylePicker · OptionChip" note="하늘 · 대리석 · 사진 / 도슨트 첫 줄은 노트 아래, 라벨은 footer 위 (R6)" wide>
           <CardDemo />
         </Item>
       </Section>

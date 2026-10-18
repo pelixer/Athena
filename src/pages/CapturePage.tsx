@@ -102,7 +102,6 @@ export function CapturePage() {
   return (
     <div className={styles.screen}>
       {still ? <img className={styles.viewfinder} src={still} alt="" /> : <video ref={camera.videoRef} className={styles.viewfinder} autoPlay playsInline muted />}
-      {!still && camera.status === 'unavailable' && <p className={styles.fallback}>카메라를 열 수 없어요. 셔터를 누르면 사진을 고를 수 있어요.</p>}
 
       {mode === 'obje' ? (
         <div className={styles.frame} aria-hidden>
@@ -127,10 +126,23 @@ export function CapturePage() {
         <IndexBadge index={badgeIndex} variant="light" />
       </div>
 
-      {toast && (
+      {toast ? (
         <div className={styles.toast}>
           <Toast>{toast}</Toast>
         </div>
+      ) : (
+        !still &&
+        camera.status === 'unavailable' && (
+          // R7: 카메라를 못 열면 Toast에 "사진에서 고르기"를 함께 띄운다 (셔터도 사진 선택으로 동작)
+          <div className={styles.toast}>
+            <Toast>
+              카메라를 열 수 없어요 ·{' '}
+              <button type="button" className={styles.toastAction} onClick={() => fileRef.current?.click()}>
+                사진에서 고르기
+              </button>
+            </Toast>
+          </div>
+        )
       )}
 
       <div className={styles.scrim} />

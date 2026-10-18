@@ -9,8 +9,7 @@
   flex-direction: column;
   gap: var(--space-3);
 }
-.eyebrow,
-.groupLabel {
+.eyebrow {
   margin: 0;
   font: var(--type-label);
   letter-spacing: var(--tracking-label);
@@ -27,6 +26,19 @@
   font: var(--type-meta);
   letter-spacing: var(--tracking-control);
   color: var(--text-body);
+}
+.groupLabel {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-strong);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-primary);
+}
+.groupCount {
+  color: var(--text-secondary);
 }
 .group {
   display: flex;

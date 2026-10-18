@@ -1,5 +1,5 @@
 import { db } from './db'
-import { toDocent, workTitle } from '../domain/docent'
+import { bodyToText, toDocent, workTitle } from '../domain/docent'
 import type { GeoPoint, ID, Obje, Visit, VisitKind } from '../domain/types'
 
 const newId = () => crypto.randomUUID()
@@ -62,4 +62,15 @@ export async function updateObje(id: ID, changes: Partial<Pick<Obje, 'title' | '
 
 export async function updateNote(id: ID, note: string): Promise<void> {
   await db.objes.update(id, { note: note.trim() || undefined, noteUpdatedAt: Date.now() })
+}
+
+/** 고치기 시트에서 고친 도슨트: 첫 줄(작가 · 〈작품〉 · 연도)과 본문을 따로 받는다 (R10). */
+export async function editDocent(objeId: ID, heading: string, body: string): Promise<void> {
+  await db.transaction('rw', db.objes, async () => {
+    const obje = await db.objes.get(objeId)
+    if (!obje) return
+    const h = heading.trim().replace(/\s+/g, ' ')
+    const docent = { photoId: obje.docent?.photoId, ...(h && { heading: h }), text: bodyToText(body) }
+    await db.objes.update(objeId, { docent, title: obje.title ?? workTitle(docent) })
+  })
 }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&display=swap">
+<style>
+@font-face{font-family:'Monoplex KR';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Monoplex KR';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Monoplex KR';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+body{margin:0}
+</style>
+</helmet>
+<div style="width:360px;height:450px;overflow:hidden;position:relative;font-family:'Pretendard',sans-serif;color:#17181B">
+
+  <sc-if value="{{ isCover }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;inset:0;box-sizing:border-box;padding:24px;background:#FBFAF7;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964"><span>관람 기록</span><span>2026.10.17 토</span></div>
+      <div style="flex:1;min-height:0;border-radius:2px;background:url(assets/cliff-sky.jpg) 40% 40%/cover"></div>
+      <div style="font:600 40px/1.15 'Noto Serif KR',serif;letter-spacing:-.01em;word-break:keep-all;text-wrap:balance">흰 절벽 — 한서윤 사진전</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;border-top:1px solid #17181B;padding-top:12px">
+        <span style="font:500 12px/1.5 'Monoplex KR',monospace;letter-spacing:.04em;color:#2E2F33">국립현대미술관 서울<br>13:05 — 15:20</span>
+        <span style="font:600 15px/1 'Noto Serif KR',serif;letter-spacing:.02em">Athena</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isIndex }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;box-sizing:border-box;padding:24px;background:#FBFAF7;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964"><span>목차</span><span>오브제 12 · 노트 04</span></div>
+      <div style="display:flex;flex-direction:column;border-top:1px solid #17181B">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="12">
+          <div style="display:grid;grid-template-columns:48px minmax(0,1fr) 12px 40px;align-items:center;padding:4px 0;border-bottom:1px solid #D6D3CD">
+            <span style="font:500 12px/1.5 'Monoplex KR',monospace;letter-spacing:.04em;color:#6B6964">{{ r.no }}</span>
+            <span style="font:500 14px/1.4 'Pretendard',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</span>
+            <span style="width:4px;height:4px;border-radius:50%;background:{{ r.dot }}"></span>
+            <span style="font:500 12px/1.5 'Monoplex KR',monospace;letter-spacing:.04em;color:#6B6964;text-align:right">{{ r.time }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isPlate }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;box-sizing:border-box;padding:24px;background:#FBFAF7;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;justify-content:space-between;font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964"><span>No.07 / 12</span><span>14:32</span></div>
+      <div style="flex:1;min-height:0;border-radius:2px;background:url(assets/cliff-dover.jpg) 55% 42%/cover"></div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="font:600 19px/1.4 'Noto Serif KR',serif">남쪽 해안, 오후 세 시</div>
+        <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964">한서윤, 〈남쪽 해안, 오후 3시〉, 2019</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <span style="flex:none;width:4px;height:4px;margin-top:12px;border-radius:50%;background:#2E6BD1"></span>
+        <div style="font:400 17px/1.8 'Noto Serif KR',serif;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;text-wrap:pretty">절벽은 하얗다기보다, 하늘을 오래 비춰서 푸르게 바랜 것 같았다.</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isColophon }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;box-sizing:border-box;padding:24px;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%);color:#FBFAF7;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;justify-content:space-between;font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#E8E5DF"><span>관람을 마치며</span><span>2026.10.17 토</span></div>
+      <div style="flex:1"></div>
+      <div style="font:600 26px/1.3 'Noto Serif KR',serif;word-break:keep-all;text-wrap:balance">흰 절벽 — 한서윤 사진전</div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(251,250,247,.5);padding-top:12px">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 28px/1.1 'Monoplex KR',monospace">12</span><span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.06em;color:#E8E5DF">오브제</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 28px/1.1 'Monoplex KR',monospace">05</span><span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.06em;color:#E8E5DF">도슨트</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 28px/1.1 'Monoplex KR',monospace">04</span><span style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.06em;color:#E8E5DF">나의 노트</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px">
+        <span style="font:500 12px/1.5 'Monoplex KR',monospace;letter-spacing:.04em;color:#E8E5DF">국립현대미술관 서울<br>13:05 — 15:20 · 2h 15m</span>
+        <span style="font:600 15px/1 'Noto Serif KR',serif;letter-spacing:.02em">Athena</span>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:450},&quot;page&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cover&quot;,&quot;index&quot;,&quot;plate&quot;,&quot;colophon&quot;],&quot;default&quot;:&quot;cover&quot;,&quot;tsType&quot;:&quot;'cover'|'index'|'plate'|'colophon'&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const page = this.props.page ?? 'cover';
+    const data = [
+      ['No.01', '입구의 하늘', '13:18', 0], ['No.02', '구름, 같은 시각', '13:31', 0],
+      ['No.03', '백악의 결', '13:47', 1], ['No.04', '전시실 바닥', '14:02', 0],
+      ['No.05', '자갈, 연작 No.3', '14:20', 0], ['No.06', '썰물', '14:26', 0],
+      ['No.07', '남쪽 해안, 오후 세 시', '14:32', 1], ['No.08', '등대 없는 곶', '14:41', 0],
+      ['No.09', '흰 절벽 II', '14:50', 1], ['No.10', '바다 쪽 창', '14:58', 0],
+      ['No.11', '같은 시각, 겨울', '15:07', 1], ['No.12', '마지막 방', '15:16', 0]
+    ];
+    return {
+      isCover: page === 'cover', isIndex: page === 'index', isPlate: page === 'plate', isColophon: page === 'colophon',
+      rows: data.map(([no, title, time, n]) => ({ no, title, time, dot: n ? '#2E6BD1' : 'transparent' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -26,8 +26,9 @@
   color: var(--text-on-dark);
 }
 .inset {
-  height: 190px;
-  flex: none;
+  /* 항목을 많이 켜면 사진 칸이 줄어 글이 잘리지 않는다 */
+  flex: 0 1 190px;
+  min-height: 96px;
   border-radius: var(--radius-xs);
   background: var(--bg-sunken) center / cover no-repeat;
 }

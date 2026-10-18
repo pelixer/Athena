@@ -1,9 +1,9 @@
 import type { InputHTMLAttributes, TextareaHTMLAttributes } from 'react'
 import styles from './TextField.module.css'
 
-/** 입력칸 — radius sm(입력) 규칙. 단계 2. */
-export function TextField(props: InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} className={`${styles.field} ${props.className ?? ''}`} />
+/** 입력칸 — radius md (R2). variant="heading"은 도슨트 첫 줄(heading-s) */
+export function TextField({ variant = 'body', ...props }: InputHTMLAttributes<HTMLInputElement> & { variant?: 'body' | 'heading' }) {
+  return <input {...props} className={`${styles.field} ${variant === 'heading' ? styles.heading : ''} ${props.className ?? ''}`} />
 }
 
 /** 여러 줄 입력. variant="note"는 해석(세리프)으로 쓴다. */

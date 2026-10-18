@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { parseTagInput, parseTags } from './tags'
 import { sequenceOf } from './sequence'
 import { attachmentLabel, visitSpan, visitStats } from './visitStats'
-import { docentToText, toDocent, workTitle } from './docent'
+import { bodyToText, docentToText, textToBody, toDocent, workTitle } from './docent'
 import type { Obje } from './types'
 
 const obje = (id: string, takenAt: number, extra: Partial<Obje> = {}): Obje => ({
@@ -76,6 +76,12 @@ describe('toDocent', () => {
     expect(d.text).toBe('피그먼트 프린트, 120 × 180 cm\n작가는 같은 절벽을 일 년 동안 같은 시각에 촬영했다. 백악질 절벽은 계절과 빛에 따라 회색에서 푸른빛까지 색을 바꾼다.')
     expect(workTitle(d)).toBe('남쪽 해안, 오후 3시')
     expect(toDocent(docentToText(d), 'p1')).toEqual(d)
+  })
+
+  it('round-trips the body field of the edit sheet', () => {
+    const text = '피그먼트 프린트, 120 × 180 cm\n작가는 같은 절벽을 촬영했다.'
+    expect(bodyToText(textToBody(text))).toBe(text)
+    expect(bodyToText('첫 줄이\n이어진다.\n\n  다음 문단  ')).toBe('첫 줄이 이어진다.\n다음 문단')
   })
 
   it('returns empty text for empty OCR output', () => {
