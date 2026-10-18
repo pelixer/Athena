@@ -2,6 +2,7 @@
 
 제품 컨셉과 용어집: `docs/CONCEPT.md` (화면·컴포넌트·변수 이름은 용어집을 따른다)
 디자인과의 소통 방법: `design/PROTOCOL.md`
+배포: Cloudflare Pages, 푸시하면 자동 배포 — `docs/DEPLOY.md`
 
 ## 역할
 - **Claude Design**: 디자인 규약과 감각의 주인. 토큰(색·타입·간격·모션)의 값, 컴포넌트의 외형, 화면 구성, 카드·템플릿 비주얼.
