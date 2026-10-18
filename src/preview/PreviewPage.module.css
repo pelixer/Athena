@@ -357,3 +357,20 @@
     grid-template-columns: 1fr;
   }
 }
+.icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: var(--space-4) var(--space-2);
+}
+.iconCell {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+.iconCell figcaption {
+  font: var(--type-label);
+  letter-spacing: var(--tracking-badge);
+  color: var(--text-secondary);
+}

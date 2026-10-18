@@ -18,6 +18,7 @@ import { Sheet } from '../components/Sheet'
 import { TextArea, TextField } from '../components/TextField'
 import { PhotoViewer } from '../components/PhotoViewer'
 import { TagInput } from '../components/TagInput'
+import { Icon } from '../components/Icon'
 import styles from './ObjePage.module.css'
 
 type Editing = 'note' | 'tags' | 'title' | 'docent' | 'docentPhoto' | 'photo' | undefined
@@ -65,20 +66,16 @@ export function ObjePage() {
     <Screen
       top={
         <>
-          <IconButton surface="photo" aria-label="뒤로" onClick={() => navigate(visit ? `/visit/${visit.id}` : '/')}>
-            ←
-          </IconButton>
-          <IconButton surface="photo" aria-label="카드 만들기" onClick={() => navigate(`/obje/${obje.id}/card`)}>
-            ↗
-          </IconButton>
+          <IconButton icon="back" surface="photo" aria-label="뒤로" onClick={() => navigate(visit ? `/visit/${visit.id}` : '/')} />
+          <IconButton icon="card" surface="photo" aria-label="카드 만들기" onClick={() => navigate(`/obje/${obje.id}/card`)} />
         </>
       }
       bottom={
         <>
-          <Button variant="neutral" className={styles.secondary} onClick={() => edit('note', obje.note ?? '')}>
+          <Button variant="neutral" icon="write" className={styles.secondary} onClick={() => edit('note', obje.note ?? '')}>
             {obje.note ? '노트 수정' : '노트 쓰기'}
           </Button>
-          <Button className={styles.primary} onClick={() => navigate(`/obje/${obje.id}/card`)}>
+          <Button icon="card" className={styles.primary} onClick={() => navigate(`/obje/${obje.id}/card`)}>
             카드 만들기
           </Button>
         </>
@@ -121,7 +118,9 @@ export function ObjePage() {
               <span className={styles.visitLabel}>관람</span>
               <span className={styles.visitTitle}>{visit.title}</span>
             </span>
-            <span className={styles.arrow}>→</span>
+            <span className={styles.arrow}>
+              <Icon name="forward" />
+            </span>
           </Link>
         )}
       </main>

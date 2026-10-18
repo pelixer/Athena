@@ -55,22 +55,16 @@ export function VisitPage() {
       fade
       top={
         <>
-          <IconButton surface="marble" aria-label="뒤로" onClick={() => navigate('/')}>
-            ←
-          </IconButton>
+          <IconButton icon="back" surface="marble" aria-label="뒤로" onClick={() => navigate('/')} />
           {visit.endedAt && (
-            <IconButton surface="marble" aria-label="템플릿 만들기" onClick={toTemplate}>
-              ↗
-            </IconButton>
+            <IconButton icon="ticket" surface="marble" aria-label="템플릿 만들기" onClick={toTemplate} />
           )}
         </>
       }
       bottom={
         <>
-          <IconButton surface="marble" size={54} aria-label="오브제 추가" onClick={() => navigate(`/visit/${visit.id}/capture`)}>
-            +
-          </IconButton>
-          <Button className={styles.primary} onClick={toTemplate}>
+          <IconButton icon="add" surface="marble" size={54} aria-label="오브제 추가" onClick={() => navigate(`/visit/${visit.id}/capture`)} />
+          <Button icon="ticket" className={styles.primary} onClick={toTemplate}>
             {visit.endedAt ? '템플릿 만들기' : '관람 마무리 · 템플릿 만들기'}
           </Button>
         </>

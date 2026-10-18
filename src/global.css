@@ -80,3 +80,9 @@ button {
     animation-duration: 0ms !important;
   }
 }
+
+/* Icon의 하늘 점. 표면마다 --icon-dot을 바꾼다 (glass.module.css) */
+.icon-dot {
+  fill: var(--icon-dot, var(--accent-bright));
+  stroke: none;
+}

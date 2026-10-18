@@ -42,7 +42,7 @@ export function HomePage() {
   return (
     <Screen
       bottom={
-        <Button className={styles.primary} onClick={() => setStarting(true)}>
+        <Button icon="add" className={styles.primary} onClick={() => setStarting(true)}>
           새 관람 시작
         </Button>
       }

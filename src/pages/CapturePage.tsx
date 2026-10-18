@@ -116,9 +116,7 @@ export function CapturePage() {
       {flash > 0 && <div key={flash} className={styles.flash} />}
 
       <div className={styles.top}>
-        <IconButton surface="photo" aria-label="닫기" onClick={() => navigate(`/visit/${visitId}`)}>
-          ×
-        </IconButton>
+        <IconButton icon="close" surface="photo" aria-label="닫기" onClick={() => navigate(`/visit/${visitId}`)} />
         <span className={styles.visitPill}>
           <span className={styles.dot} />
           {data.visit.title}
@@ -170,9 +168,7 @@ export function CapturePage() {
             <span className={styles.lastEmpty} />
           )}
           <ShutterButton mode={mode} onPress={shoot} disabled={busy} />
-          <IconButton surface="photo" size={52} aria-label="카메라 전환" onClick={camera.flip} disabled={camera.status !== 'live'}>
-            ⟲
-          </IconButton>
+          <IconButton icon="flip" surface="photo" size={52} aria-label="카메라 전환" onClick={camera.flip} disabled={camera.status !== 'live'} />
         </div>
       </div>
 

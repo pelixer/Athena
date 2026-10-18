@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { App } from '../App'
 import { ViewfinderStill } from '../lib/viewfinder'
 import { Button } from '../components/Button'
+import { Icon, type IconName } from '../components/Icon'
 import { IconButton } from '../components/IconButton'
 import { AddTag, Tag } from '../components/Tag'
 import { OptionChip } from '../components/OptionChip'
@@ -25,6 +26,11 @@ import styles from './PreviewPage.module.css'
 
 // 컴포넌트 갤러리 — Code가 구현한 결과를 Design이 검토하는 화면.
 // 제목은 코드의 컴포넌트·화면 이름과 같다. 'R…' 'T…'는 design/REVIEW.md 항목 번호.
+
+const ICONS: [IconName, string][] = [
+  ['back', '뒤로'], ['forward', '다음'], ['close', '닫기'], ['add', '추가'], ['share', '공유'], ['save', '저장'],
+  ['flip', '카메라 전환'], ['write', '노트 쓰기'], ['card', '카드'], ['ticket', '템플릿'], ['photo', '사진'], ['tag', '라벨'],
+]
 
 const NOTE = '절벽은 하얗다기보다, 하늘을 오래 비춰서 푸르게 바랜 것 같았다. 사진 앞에 서 있으니 바닷바람 소리가 들리는 듯했다.'
 const DOCENT = {
@@ -71,10 +77,21 @@ export function PreviewPage() {
 
       <Section no="03" title="컴포넌트">
         <div className={styles.grid}>
+          <Item name="Icon · 하늘 점 (안 C)" note="1.5 선 + 하늘색 점. 점 색은 표면마다 바뀐다" status="proposed" refs="I1">
+            <div className={styles.icons}>
+              {ICONS.map(([n, ko]) => (
+                <figure key={n} className={styles.iconCell}>
+                  <Icon name={n} size={26} />
+                  <figcaption>{ko}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </Item>
+
           <Item name="Button · Liquid Glass" note="glass-accent · glass-neutral · ghost · glass-dark">
             <div className={styles.onMarble}>
-              <Button>카드 만들기</Button>
-              <Button variant="neutral">노트 쓰기</Button>
+              <Button icon="card">카드 만들기</Button>
+              <Button variant="neutral" icon="write">노트 쓰기</Button>
               <Button variant="ghost">나중에</Button>
             </div>
             <div className={styles.onPhoto}>
@@ -86,13 +103,13 @@ export function PreviewPage() {
           <Item name="IconButton" note="on-photo · on-marble · 44 / 52 / 54">
             <div className={styles.split}>
               <div className={styles.onPhoto}>
-                <IconButton surface="photo" aria-label="뒤로">←</IconButton>
-                <IconButton surface="photo" aria-label="공유">↗</IconButton>
-                <IconButton surface="photo" size={52} aria-label="카메라 전환">⟲</IconButton>
+                <IconButton icon="back" surface="photo" aria-label="뒤로" />
+                <IconButton icon="share" surface="photo" aria-label="공유" />
+                <IconButton icon="flip" surface="photo" size={52} aria-label="카메라 전환" />
               </div>
               <div className={styles.onMarbleRow}>
-                <IconButton aria-label="뒤로">←</IconButton>
-                <IconButton size={54} aria-label="추가">+</IconButton>
+                <IconButton icon="back" aria-label="뒤로" />
+                <IconButton icon="add" size={54} aria-label="추가" />
               </div>
             </div>
           </Item>

@@ -63,9 +63,7 @@ export function PhotoViewer({ src, caption, onClose }: { src: string; caption: s
         />
       </div>
       <div className={styles.close}>
-        <IconButton surface="photo" aria-label="닫기" onClick={onClose}>
-          ×
-        </IconButton>
+        <IconButton icon="close" surface="photo" aria-label="닫기" onClick={onClose} />
       </div>
       <p className={styles.caption}>{caption}</p>
     </div>

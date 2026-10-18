@@ -6,6 +6,7 @@
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   color: var(--on-accent);
+  --icon-dot: var(--color-sky-900);
 }
 .neutral {
   background: var(--glass-neutral-bg);
@@ -22,4 +23,5 @@
   backdrop-filter: var(--glass-dark-blur);
   -webkit-backdrop-filter: var(--glass-dark-blur);
   color: var(--text-on-dark);
+  --icon-dot: var(--accent);
 }

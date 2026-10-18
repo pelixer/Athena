@@ -108,19 +108,17 @@ export function TemplatePage() {
       tone="sunken"
       top={
         <>
-          <IconButton surface="marble" aria-label="닫기" onClick={() => navigate(`/visit/${visit.id}`)}>
-            ×
-          </IconButton>
+          <IconButton icon="close" surface="marble" aria-label="닫기" onClick={() => navigate(`/visit/${visit.id}`)} />
           <span className={styles.heading}>템플릿 만들기</span>
           <span className={styles.balance} />
         </>
       }
       bottom={
         <>
-          <Button variant="neutral" className={styles.secondary} disabled={busy || !chosen.length} onClick={() => exportTicket('save')}>
+          <Button variant="neutral" icon="save" className={styles.secondary} disabled={busy || !chosen.length} onClick={() => exportTicket('save')}>
             저장
           </Button>
-          <Button className={styles.primary} disabled={busy || !chosen.length} onClick={() => exportTicket('share')}>
+          <Button icon="share" className={styles.primary} disabled={busy || !chosen.length} onClick={() => exportTicket('share')}>
             공유하기
           </Button>
         </>
