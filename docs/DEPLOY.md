@@ -1,35 +1,33 @@
-# 배포 — Cloudflare Workers (정적 자산)
+# 배포 — Cloudflare Workers (정적 자산), GitHub Actions
 
-레포를 Cloudflare에 연결하면 `claude/main`에 푸시할 때마다 자동으로 빌드·배포된다. 서버 코드·API 키 없음 —
+valopoint와 같은 방식이다. `main`에 푸시하면 GitHub Actions(`.github/workflows/deploy-cloudflare.yml`)가
+**테스트 → 빌드 → `wrangler deploy` → 실제 사이트 점검**을 한다. 서버 코드·API 키 없음 —
 Worker는 `dist`의 정적 파일만 내보낸다 (`wrangler.jsonc`).
 
-## 처음 한 번 (Cloudflare 대시보드 → Workers & Pages → Create → Import a repository)
+Cloudflare 대시보드의 "Import a repository"(Workers Builds)는 쓰지 않는다. 같이 켜면 두 번 배포된다.
 
-| 항목 | 값 |
-|---|---|
-| Repository | `pelixer/Athena` |
-| Project name | `athena` (`wrangler.jsonc`의 `name`과 같아야 한다) |
-| Production branch | `claude/main` |
-| Build command | `npm run build` |
-| Deploy command | `npx wrangler deploy` (기본값) |
-| Non-production branch deploy command | `npx wrangler versions upload` (기본값, 미리보기 빌드를 켤 때) |
-| Path | `/` |
-| API token | Create new token (자동 생성) |
-| Variables | 없음 |
+## 처음 한 번 — GitHub 저장소 설정 (pelixer/Athena → Settings → Secrets and variables → Actions)
 
-Node 버전은 레포의 `.node-version`(22)을 따른다. 배포가 끝나면 `https://athena.<계정>.workers.dev` 주소가 생긴다.
+| 종류 | 이름 | 값 |
+|---|---|---|
+| Secret | `CLOUDFLARE_API_TOKEN` | Workers 편집 권한 토큰. valopoint에 쓴 토큰을 그대로 써도 된다 (계정 전체 권한이면) |
+| Secret | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 계정 ID (대시보드 Workers & Pages 오른쪽 Account details) |
+| Variable (선택) | `ATHENA_DOMAIN` | 같은 계정 zone의 도메인. 없으면 `https://athena.demosco.workers.dev` |
+
+설정 후 Actions 탭에서 deploy-cloudflare를 **Run workflow**로 한 번 돌리거나, `main`에 푸시한다.
+
+## 배포 점검 (워크플로가 자동으로)
+- `/`가 앱을 내보내는지, `/visit/…` 같은 앱 주소가 `index.html`로 열리는지
+- OCR 한국어 모델(`/ocr/lang/kor.traineddata.gz`)이 내려가는지
+- `public/_headers`의 보안 헤더(CSP)가 붙었는지
 
 ## 레포 쪽에 들어 있는 것
-- `wrangler.jsonc` — `dist`를 정적 자산으로 올리고, 앱 주소(`/visit/…`, `/obje/…`)를 새로고침해도 `index.html`을 주는 SPA 설정
-- `public/_headers` — 캐시(빌드 파일 1년, OCR 파일 30일)와 카메라·위치 권한 헤더
+- `wrangler.jsonc` — 정적 자산 + SPA 설정. `wrangler`는 devDependency로 버전 고정
+- `public/_headers` — 캐시(빌드 파일 1년, OCR 파일 30일), 카메라·위치 권한, CSP.
+  CSP가 'self' 밖으로 여는 것: OCR용 WebAssembly, Google Fonts(Noto Serif KR), 사진 blob:, 카메라 스트림
 - OCR 파일(`public/ocr`)은 레포에 없고 `npm run build`가 `node_modules`에서 복사한다
-- `wrangler`는 devDependency로 버전을 고정했다
 
 로컬에서 배포본처럼 확인: `npm run build && npx wrangler dev`
-
-## 확인
-- 휴대폰에서 주소를 열고 관람 시작 → 카메라 권한 허용 → 오브제·도슨트 촬영
-- 도슨트 첫 인식 때 OCR 파일(약 5MB)을 한 번 받는다. 와이파이에서 한 번 열어 두면 좋다.
 
 ## 주의: 기록은 그 기기의 브라우저에 저장된다
 - 계정·서버가 없으므로 사진과 노트는 그 휴대폰 브라우저 안(IndexedDB)에만 있다. 브라우저 데이터를 지우면 함께 지워진다.

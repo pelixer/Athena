@@ -17,6 +17,8 @@ function getWorker(): Promise<Worker> {
         corePath: base,
         langPath: `${base}/lang`,
         gzip: true,
+        // 워커를 blob: 주소가 아니라 자기 주소에서 띄운다 (CSP worker-src 'self')
+        workerBlobURL: false,
       }),
     )
     .catch((e) => {

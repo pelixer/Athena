@@ -1,0 +1,75 @@
+# 테스트 → 빌드 → Cloudflare Workers(정적 자산) 배포 → 실제 사이트 점검. valopoint의 deploy-cloudflare와 같은 틀.
+# 저장소 secrets CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID가 필요하다. 없으면 실패한다
+# (조용히 건너뛰면 사이트가 옛 빌드로 남는다).
+# 저장소 variable ATHENA_DOMAIN(같은 Cloudflare 계정의 zone에 있는 도메인)이 있으면 그 도메인에 붙인다.
+# 없으면 athena.<계정>.workers.dev 로만 열린다.
+name: deploy-cloudflare
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["docs/**", "**/*.md", "design/source/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      DOMAIN: ${{ vars.ATHENA_DOMAIN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build # typecheck + OCR 파일 복사 + vite build
+      - name: Deploy
+        id: deploy
+        shell: bash
+        run: |
+          set -o pipefail
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Cloudflare secrets not set; nothing was deployed"; exit 1
+          fi
+          args=()
+          [ -n "$DOMAIN" ] && args=(--domain "$DOMAIN")
+          if ! npx wrangler deploy "${args[@]}" 2>&1 | tee deploy.log; then
+            echo "::error title=wrangler deploy failed::$(grep -iE 'error|authentication|permission|code: ?[0-9]+' deploy.log | tail -5 | tr '\n' ' ' | cut -c1-900)"
+            exit 1
+          fi
+          url=$([ -n "$DOMAIN" ] && echo "https://$DOMAIN" || grep -o 'https://[^ ]*workers\.dev' deploy.log | head -1)
+          [ -n "$url" ] || { echo "::error::deployed, but no URL found in the wrangler output"; exit 1; }
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+      - name: Smoke test (앱 · 앱 주소 새로고침 · OCR 모델 · 보안 헤더)
+        if: steps.deploy.outputs.url != ''
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/") && [ "$code" = 200 ] && break
+            echo "attempt $i: HTTP $code"; sleep 10
+          done
+          curl -sf "$URL/" | grep -q '<div id="root"' || { echo "::error::index.html not served"; exit 1; }
+          curl -sf "$URL/visit/smoke-test" | grep -q '<div id="root"' || { echo "::error::app routes do not fall back to index.html"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/ocr/lang/kor.traineddata.gz")
+          [ "$code" = 200 ] || { echo "::error::OCR model not served (HTTP $code)"; exit 1; }
+          # 새 버전이 모든 엣지에 닿기까지 몇 초 걸린다
+          for i in 1 2 3 4 5 6; do
+            curl -sfI "$URL/?t=$(date +%s)" | tr -d '\r' > head.txt || true
+            grep -qi '^content-security-policy:' head.txt && break
+            echo "attempt $i: no CSP header yet"; sleep 10
+          done
+          grep -qi '^content-security-policy:' head.txt || { cat head.txt; echo "::error::security headers (public/_headers) missing on the live site"; exit 1; }
+          echo "::notice::Live at $URL"

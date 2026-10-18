@@ -1,9 +1,10 @@
-// Cloudflare Workers 정적 자산 배포 설정 (서버 코드 없음).
-// 빌드: npm run build → dist / 배포: npx wrangler deploy
+// Cloudflare Worker: dist의 정적 자산만 내보낸다 (서버 코드 없음). valopoint와 같은 계정·같은 방식.
+// 배포는 GitHub Actions(.github/workflows/deploy-cloudflare.yml)가 한다. 사용자 도메인은 배포할 때
+// 저장소 변수 ATHENA_DOMAIN으로 넘기므로 이 파일에는 routes가 없다.
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "athena",
-  "compatibility_date": "2025-10-01",
+  "compatibility_date": "2026-10-03",
   "assets": {
     "directory": "./dist",
     // /visit/… 같은 앱 주소를 새로고침해도 index.html을 준다
