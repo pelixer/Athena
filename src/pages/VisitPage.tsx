@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { db } from '../data/db'
 import { useLive, usePhotoUrl } from '../data/hooks'
-import { endVisit } from '../data/repo'
+import { deleteVisit, endVisit } from '../data/repo'
 import { sequenceOf } from '../domain/sequence'
 import { attachmentLabel, visitSpan, visitStats } from '../domain/visitStats'
 import type { Obje } from '../domain/types'
@@ -12,6 +12,7 @@ import { IconButton } from '../components/IconButton'
 import { StatRow } from '../components/StatRow'
 import { TabBar } from '../components/TabBar'
 import { ObjeCard } from '../components/ObjeCard'
+import { Sheet } from '../components/Sheet'
 import styles from './VisitPage.module.css'
 
 type View = 'index' | 'tags' | 'notes'
@@ -21,6 +22,7 @@ export function VisitPage() {
   const { visitId = '' } = useParams()
   const navigate = useNavigate()
   const [view, setView] = useState<View>('index')
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const data = useLive(async () => {
     const visit = await db.visits.get(visitId)
     const objes = await db.objes.where('visitId').equals(visitId).toArray()
@@ -55,9 +57,10 @@ export function VisitPage() {
       top={
         <>
           <IconButton icon="back" surface="marble" aria-label="뒤로" onClick={() => navigate('/')} />
-          {visit.endedAt && (
-            <IconButton icon="ticket" surface="marble" aria-label="템플릿 만들기" onClick={toTemplate} />
-          )}
+          <span className={styles.topActions}>
+            {visit.endedAt && <IconButton icon="ticket" surface="marble" aria-label="템플릿 만들기" onClick={toTemplate} />}
+            <IconButton icon="delete" surface="marble" aria-label="관람 지우기" onClick={() => setConfirmDelete(true)} />
+          </span>
         </>
       }
       bottom={
@@ -119,6 +122,20 @@ export function VisitPage() {
           ))
         )}
       </main>
+      <Sheet
+        open={confirmDelete}
+        title="관람을 지울까요?"
+        confirmLabel="지우기"
+        onClose={() => setConfirmDelete(false)}
+        onConfirm={async () => {
+          await deleteVisit(visit.id)
+          navigate('/', { replace: true })
+        }}
+      >
+        <p className={styles.deleteNote}>
+          〈{visit.title}〉의 오브제 {objes.length}개와 사진·캡션·나의 노트가 함께 지워져요. 되돌릴 수 없어요.
+        </p>
+      </Sheet>
     </Screen>
   )
 }

@@ -60,3 +60,13 @@
   text-align: center;
   color: var(--text-secondary);
 }
+.topActions {
+  display: flex;
+  gap: var(--space-2);
+}
+.deleteNote {
+  margin: 0;
+  font: var(--type-body-s);
+  color: var(--text-body);
+  word-break: keep-all;
+}

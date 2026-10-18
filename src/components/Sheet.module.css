@@ -9,8 +9,27 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  background: var(--scrim);
   animation: fade var(--dur-base) var(--ease-settle);
+}
+/* 어둡게 덮는 막은 보이는 영역보다 넓게 — iOS 키보드는 반투명이라 그 뒤의 화면이 비친다 */
+.scrim::before {
+  content: '';
+  position: fixed;
+  inset: -50vh 0;
+  z-index: -1;
+  background: var(--scrim);
+}
+/* 시트 바닥을 키보드 뒤까지 이어, 시트와 키보드 사이가 끊겨 보이지 않게 한다 */
+.scrim::after {
+  content: '';
+  position: fixed;
+  left: 50%;
+  top: calc(var(--vv-top) + var(--vv-height) - 1px);
+  width: min(100%, 480px);
+  height: 100vh;
+  transform: translateX(-50%);
+  background: var(--bg-base);
+  animation: riseBase var(--dur-slow) var(--ease-settle);
 }
 .sheet {
   width: 100%;
@@ -18,7 +37,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding: var(--space-3) var(--space-5) calc(var(--space-5) + var(--safe-bottom));
+  padding: var(--space-3) var(--space-5) calc(var(--space-5) + var(--vv-safe-bottom, var(--safe-bottom)));
   max-height: calc(var(--vv-height) - var(--safe-top) - var(--space-3));
   overflow-y: auto;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -64,5 +83,10 @@
 @keyframes rise {
   from {
     transform: translateY(100%);
+  }
+}
+@keyframes riseBase {
+  from {
+    transform: translate(-50%, 100vh);
   }
 }

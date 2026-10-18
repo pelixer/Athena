@@ -50,6 +50,17 @@ export async function setDocentText(objeId: ID, raw: string): Promise<void> {
   })
 }
 
+/** 관람을 지운다: 관람, 그 안의 오브제, 오브제·캡션 사진까지 모두. 되돌릴 수 없다. */
+export async function deleteVisit(visitId: ID): Promise<void> {
+  await db.transaction('rw', db.visits, db.objes, db.photos, async () => {
+    const objes = await db.objes.where('visitId').equals(visitId).toArray()
+    const photoIds = objes.flatMap((o) => [o.photoId, o.docent?.photoId]).filter((id): id is ID => !!id)
+    await db.photos.bulkDelete(photoIds)
+    await db.objes.bulkDelete(objes.map((o) => o.id))
+    await db.visits.delete(visitId)
+  })
+}
+
 /** 관람에서 가장 최근에 추가한 오브제 — 캡션을 붙일 대상.
  *  찍은 시각이 아니라 추가한 순서로 고른다 (사진첩에서 올린 예전 사진도 방금 추가했으면 대상이다). */
 export async function latestObje(visitId: ID): Promise<Obje | undefined> {
