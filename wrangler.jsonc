@@ -1,0 +1,12 @@
+// Cloudflare Workers 정적 자산 배포 설정 (서버 코드 없음).
+// 빌드: npm run build → dist / 배포: npx wrangler deploy
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "athena",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "./dist",
+    // /visit/… 같은 앱 주소를 새로고침해도 index.html을 준다
+    "not_found_handling": "single-page-application"
+  }
+}

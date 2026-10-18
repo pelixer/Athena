@@ -1,26 +1,31 @@
-# 배포 — Cloudflare Pages
+# 배포 — Cloudflare Workers (정적 자산)
 
-레포를 Cloudflare Pages에 연결하면 푸시할 때마다 자동으로 빌드·배포된다. 서버·API 키 없음.
+레포를 Cloudflare에 연결하면 `claude/main`에 푸시할 때마다 자동으로 빌드·배포된다. 서버 코드·API 키 없음 —
+Worker는 `dist`의 정적 파일만 내보낸다 (`wrangler.jsonc`).
 
-## 처음 한 번 (Cloudflare 대시보드)
-1. Workers & Pages → Create → Pages → **Connect to Git** → `pelixer/Athena` 선택
-2. 빌드 설정
+## 처음 한 번 (Cloudflare 대시보드 → Workers & Pages → Create → Import a repository)
 
-   | 항목 | 값 |
-   |---|---|
-   | Production branch | `claude/gracious-einstein-eupywf` (나중에 `main`을 만들면 바꾼다) |
-   | Framework preset | None (또는 Vite) |
-   | Build command | `npm run build` |
-   | Build output directory | `dist` |
-   | Root directory | (비움) |
+| 항목 | 값 |
+|---|---|
+| Repository | `pelixer/Athena` |
+| Project name | `athena` (`wrangler.jsonc`의 `name`과 같아야 한다) |
+| Production branch | `claude/main` |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` (기본값) |
+| Non-production branch deploy command | `npx wrangler versions upload` (기본값, 미리보기 빌드를 켤 때) |
+| Path | `/` |
+| API token | Create new token (자동 생성) |
+| Variables | 없음 |
 
-   Node 버전은 레포의 `.node-version`(22)을 따른다.
-3. Save and Deploy → `https://<프로젝트>.pages.dev` 주소가 생긴다.
+Node 버전은 레포의 `.node-version`(22)을 따른다. 배포가 끝나면 `https://athena.<계정>.workers.dev` 주소가 생긴다.
 
 ## 레포 쪽에 들어 있는 것
-- `public/_headers` — 캐시(빌드 파일은 1년, OCR 파일은 30일)와 카메라·위치 권한 헤더
-- SPA 라우팅: `404.html`이 없으면 Pages가 모든 경로에 `index.html`을 준다. `/visit/…` 같은 주소를 새로고침해도 열린다.
-- OCR 파일(`public/ocr`)은 레포에 없고 `npm run build`가 `node_modules`에서 복사한다.
+- `wrangler.jsonc` — `dist`를 정적 자산으로 올리고, 앱 주소(`/visit/…`, `/obje/…`)를 새로고침해도 `index.html`을 주는 SPA 설정
+- `public/_headers` — 캐시(빌드 파일 1년, OCR 파일 30일)와 카메라·위치 권한 헤더
+- OCR 파일(`public/ocr`)은 레포에 없고 `npm run build`가 `node_modules`에서 복사한다
+- `wrangler`는 devDependency로 버전을 고정했다
+
+로컬에서 배포본처럼 확인: `npm run build && npx wrangler dev`
 
 ## 확인
 - 휴대폰에서 주소를 열고 관람 시작 → 카메라 권한 허용 → 오브제·도슨트 촬영
