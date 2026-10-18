@@ -32,6 +32,9 @@
 :root {
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* 키보드 위에 보이는 영역 (src/lib/viewport.ts가 갱신) */
+  --vv-top: 0px;
+  --vv-height: 100dvh;
 }
 
 *,

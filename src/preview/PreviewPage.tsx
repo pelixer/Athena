@@ -60,6 +60,7 @@ export function PreviewPage() {
           <Frame label="02 오브제 상세 · ObjePage" path={`/obje/${SAMPLE.objeId}`} />
           <Frame label="03 관람 보기 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
           <Frame label="04 공유 카드 · CardPage" path={`/obje/${SAMPLE.objeId}/card`} />
+          <Frame label="05 템플릿 · TemplatePage (1b 입장권)" path={`/visit/${SAMPLE.visitId}/template`} />
           <Frame label="홈 · HomePage" path="/" />
         </div>
       </Section>

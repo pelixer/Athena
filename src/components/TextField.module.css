@@ -25,4 +25,6 @@
 }
 .heading {
   font: var(--type-heading-s);
+  /* iOS는 16px보다 작은 입력칸에 초점이 가면 화면을 확대해 버린다 (DEVIATIONS) */
+  font-size: 16px;
 }

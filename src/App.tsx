@@ -4,6 +4,7 @@ import { CapturePage } from './pages/CapturePage'
 import { ObjePage } from './pages/ObjePage'
 import { VisitPage } from './pages/VisitPage'
 import { CardPage } from './pages/CardPage'
+import { TemplatePage } from './pages/TemplatePage'
 
 export function App() {
   return (
@@ -11,6 +12,7 @@ export function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/visit/:visitId" element={<VisitPage />} />
       <Route path="/visit/:visitId/capture" element={<CapturePage />} />
+      <Route path="/visit/:visitId/template" element={<TemplatePage />} />
       <Route path="/obje/:objeId" element={<ObjePage />} />
       <Route path="/obje/:objeId/card" element={<CardPage />} />
     </Routes>

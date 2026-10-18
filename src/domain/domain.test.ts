@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { parseTagInput, parseTags } from './tags'
+import { parseTagInput, parseTags, typeTagInput } from './tags'
 import { sequenceOf } from './sequence'
 import { attachmentLabel, visitSpan, visitStats } from './visitStats'
 import { bodyToText, docentToText, textToBody, toDocent, workTitle } from './docent'
+import { defaultTemplateSelection, selectedInOrder } from './template'
 import type { Obje } from './types'
 
 const obje = (id: string, takenAt: number, extra: Partial<Obje> = {}): Obje => ({
@@ -16,6 +17,16 @@ describe('parseTags', () => {
 
   it('returns an empty list when there are no tags', () => {
     expect(parseTags('그냥 메모')).toEqual([])
+  })
+
+  it('adds # live while typing labels', () => {
+    expect(typeTagInput('', '흰')).toBe('#흰')
+    expect(typeTagInput('#흰절벽', '#흰절벽 ')).toBe('#흰절벽 #')
+    expect(typeTagInput('#흰절벽 #', '#흰절벽 #바')).toBe('#흰절벽 #바')
+    expect(typeTagInput('#흰절벽 #', '#흰절벽 ')).toBe('#흰절벽')
+    expect(typeTagInput('#흰절벽 #', '#흰절벽 # ')).toBe('#흰절벽 #')
+    expect(typeTagInput('', '흰절벽 바다')).toBe('#흰절벽 #바다')
+    expect(typeTagInput('#흰절벽', '#흰절벽##')).toBe('#흰절벽')
   })
 
   it('accepts words without # in the tag input', () => {
@@ -86,5 +97,25 @@ describe('toDocent', () => {
 
   it('returns empty text for empty OCR output', () => {
     expect(toDocent('  \n\n ')).toEqual({ photoId: undefined, text: '' })
+  })
+})
+
+describe('template selection', () => {
+  const objes = [
+    obje('c', 300, { note: '세 번째' }),
+    obje('a', 100),
+    obje('b', 200, { note: '두 번째' }),
+  ]
+
+  it('selects every obje in capture order, with the first noted obje as cover', () => {
+    expect(defaultTemplateSelection(objes)).toEqual({ objeIds: ['a', 'b', 'c'], coverId: 'b' })
+  })
+
+  it('falls back to the first obje when none has a note', () => {
+    expect(defaultTemplateSelection([obje('x', 2), obje('y', 1)]).coverId).toBe('y')
+  })
+
+  it('keeps chosen objes in capture order', () => {
+    expect(selectedInOrder(objes, ['c', 'a']).map((o) => o.id)).toEqual(['a', 'c'])
   })
 })

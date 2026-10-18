@@ -1,0 +1,25 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.item {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-xs);
+  background: var(--bg-sunken) center / cover no-repeat;
+  opacity: 0.45;
+  cursor: pointer;
+  transition: opacity var(--dur-quick) var(--ease-move), border-color var(--dur-quick) var(--ease-move);
+}
+.selected {
+  border-color: var(--border-strong);
+  opacity: 1;
+}
+.badge {
+  position: absolute;
+  left: var(--space-1);
+  top: var(--space-1);
+}

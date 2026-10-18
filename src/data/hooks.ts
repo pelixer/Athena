@@ -32,3 +32,28 @@ export function usePhotoUrl(photoId: ID | undefined): string | undefined {
   }, [photoId])
   return url
 }
+
+/** 여러 사진을 object URL로 (템플릿 썸네일). 순서는 photoIds 그대로. */
+export function usePhotoUrls(photoIds: ID[]): (string | undefined)[] {
+  const key = photoIds.join(',')
+  const [urls, setUrls] = useState<Record<ID, string>>({})
+  useEffect(() => {
+    let cancelled = false
+    const made: string[] = []
+    db.photos.bulkGet(photoIds).then((photos) => {
+      if (cancelled) return
+      const next: Record<ID, string> = {}
+      photos.forEach((p) => {
+        if (!p) return
+        next[p.id] = URL.createObjectURL(p.blob)
+        made.push(next[p.id])
+      })
+      setUrls(next)
+    })
+    return () => {
+      cancelled = true
+      made.forEach((u) => URL.revokeObjectURL(u))
+    }
+  }, [key])
+  return photoIds.map((id) => urls[id])
+}

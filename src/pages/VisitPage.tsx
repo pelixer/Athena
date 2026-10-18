@@ -13,7 +13,6 @@ import { Button } from '../components/Button'
 import { StatRow } from '../components/StatRow'
 import { TabBar } from '../components/TabBar'
 import { ObjeCard } from '../components/ObjeCard'
-import { Toast } from '../components/Toast'
 import styles from './VisitPage.module.css'
 
 type View = 'index' | 'tags' | 'notes'
@@ -23,7 +22,6 @@ export function VisitPage() {
   const { visitId = '' } = useParams()
   const navigate = useNavigate()
   const [view, setView] = useState<View>('index')
-  const [notice, setNotice] = useState<string>()
   const data = useLive(async () => {
     const visit = await db.visits.get(visitId)
     const objes = await db.objes.where('visitId').equals(visitId).toArray()
@@ -39,11 +37,10 @@ export function VisitPage() {
   const stats = visitStats(objes)
   const span = visitSpan(objes, visit.endedAt)
 
-  async function finish() {
-    await endVisit(visit!.id)
-    // TODO(Template): 단계 3 — 템플릿 시안을 받으면 여기서 템플릿 만들기로 이어진다.
-    setNotice('관람을 마쳤어요. 템플릿 만들기는 곧 열려요.')
-    setTimeout(() => setNotice(undefined), 2600)
+  // R8: 진행 중이면 관람을 끝내고 템플릿으로, 끝난 관람이면 바로 템플릿으로
+  async function toTemplate() {
+    if (!visit!.endedAt) await endVisit(visit!.id)
+    navigate(`/visit/${visit!.id}/template`)
   }
 
   const groups: [string | undefined, Obje[]][] =
@@ -57,17 +54,24 @@ export function VisitPage() {
     <Screen
       fade
       top={
-        <IconButton surface="marble" aria-label="뒤로" onClick={() => navigate('/')}>
-          ←
-        </IconButton>
+        <>
+          <IconButton surface="marble" aria-label="뒤로" onClick={() => navigate('/')}>
+            ←
+          </IconButton>
+          {visit.endedAt && (
+            <IconButton surface="marble" aria-label="템플릿 만들기" onClick={toTemplate}>
+              ↗
+            </IconButton>
+          )}
+        </>
       }
       bottom={
         <>
           <IconButton surface="marble" size={54} aria-label="오브제 추가" onClick={() => navigate(`/visit/${visit.id}/capture`)}>
             +
           </IconButton>
-          <Button className={styles.primary} onClick={finish}>
-            관람 마무리 · 템플릿 만들기
+          <Button className={styles.primary} onClick={toTemplate}>
+            {visit.endedAt ? '템플릿 만들기' : '관람 마무리 · 템플릿 만들기'}
           </Button>
         </>
       }
@@ -124,11 +128,6 @@ export function VisitPage() {
           ))
         )}
       </main>
-      {notice && (
-        <div className={styles.notice}>
-          <Toast>{notice}</Toast>
-        </div>
-      )}
     </Screen>
   )
 }

@@ -17,6 +17,7 @@ import { NoteBlock } from '../components/NoteBlock'
 import { Sheet } from '../components/Sheet'
 import { TextArea, TextField } from '../components/TextField'
 import { PhotoViewer } from '../components/PhotoViewer'
+import { TagInput } from '../components/TagInput'
 import styles from './ObjePage.module.css'
 
 type Editing = 'note' | 'tags' | 'title' | 'docent' | 'docentPhoto' | 'photo' | undefined
@@ -132,7 +133,7 @@ export function ObjePage() {
         <TextField id="title" autoFocus value={draft} placeholder="남쪽 해안, 오후 세 시" onChange={(e) => setDraft(e.target.value)} />
       </Sheet>
       <Sheet open={editing === 'tags'} title="라벨 추가" onClose={close} onConfirm={save} confirmLabel="추가">
-        <TextField id="tags" autoFocus value={draft} placeholder="#흰절벽 #바다" onChange={(e) => setDraft(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && save()} />
+        <TagInput id="tags" autoFocus value={draft} placeholder="#흰절벽 #바다 — 띄어 쓰면 #이 붙어요" onValue={setDraft} onKeyDown={(e) => e.key === 'Enter' && save()} />
       </Sheet>
       <Sheet
         open={editing === 'docent'}
