@@ -8,7 +8,7 @@ name: deploy-cloudflare
 on:
   push:
     branches: [main]
-    paths-ignore: ["docs/**", "**/*.md", "design/source/**"]
+    paths-ignore: ["docs/**", "**/*.md", "design/source/**", "design/briefs/**"]
   workflow_dispatch:
 
 permissions:
