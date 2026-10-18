@@ -15,6 +15,7 @@ import { DocentBlock } from '../components/DocentBlock'
 import { NoteBlock } from '../components/NoteBlock'
 import { ShutterButton } from '../components/ShutterButton'
 import { ModeSwitch } from '../components/ModeSwitch'
+import { AttachConfirm } from '../components/AttachConfirm'
 import { Toast } from '../components/Toast'
 import { TabBar } from '../components/TabBar'
 import { StatRow } from '../components/StatRow'
@@ -61,7 +62,7 @@ export function PreviewPage() {
 
       <Section no="01" title="대표 화면" note="예시 데이터로 렌더링한 실제 화면 · 프레임은 시안과 같은 390 × 844">
         <div className={styles.frames}>
-          <Frame label="01 촬영 · CapturePage" path={`/visit/${SAMPLE.visitId}/capture`} still={samplePhotos.cliffSky} />
+          <Frame label="01 촬영 · CapturePage" status="proposed" refs="R13 R14" path={`/visit/${SAMPLE.visitId}/capture`} still={samplePhotos.cliffSky} />
           <Frame label="01 촬영 · 도슨트 모드" path={`/visit/${SAMPLE.visitId}/capture?mode=docent`} still={samplePhotos.marble} />
           <Frame label="02 오브제 상세 · ObjePage" path={`/obje/${SAMPLE.objeId}`} />
           <Frame label="03 관람 보기 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
@@ -153,6 +154,13 @@ export function PreviewPage() {
 
           <Item name="ShutterButton · ModeSwitch">
             <ShutterDemo />
+          </Item>
+
+          <Item name="AttachConfirm" note="사진을 첨부하면 ModeSwitch 자리에 나타난다 · 위: 오브제가 아직 없을 때" status="proposed" refs="R13">
+            <div className={styles.dark}>
+              <AttachConfirm onConfirm={() => {}} disabled={['docent']} />
+              <AttachConfirm onConfirm={() => {}} />
+            </div>
           </Item>
 
           <Item name="MetaTable" note="오브제 상세의 자동 기록 표">

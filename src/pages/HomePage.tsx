@@ -5,7 +5,7 @@ import { useLive, usePhotoUrl } from '../data/hooks'
 import { createVisit } from '../data/repo'
 import type { ID, Visit } from '../domain/types'
 import { Screen } from '../components/Screen'
-import { Button } from '../components/Button'
+import { IconButton } from '../components/IconButton'
 import { Sheet } from '../components/Sheet'
 import { TextField } from '../components/TextField'
 import { formatCount, formatDateWeekday } from '../lib/format'
@@ -42,9 +42,7 @@ export function HomePage() {
   return (
     <Screen
       bottom={
-        <Button icon="add" className={styles.primary} onClick={() => setStarting(true)}>
-          새 관람 시작
-        </Button>
+        <IconButton icon="add" surface="accent" size={54} aria-label="새 관람 시작" onClick={() => setStarting(true)} />
       }
     >
       <main className={styles.page}>

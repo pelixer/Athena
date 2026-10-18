@@ -55,10 +55,6 @@
   font: var(--type-body-s);
   color: var(--text-secondary);
 }
-.primary {
-  flex: 1;
-  padding: 0 var(--space-4);
-}
 .missing {
   padding: var(--space-16) var(--space-5);
   text-align: center;

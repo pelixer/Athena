@@ -24,6 +24,9 @@
 .marble {
   composes: neutral from './glass.module.css';
 }
+.accent {
+  composes: accent from './glass.module.css';
+}
 .s44 {
   width: 44px;
   height: 44px;

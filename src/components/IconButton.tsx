@@ -3,8 +3,8 @@ import { Icon, type IconName } from './Icon'
 import styles from './IconButton.module.css'
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
-  /** photo: 사진 위(glass-dark) · marble: 대리석 위(glass-neutral) */
-  surface?: 'photo' | 'marble'
+  /** photo: 사진 위(glass-dark) · marble: 대리석 위(glass-neutral) · accent: 주 동작(glass-accent) */
+  surface?: 'photo' | 'marble' | 'accent'
   size?: 44 | 52 | 54
   icon: IconName
   'aria-label': string
@@ -15,7 +15,7 @@ export function IconButton({ surface = 'marble', size = 44, icon, className, typ
   return (
     <button
       type={type}
-      className={[styles.icon, surface === 'photo' ? styles.photo : styles.marble, styles[`s${size}`], className].filter(Boolean).join(' ')}
+      className={[styles.icon, styles[surface], styles[`s${size}`], className].filter(Boolean).join(' ')}
       {...rest}
     >
       <Icon name={icon} size={size === 44 ? 22 : 24} />

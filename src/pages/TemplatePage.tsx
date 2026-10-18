@@ -10,7 +10,6 @@ import { formatCount, formatDate, formatDateWeekday, formatDuration, formatIndex
 import { renderTemplate, saveCard, shareCard } from '../lib/cardExport'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
-import { Button } from '../components/Button'
 import { OptionChip } from '../components/OptionChip'
 import { Sheet } from '../components/Sheet'
 import { ObjePickGrid } from '../components/ObjePickGrid'
@@ -115,12 +114,8 @@ export function TemplatePage() {
       }
       bottom={
         <>
-          <Button variant="neutral" icon="save" className={styles.secondary} disabled={busy || !chosen.length} onClick={() => exportTicket('save')}>
-            저장
-          </Button>
-          <Button icon="share" className={styles.primary} disabled={busy || !chosen.length} onClick={() => exportTicket('share')}>
-            공유하기
-          </Button>
+          <IconButton icon="save" size={54} aria-label="저장" disabled={busy || !chosen.length} onClick={() => exportTicket('save')} />
+          <IconButton icon="share" surface="accent" size={54} aria-label="공유하기" disabled={busy || !chosen.length} onClick={() => exportTicket('share')} />
         </>
       }
     >

@@ -52,7 +52,13 @@
   transform: translateX(-50%);
   width: 100%;
   max-width: 480px;
+  /* 아래 버튼 줄: 글자 없는 아이콘 버튼을 가운데에 모은다 */
   display: flex;
-  gap: var(--space-3);
+  justify-content: center;
+  gap: var(--space-5);
   padding: var(--space-3) var(--space-5) calc(var(--safe-bottom) + var(--space-4));
+  pointer-events: none;
+}
+.bottom > * {
+  pointer-events: auto;
 }

@@ -9,7 +9,6 @@ import type { Obje } from '../domain/types'
 import { formatCount, formatDateWeekday, formatDuration, formatIndex, formatTime } from '../lib/format'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
-import { Button } from '../components/Button'
 import { StatRow } from '../components/StatRow'
 import { TabBar } from '../components/TabBar'
 import { ObjeCard } from '../components/ObjeCard'
@@ -64,9 +63,7 @@ export function VisitPage() {
       bottom={
         <>
           <IconButton icon="add" surface="marble" size={54} aria-label="오브제 추가" onClick={() => navigate(`/visit/${visit.id}/capture`)} />
-          <Button icon="ticket" className={styles.primary} onClick={toTemplate}>
-            {visit.endedAt ? '템플릿 만들기' : '관람 마무리 · 템플릿 만들기'}
-          </Button>
+          <IconButton icon="ticket" surface="accent" size={54} aria-label={visit.endedAt ? '템플릿 만들기' : '관람 마무리 · 템플릿 만들기'} onClick={toTemplate} />
         </>
       }
     >

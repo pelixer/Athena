@@ -86,16 +86,20 @@
   justify-content: center;
   padding: 0 var(--space-4);
 }
-.toastAction {
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  letter-spacing: inherit;
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
+.unavailable {
+  position: absolute;
+  left: var(--space-8);
+  right: var(--space-8);
+  top: 42%;
+  margin: 0;
+  text-align: center;
+  white-space: pre-line;
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+  color: var(--text-on-dark-muted);
+}
+.attached {
+  object-fit: contain;
 }
 .flash {
   position: absolute;
@@ -123,20 +127,47 @@
   justify-content: space-between;
   gap: var(--space-3);
 }
-.visitPill {
-  composes: dark from '../components/glass.module.css';
+/* 상단 안내 — 관람 이름과 다음 순번. 버튼이 아니므로 유리 표면 없이 글자만 둔다. */
+.scrimTop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--safe-top) + 120px);
+  background: var(--scrim-bottom); /* T16 --scrim-top 요청 중: 하단 스크림을 뒤집어 쓴다 */
+  transform: scaleY(-1);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.status {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+.eyebrow {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  min-width: 0;
-  height: 36px;
-  padding: 0 var(--space-3);
-  border-radius: var(--radius-pill);
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-on-dark-muted);
+}
+.visitTitle {
+  max-width: 100%;
+  font: var(--type-heading-s);
+  color: var(--text-on-dark);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.slot {
+  width: 44px;
+  height: 44px;
+  flex: none;
 }
 .dot {
   width: 6px;
@@ -209,4 +240,8 @@
     transform: scale(1.4);
     opacity: 0;
   }
+}
+.shutterOff {
+  opacity: 0.3;
+  transition: opacity var(--dur-base) var(--ease-move);
 }

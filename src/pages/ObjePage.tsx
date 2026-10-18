@@ -9,7 +9,6 @@ import { textToBody } from '../domain/docent'
 import { formatDate, formatGeo, formatIndex, formatTimeSeconds } from '../lib/format'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
-import { Button } from '../components/Button'
 import { MetaTable } from '../components/MetaTable'
 import { TagList } from '../components/Tag'
 import { DocentBlock } from '../components/DocentBlock'
@@ -72,12 +71,8 @@ export function ObjePage() {
       }
       bottom={
         <>
-          <Button variant="neutral" icon="write" className={styles.secondary} onClick={() => edit('note', obje.note ?? '')}>
-            {obje.note ? '노트 수정' : '노트 쓰기'}
-          </Button>
-          <Button icon="card" className={styles.primary} onClick={() => navigate(`/obje/${obje.id}/card`)}>
-            카드 만들기
-          </Button>
+          <IconButton icon="write" size={54} aria-label={obje.note ? '노트 수정' : '노트 쓰기'} onClick={() => edit('note', obje.note ?? '')} />
+          <IconButton icon="card" surface="accent" size={54} aria-label="카드 만들기" onClick={() => navigate(`/obje/${obje.id}/card`)} />
         </>
       }
     >
