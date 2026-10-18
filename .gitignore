@@ -4,3 +4,4 @@ dist-preview
 *.tsbuildinfo
 .DS_Store
 public/ocr
+.wrangler
