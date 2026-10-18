@@ -27,7 +27,7 @@
 ## 코드 구조
 - `src/domain` 용어집 타입과 순수 로직 (태그 파싱, 관람 내 순번, 관람 통계) — 테스트: `src/domain/*.test.ts`
 - `src/data` IndexedDB(Dexie) 저장소. 로컬 우선, 계정 없음.
-- `src/lib` 카메라, 사진 메타(EXIF/위치), OCR(기기 안 Tesseract, 서버 없음), 카드 내보내기, 포맷.
+- `src/lib` 카메라, 사진 메타(EXIF/위치), OCR(기기 안 PaddleOCR PP-OCRv5 + ONNX Runtime wasm, 서버 없음 · 예비 Tesseract), 카드 내보내기, 포맷.
 - `src/components` 표시 전용 컴포넌트. DB를 모른다 (갤러리에서 샘플로 렌더링할 수 있어야 한다).
 - `src/pages` 화면. 데이터를 읽어 컴포넌트에 넘긴다.
 - `src/preview` 컴포넌트 갤러리 (preview.html)

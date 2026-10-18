@@ -32,3 +32,10 @@ Cloudflare 대시보드의 "Import a repository"(Workers Builds)는 쓰지 않�
 ## 주의: 기록은 그 기기의 브라우저에 저장된다
 - 계정·서버가 없으므로 사진과 노트는 그 휴대폰 브라우저 안(IndexedDB)에만 있다. 브라우저 데이터를 지우면 함께 지워진다.
 - iPhone Safari는 한동안 열지 않은 사이트의 저장 데이터를 지울 수 있다. **홈 화면에 추가**해서 쓰면 이 정리 대상에서 빠진다.
+
+## OCR 파일 (2026-10-18~)
+- 도슨트 글자 읽기는 PaddleOCR PP-OCRv5(글줄 검출 + 한국어 인식) 모델을 브라우저에서 ONNX Runtime(wasm)으로 돌린다. 서버·과금 없음.
+- 모델(det.onnx 4.8MB, rec.onnx 13.4MB, dict.txt)은 npm에 없어 `scripts/copy-ocr-assets.mjs`가 빌드 전에 GitHub 릴리스(GreatV/oar-ocr v0.3.0, Apache-2.0)에서 받아 SHA-256을 확인하고 `.cache/ocr-models`에 둔다. Actions는 이 폴더를 캐시한다.
+- 릴리스가 사라지면 빌드가 멈춘다. 그때는 같은 파일을 다른 곳에서 받아 해시만 맞추면 된다 (해시는 스크립트 안).
+- ONNX Runtime은 WebGPU 없는 wasm 판(14MB)만 올린다. WebGPU 판 wasm(28MB)은 Cloudflare 파일당 한도 25MB를 넘는다.
+- OpenCV.js는 쓰지 않는다 (내부 eval이 CSP에 막힌다). 검출 후처리는 `src/lib/ocrGeometry.ts`.

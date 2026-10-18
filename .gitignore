@@ -5,3 +5,4 @@ dist-preview
 .DS_Store
 public/ocr
 .wrangler
+.cache

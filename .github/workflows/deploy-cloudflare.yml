@@ -33,6 +33,11 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - run: npm ci
+      - name: OCR 모델 캐시 (PaddleOCR, GitHub 릴리스에서 받는 약 18MB)
+        uses: actions/cache@v4
+        with:
+          path: .cache/ocr-models
+          key: ocr-models-${{ hashFiles('scripts/copy-ocr-assets.mjs') }}
       - run: npm test
       - run: npm run build # typecheck + OCR 파일 복사 + vite build
       - name: Deploy
@@ -63,8 +68,10 @@ jobs:
           done
           curl -sf "$URL/" | grep -q '<div id="root"' || { echo "::error::index.html not served"; exit 1; }
           curl -sf "$URL/visit/smoke-test" | grep -q '<div id="root"' || { echo "::error::app routes do not fall back to index.html"; exit 1; }
-          code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/ocr/lang/kor.traineddata.gz")
-          [ "$code" = 200 ] || { echo "::error::OCR model not served (HTTP $code)"; exit 1; }
+          for f in ocr/models/rec.onnx ocr/models/det.onnx ocr/ort/ort-wasm-simd-threaded.wasm ocr/lang/kor.traineddata.gz; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/$f")
+            [ "$code" = 200 ] || { echo "::error::OCR file not served: $f (HTTP $code)"; exit 1; }
+          done
           # 새 버전이 모든 엣지에 닿기까지 몇 초 걸린다
           for i in 1 2 3 4 5 6; do
             curl -sfI "$URL/?t=$(date +%s)" | tr -d '\r' > head.txt || true

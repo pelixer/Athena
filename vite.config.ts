@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 import { viteSingleFile } from 'vite-plugin-singlefile'
 
 const backend = fileURLToPath(new URL('./src/data/backend.ts', import.meta.url))
+const ortWasm = fileURLToPath(new URL('./node_modules/onnxruntime-web/dist/ort.wasm.min.mjs', import.meta.url))
 const previewBackend = fileURLToPath(new URL('./src/data/backend.preview.ts', import.meta.url))
 
 // `--mode preview` builds the gallery (preview.html) into one self-contained HTML file
@@ -25,5 +26,13 @@ export default defineConfig(({ mode }) =>
         ],
         build: { outDir: 'dist-preview', rollupOptions: { input: 'preview.html' } },
       }
-    : { plugins: [react()] },
+    : {
+        plugins: [react()],
+        resolve: {
+          // ONNX Runtime은 wasm 전용 판을 쓰고, wasm 파일은 번들하지 않고 public/ocr/ort에서 받는다
+          // (기본 판은 28MB짜리 WebGPU용 wasm을 끌어들여 Cloudflare 파일 한도 25MB를 넘는다)
+          alias: [{ find: /^onnxruntime-web$/, replacement: ortWasm }],
+        },
+        worker: { format: 'es' },
+      },
 )
