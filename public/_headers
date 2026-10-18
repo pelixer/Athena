@@ -1,4 +1,4 @@
-# Cloudflare Pages 응답 헤더
+# Cloudflare 정적 자산 응답 헤더 (Workers·Pages 모두 이 파일을 읽는다)
 
 # 빌드가 파일 이름에 해시를 붙이는 JS·CSS·글꼴·이미지는 바뀌지 않는다
 /assets/*
