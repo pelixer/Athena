@@ -12,6 +12,7 @@ import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
 import { OptionChip } from '../components/OptionChip'
 import { Sheet } from '../components/Sheet'
+import { DownloadSheet } from '../components/DownloadSheet'
 import { ObjePickGrid } from '../components/ObjePickGrid'
 import { TemplateTicket } from '../components/TemplateTicket'
 import styles from './TemplatePage.module.css'
@@ -31,6 +32,7 @@ export function TemplatePage() {
   const [showNote, setShowNote] = useState(true)
   const [picking, setPicking] = useState<Picking>()
   const [draft, setDraft] = useState<ID[]>([])
+  const [pending, setPending] = useState<Blob>()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>()
   const close = useCallback(() => setPicking(undefined), [])
@@ -66,7 +68,7 @@ export function TemplatePage() {
   const rows: [string, string][] = [['날짜', formatDateWeekday(visit.startedAt)]]
   if (span) rows.push(['시간', `${formatTime(span.start)} — ${formatTime(span.end)} · ${formatDuration(span.end - span.start)}`])
   if (visit.venue) rows.push(['장소', visit.venue])
-  rows.push(['기록', `오브제 ${formatCount(stats.objes)} · 도슨트 ${formatCount(stats.docents)} · 노트 ${formatCount(stats.notes)}`])
+  rows.push(['기록', `오브제 ${formatCount(stats.objes)} · 캡션 ${formatCount(stats.docents)} · 노트 ${formatCount(stats.notes)}`])
   const coverIndex = cover ? index.get(cover.id) : undefined
   const filename = `athena-${formatDate(visit.startedAt).replaceAll('.', '')}-ticket.png`
 
@@ -88,7 +90,8 @@ export function TemplatePage() {
     setError(undefined)
     try {
       const blob = await renderTemplate(ticketRef.current)
-      if (action === 'save') saveCard(blob, filename)
+      // 저장은 먼저 묻는다. 다운로드는 시트의 버튼을 누르는 순간 일어난다 (DownloadSheet)
+      if (action === 'save') setPending(blob)
       else await shareCard(blob, filename)
     } catch (e) {
       if ((e as Error).name !== 'AbortError') setError('입장권을 만들지 못했어요. 잠시 후 다시 시도해 주세요.')
@@ -155,6 +158,14 @@ export function TemplatePage() {
       <Sheet open={picking === 'cover'} title="표지 · 이 오브제의 나의 노트가 그루터기에 실려요" onClose={close} onConfirm={confirmPick} confirmLabel="표지로">
         <ObjePickGrid items={coverChoices.map((it) => ({ ...it, selected: draft.includes(it.id) }))} onToggle={(id) => setDraft([id])} />
       </Sheet>
+      <DownloadSheet
+        filename={pending && filename}
+        onDownload={() => {
+          if (pending) saveCard(pending, filename)
+          setPending(undefined)
+        }}
+        onClose={() => setPending(undefined)}
+      />
     </Screen>
   )
 }

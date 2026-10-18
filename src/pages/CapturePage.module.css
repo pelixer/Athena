@@ -23,60 +23,60 @@
   color: var(--text-on-dark-muted);
 }
 
-/* 오브제 모드: 네 모서리 프레임 */
+/* 프레임 — 오브제(세로로 크게)와 캡션(가로로 작게)이 같은 모양: 흰 둥근 모서리 */
 .frame {
   position: absolute;
+  transition: all var(--dur-base) var(--ease-settle);
+}
+.frameObje {
   left: 36px;
   right: 36px;
   top: calc(var(--safe-top) + 106px);
-  bottom: 250px;
+  bottom: 270px;
+}
+.frameCaption {
+  left: 48px;
+  right: 48px;
+  top: 30%;
+  height: 170px;
 }
 .cornerTL,
 .cornerTR,
 .cornerBL,
 .cornerBR {
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   border: 0 solid var(--text-on-dark);
-  opacity: 0.8;
+  opacity: 0.9;
 }
 .cornerTL {
   left: 0;
   top: 0;
-  border-left-width: 1.5px;
-  border-top-width: 1.5px;
+  border-left-width: 2px;
+  border-top-width: 2px;
+  border-top-left-radius: var(--radius-md);
 }
 .cornerTR {
   right: 0;
   top: 0;
-  border-right-width: 1.5px;
-  border-top-width: 1.5px;
+  border-right-width: 2px;
+  border-top-width: 2px;
+  border-top-right-radius: var(--radius-md);
 }
 .cornerBL {
   left: 0;
   bottom: 0;
-  border-left-width: 1.5px;
-  border-bottom-width: 1.5px;
+  border-left-width: 2px;
+  border-bottom-width: 2px;
+  border-bottom-left-radius: var(--radius-md);
 }
 .cornerBR {
   right: 0;
   bottom: 0;
-  border-right-width: 1.5px;
-  border-bottom-width: 1.5px;
-}
-
-/* 도슨트 모드: 설명문 인식 영역 */
-.docentFrame {
-  position: absolute;
-  left: 62px;
-  right: 62px;
-  top: 32%;
-  height: 150px;
-  border: 2px solid var(--accent);
-  border-radius: var(--radius-md);
-  box-shadow: 0 0 0 2000px var(--scrim-dim);
-  transition: opacity var(--dur-base) var(--ease-settle);
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  border-bottom-right-radius: var(--radius-md);
 }
 .toast {
   position: absolute;
@@ -228,7 +228,11 @@
     opacity: 0;
   }
 }
-.shutterOff {
-  opacity: 0.3;
-  transition: opacity var(--dur-base) var(--ease-move);
+/* 지금 사진이 어디로 가는지 (캡션 → No.03 등) */
+.hint {
+  margin: 0 0 calc(var(--space-2) * -1);
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+  color: var(--text-on-dark-muted);
+  text-align: center;
 }

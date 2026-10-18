@@ -79,7 +79,7 @@ export function VisitPage() {
           <StatRow
             stats={[
               ['오브제', stats.objes],
-              ['도슨트', stats.docents],
+              ['캡션', stats.docents],
               ['나의 노트', stats.notes],
             ]}
           />

@@ -7,6 +7,7 @@ import { formatDate, formatIndex, formatTime } from '../lib/format'
 import { renderCard, saveCard, shareCard } from '../lib/cardExport'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
+import { DownloadSheet } from '../components/DownloadSheet'
 import { Card, type CardField, type CardStyle } from '../components/Card'
 import { CardStylePicker } from '../components/CardStylePicker'
 import { OptionChip } from '../components/OptionChip'
@@ -15,7 +16,7 @@ import styles from './CardPage.module.css'
 const FIELDS: { field: CardField; label: string }[] = [
   { field: 'note', label: '나의 노트' },
   { field: 'meta', label: '날짜 · 장소' },
-  { field: 'docent', label: '도슨트' },
+  { field: 'docent', label: '캡션' },
   { field: 'tags', label: '라벨' },
 ]
 
@@ -26,6 +27,7 @@ export function CardPage() {
   const cardRef = useRef<HTMLDivElement>(null)
   const [style, setStyle] = useState<CardStyle>('sky')
   const [fields, setFields] = useState<Set<CardField>>(new Set(['note', 'meta']))
+  const [pending, setPending] = useState<Blob>()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>()
 
@@ -56,7 +58,8 @@ export function CardPage() {
     setError(undefined)
     try {
       const blob = await renderCard(cardRef.current)
-      if (action === 'save') saveCard(blob, filename)
+      // 저장은 먼저 묻는다. 다운로드는 시트의 버튼을 누르는 순간 일어난다 (DownloadSheet)
+      if (action === 'save') setPending(blob)
       else await shareCard(blob, filename)
     } catch (e) {
       if ((e as Error).name !== 'AbortError') setError('카드를 만들지 못했어요. 잠시 후 다시 시도해 주세요.')
@@ -102,6 +105,14 @@ export function CardPage() {
         </div>
         {error && <p className={styles.error}>{error}</p>}
       </main>
+      <DownloadSheet
+        filename={pending && filename}
+        onDownload={() => {
+          if (pending) saveCard(pending, filename)
+          setPending(undefined)
+        }}
+        onClose={() => setPending(undefined)}
+      />
     </Screen>
   )
 }

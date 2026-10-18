@@ -64,7 +64,7 @@ describe('visit stats', () => {
   })
 
   it('labels what is attached to an obje', () => {
-    expect(objes.map(attachmentLabel)).toEqual(['도슨트 · 노트', '도슨트', '—'])
+    expect(objes.map(attachmentLabel)).toEqual(['캡션 · 노트', '캡션', '—'])
   })
 })
 

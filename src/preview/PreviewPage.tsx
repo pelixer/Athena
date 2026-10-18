@@ -15,7 +15,6 @@ import { DocentBlock } from '../components/DocentBlock'
 import { NoteBlock } from '../components/NoteBlock'
 import { ShutterButton } from '../components/ShutterButton'
 import { ModeSwitch } from '../components/ModeSwitch'
-import { AttachConfirm } from '../components/AttachConfirm'
 import { Toast } from '../components/Toast'
 import { TabBar } from '../components/TabBar'
 import { StatRow } from '../components/StatRow'
@@ -63,7 +62,7 @@ export function PreviewPage() {
       <Section no="01" title="대표 화면" note="예시 데이터로 렌더링한 실제 화면 · 프레임은 시안과 같은 390 × 844">
         <div className={styles.frames}>
           <Frame label="01 촬영 · CapturePage" status="proposed" refs="R13 R14" path={`/visit/${SAMPLE.visitId}/capture`} still={samplePhotos.cliffSky} />
-          <Frame label="01 촬영 · 도슨트 모드" path={`/visit/${SAMPLE.visitId}/capture?mode=docent`} still={samplePhotos.marble} />
+          <Frame label="01 촬영 · 캡션 모드" path={`/visit/${SAMPLE.visitId}/capture?mode=docent`} still={samplePhotos.marble} />
           <Frame label="02 오브제 상세 · ObjePage" path={`/obje/${SAMPLE.objeId}`} />
           <Frame label="03 관람 보기 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
           <Frame label="04 공유 카드 · CardPage" path={`/obje/${SAMPLE.objeId}/card`} />
@@ -139,7 +138,7 @@ export function PreviewPage() {
 
           <Item name="ObjeCard">
             <div className={styles.narrow}>
-              <ObjeCard src={samplePhotos.cliffDover} index={7} time="14:32" attachment="도슨트 · 노트" title="남쪽 해안, 오후 세 시" />
+              <ObjeCard src={samplePhotos.cliffDover} index={7} time="14:32" attachment="캡션 · 노트" title="남쪽 해안, 오후 세 시" />
             </div>
           </Item>
 
@@ -156,10 +155,10 @@ export function PreviewPage() {
             <ShutterDemo />
           </Item>
 
-          <Item name="AttachConfirm" note="사진을 첨부하면 ModeSwitch 자리에 나타난다 · 위: 오브제가 아직 없을 때" status="proposed" refs="R13">
+          <Item name="ShutterButton · 첨부 추가" note="사진을 첨부하면 셔터 자리가 ✓(추가)로 바뀐다 · 오브제 흰색 / 캡션 하늘" status="proposed" refs="R13">
             <div className={styles.dark}>
-              <AttachConfirm onConfirm={() => {}} disabled={['docent']} />
-              <AttachConfirm onConfirm={() => {}} />
+              <ShutterButton mode="obje" icon="check" label="새 오브제로 추가" onPress={() => {}} />
+              <ShutterButton mode="docent" icon="check" label="캡션으로 추가" onPress={() => {}} />
             </div>
           </Item>
 
@@ -177,7 +176,7 @@ export function PreviewPage() {
             <StatRow
               stats={[
                 ['오브제', 12],
-                ['도슨트', 5],
+                ['캡션', 5],
                 ['나의 노트', 4],
               ]}
             />
@@ -194,7 +193,7 @@ export function PreviewPage() {
           <Item name="TextField · Sheet" note="radius-lg 시트 · 손잡이 · 취소/확인 (R2) · 도슨트 고치기 (R10)">
             <div className={styles.sheet}>
               <span className={styles.sheetHandle} />
-              <span className={styles.sheetLabel}>도슨트 · 원문 고치기</span>
+              <span className={styles.sheetLabel}>캡션 · 원문 고치기</span>
               <TextField variant="heading" defaultValue={DOCENT.heading} />
               <TextArea rows={3} defaultValue={DOCENT.text} />
               <div className={styles.sheetActions}>
@@ -275,7 +274,7 @@ function ShutterDemo() {
       <ModeSwitch
         options={[
           { value: 'obje', label: '오브제' },
-          { value: 'docent', label: '도슨트' },
+          { value: 'docent', label: '캡션' },
         ]}
         value={mode}
         onChange={setMode}
@@ -323,7 +322,7 @@ function CardDemo() {
         <div className={styles.row}>
           <OptionChip label="나의 노트" on onToggle={() => {}} />
           <OptionChip label="날짜 · 장소" on onToggle={() => {}} />
-          <OptionChip label="도슨트" on={false} onToggle={() => {}} />
+          <OptionChip label="캡션" on={false} onToggle={() => {}} />
           <OptionChip label="라벨" on={false} onToggle={() => {}} />
         </div>
       </div>

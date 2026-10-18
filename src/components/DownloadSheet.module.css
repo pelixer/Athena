@@ -1,0 +1,7 @@
+.file {
+  margin: 0;
+  font: var(--type-meta);
+  letter-spacing: var(--tracking-control);
+  color: var(--text-secondary);
+  word-break: break-all;
+}

@@ -6,7 +6,7 @@ export function DocentBlock({ docent, onShowPhoto, onEdit }: { docent: Docent; o
   return (
     <section className={styles.block}>
       <header className={styles.header}>
-        <span className={styles.label}>도슨트 · 원문</span>
+        <span className={styles.label}>캡션 · 원문</span>
         <span className={styles.actions}>
           {onEdit && (
             <button type="button" className={styles.action} onClick={onEdit}>

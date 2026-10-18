@@ -50,10 +50,15 @@ export async function setDocentText(objeId: ID, raw: string): Promise<void> {
   })
 }
 
-/** 관람에서 가장 최근에 찍은 오브제 — 도슨트를 붙일 대상 */
+/** 관람에서 가장 최근에 추가한 오브제 — 캡션을 붙일 대상.
+ *  찍은 시각이 아니라 추가한 순서로 고른다 (사진첩에서 올린 예전 사진도 방금 추가했으면 대상이다). */
 export async function latestObje(visitId: ID): Promise<Obje | undefined> {
-  const objes = await db.objes.where('visitId').equals(visitId).sortBy('takenAt')
-  return objes.at(-1)
+  const objes = await db.objes.where('visitId').equals(visitId).toArray()
+  return latestAdded(objes)
+}
+
+export function latestAdded<T extends { createdAt: number }>(objes: T[]): T | undefined {
+  return objes.reduce<T | undefined>((a, o) => (!a || o.createdAt >= a.createdAt ? o : a), undefined)
 }
 
 export async function updateObje(id: ID, changes: Partial<Pick<Obje, 'title' | 'place' | 'tags' | 'docent'>>): Promise<void> {

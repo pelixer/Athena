@@ -126,15 +126,15 @@ export function ObjePage() {
       </Sheet>
       <Sheet
         open={editing === 'docent'}
-        title="도슨트 · 원문 고치기"
+        title="캡션 · 원문 고치기"
         onClose={close}
         onConfirm={save}
-        aside={docentSrc && <img className={styles.docentThumb} src={docentSrc} alt="설명문 사진" />}
+        aside={docentSrc && <img className={styles.docentThumb} src={docentSrc} alt="캡션 사진" />}
       >
         <TextField id="docent-heading" variant="heading" value={draftHeading} placeholder="작가, 〈작품명〉, 연도" onChange={(e) => setDraftHeading(e.target.value)} />
         <TextArea id="docent" rows={8} autoFocus value={draft} placeholder="설명문 · 문단 사이는 빈 줄" onChange={(e) => setDraft(e.target.value)} />
       </Sheet>
-      {editing === 'docentPhoto' && docentSrc && <PhotoViewer src={docentSrc} caption={`도슨트 원본 · ${formatIndex(index)}`} onClose={close} />}
+      {editing === 'docentPhoto' && docentSrc && <PhotoViewer src={docentSrc} caption={`캡션 원본 · ${formatIndex(index)}`} onClose={close} />}
       {editing === 'photo' && src && <PhotoViewer src={src} caption={`${formatIndex(index)}${obje.title ? ` · ${obje.title}` : ''}`} onClose={close} />}
     </Screen>
   )
