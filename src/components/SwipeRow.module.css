@@ -1,6 +1,8 @@
 .row {
   position: relative;
   overflow: hidden;
+  /* 줄 사이 선은 움직이지 않는 바깥 틀에 둔다 (합성 층 안의 1px 선은 반올림으로 사라질 수 있다) */
+  border-bottom: 1px solid var(--border-vein);
 }
 .actions {
   position: absolute;
@@ -9,19 +11,33 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  opacity: 0;
+  transform: scale(0.8);
+  will-change: opacity, transform;
 }
 .start {
   left: 0;
+  transform-origin: left center;
 }
 .end {
   right: 0;
+  transform-origin: right center;
 }
 .content {
   position: relative;
   background: var(--bg-base);
   touch-action: pan-y;
-  transition: transform var(--dur-base) var(--ease-settle);
+  transform: translate3d(0, 0, 0);
+  /* 자기 층에서 합성 — 손가락을 따라가는 동안 다시 그리지 않는다 */
+  will-change: transform;
+  backface-visibility: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
-.dragging {
-  transition: none;
+/* 놓은 뒤 자리 잡기만 애니메이션. 끄는 동안은 손가락에 1:1 */
+.animating {
+  transition:
+    transform var(--dur-base) var(--ease-settle),
+    opacity var(--dur-base) var(--ease-settle);
 }

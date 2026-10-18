@@ -2,12 +2,14 @@ import { useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { db } from '../data/db'
 import { useLive } from '../data/hooks'
-import { createVisit } from '../data/repo'
+import { createVisit, deleteFolder } from '../data/repo'
 import type { Folder } from '../domain/types'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
 import { Icon } from '../components/Icon'
 import { NewCollectionSheet } from '../components/NewCollectionSheet'
+import { SwipeRow } from '../components/SwipeRow'
+import { Sheet } from '../components/Sheet'
 import { formatCount, formatDateWeekday } from '../lib/format'
 import { CollectionList, useCollections } from './CollectionList'
 import styles from './HomePage.module.css'
@@ -20,6 +22,7 @@ import styles from './HomePage.module.css'
 export function HomePage() {
   const navigate = useNavigate()
   const [starting, setStarting] = useState(false)
+  const [deletingFolder, setDeletingFolder] = useState<Folder & { count: number }>()
   const close = useCallback(() => setStarting(false), [])
   const rows = useCollections(undefined)
   const folders = useLive(async () => {
@@ -45,20 +48,37 @@ export function HomePage() {
         {((rows && rows.length > 0) || (folders && folders.length > 0)) && (
           <section className={styles.list}>
             <span className={styles.label}>컬렉션</span>
-            {folders?.map((f) => <FolderRow key={f.id} folder={f} />)}
+            {folders?.map((f) => (
+              // 폴더 줄도 왼쪽으로 밀면 지우기 (안의 컬렉션은 홈으로 나온다)
+              <SwipeRow key={f.id} end={[{ icon: 'delete', label: '폴더 지우기', onAction: () => setDeletingFolder(f) }]}>
+                <FolderRow folder={f} />
+              </SwipeRow>
+            ))}
             {rows && <CollectionList rows={rows} folders={folders ?? []} />}
           </section>
         )}
       </main>
 
       <NewCollectionSheet open={starting} onClose={close} onStart={start} />
+      <Sheet
+        open={!!deletingFolder}
+        title="폴더를 지울까요?"
+        confirmLabel="지우기"
+        onClose={() => setDeletingFolder(undefined)}
+        onConfirm={async () => {
+          if (deletingFolder) await deleteFolder(deletingFolder.id)
+          setDeletingFolder(undefined)
+        }}
+      >
+        <p className={styles.note}>〈{deletingFolder?.name}〉 폴더만 지워져요. 안의 컬렉션 {deletingFolder?.count ?? 0}개는 홈으로 옮겨져요.</p>
+      </Sheet>
     </Screen>
   )
 }
 
 function FolderRow({ folder }: { folder: Folder & { count: number } }) {
   return (
-    <Link to={`/folder/${folder.id}`} className={styles.folderRow}>
+    <Link to={`/folder/${folder.id}`} className={styles.folderRow} draggable={false}>
       <span className={styles.folderIcon}>
         <Icon name="folder" size={24} />
       </span>
