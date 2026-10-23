@@ -17,8 +17,7 @@ const SHOW = 1500
 
 /**
  * IconButton — v2.3 "하늘 이중 원" (Athena Button Explorations 1b).
- * 바탕·글자·점 없이 테두리 1px + 안쪽 원 1px(4.5px 안) + 아이콘 하나. 안쪽 원은 box-shadow로 그린다
- * (outline-offset 방식은 iOS 16.3 이하 Safari에서 네모로 보인다).
+ * 바탕·글자·점 없이 1px 원 두 개(사이 3.5px, 속은 비움) + 아이콘 하나. 두 원은 SVG로 그린다 (R3: box-shadow는 띠처럼 굵어 보였다).
  * 길게 누르면 aria-label이 말풍선으로 뜬다(누름은 실행되지 않는다).
  */
 export function IconButton({ surface = 'marble', size = 44, icon, className, type = 'button', firstHint, onClick, onPointerDown, onPointerUp, onPointerLeave, onPointerCancel, ...rest }: Props) {
@@ -92,6 +91,10 @@ export function IconButton({ surface = 'marble', size = 44, icon, className, typ
         }}
         {...rest}
       >
+        <svg className={styles.ring} viewBox={`0 0 ${size} ${size}`} width={size} height={size} aria-hidden="true" focusable="false">
+          <circle cx={size / 2} cy={size / 2} r={size / 2 - 0.5} />
+          <circle cx={size / 2} cy={size / 2} r={size / 2 - 4.5} />
+        </svg>
         <Icon name={icon} size={size === 54 ? 24 : 22} />
       </button>
     </span>

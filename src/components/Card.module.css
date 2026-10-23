@@ -132,19 +132,18 @@
   text-overflow: ellipsis;
 }
 
-/* 서명: 메타 마지막 줄 밑선 = 신전 받침 밑선 */
+/* 서명: 메타 마지막 줄 밑선 = 신전 받침 밑선 (R3). 로고의 기준선은 받침 아래 변이다(AthenaLogo) */
 .footer {
   flex: none;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: last baseline;
   gap: 8px;
   color: var(--card-meta);
 }
 .meta {
   display: block;
   min-width: 0;
-  margin-bottom: calc(-0.275em - 0.7px);
   font: var(--type-card-meta);
   /* 두 줄 고정: 긴 장소는 줄마다 말줄임 */
   white-space: nowrap;

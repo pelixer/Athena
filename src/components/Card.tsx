@@ -102,7 +102,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(p, ref) 
             </>
           )}
         </span>
-        <AthenaLogo size={24} className={styles.logo} />
+        <AthenaLogo size={24} baseline className={styles.logo} />
       </footer>
     </div>
   )

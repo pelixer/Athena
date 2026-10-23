@@ -65,8 +65,8 @@ export function PreviewPage() {
           <Frame label="01 촬영 · 캡션 모드" path={`/visit/${SAMPLE.visitId}/capture?mode=docent`} still={samplePhotos.marble} />
           <Frame label="02 오브제 상세 · ObjePage" path={`/obje/${SAMPLE.objeId}`} />
           <Frame label="03 컬렉션 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
-          <Frame label="04 공유 카드 · CardPage" status="proposed" refs="V1 V5" path={`/obje/${SAMPLE.objeId}/card`} />
-          <Frame label="05 입장권 · TemplatePage" status="proposed" refs="V2 V3 V4" path={`/visit/${SAMPLE.visitId}/template`} />
+          <Frame label="04 공유 카드 · CardPage" path={`/obje/${SAMPLE.objeId}/card`} />
+          <Frame label="05 입장권 · TemplatePage" path={`/visit/${SAMPLE.visitId}/template`} />
           <Frame label="홈 · HomePage" path="/" />
         </div>
       </Section>

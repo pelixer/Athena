@@ -41,5 +41,5 @@ export function Screen({
 
 /** PlinthBar — 하단 좌대 막대. 어두운 화면(촬영·사진 보기)에는 쓰지 않는다 */
 export function PlinthBar({ tone = 'marble', children }: { tone?: 'marble' | 'wall'; children: ReactNode }) {
-  return <div className={`${styles.plinth} ${styles[`plinth-${tone}`]}`}>{children}</div>
+  return <div className={`${styles.plinth} ${tone === 'wall' ? styles.plinthWall : ''}`}>{children}</div>
 }

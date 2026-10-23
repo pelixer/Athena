@@ -51,7 +51,7 @@ export const TemplateTicket = forwardRef<HTMLDivElement, TemplateTicketProps>(fu
         {p.note && <div className={styles.note}>{p.note}</div>}
         <div className={styles.footer}>
           <span className={styles.noteLabel}>{p.note ? p.noteLabel : ''}</span>
-          <AthenaLogo size={16} />
+          <AthenaLogo size={16} baseline />
         </div>
       </div>
     </div>

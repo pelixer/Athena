@@ -107,7 +107,8 @@ export function TemplatePage() {
     >
       <main className={styles.page}>
         <div className={styles.preview}>
-          <TemplateTicket
+          <div className={styles.scale}>
+            <TemplateTicket
             ref={ticketRef}
             title={visit.title}
             rows={rows}
@@ -115,7 +116,8 @@ export function TemplatePage() {
             thumbs={thumbUrls}
             note={showNote ? cover?.note : undefined}
             noteLabel={coverIndex ? `${formatIndex(coverIndex)} · 나의 노트` : undefined}
-          />
+            />
+          </div>
           <span className={styles.format}>9:16 · 1080×1920</span>
         </div>
         <div className={styles.settings}>

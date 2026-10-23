@@ -108,7 +108,7 @@
 .footer {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: last baseline;
 }
 .noteLabel {
   font: 400 9.5px/1 var(--font-mono);

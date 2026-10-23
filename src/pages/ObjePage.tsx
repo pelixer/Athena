@@ -95,8 +95,9 @@ export function ObjePage() {
   }
 
   const rows: [string, string][] = [['날짜', formatDateWeekday(obje.takenAt)]]
+  // D1: 날짜 · 장소 두 줄. 장소 이름이 없을 때만 좌표를 보인다 (라벨 줄이 하단 좌대 위에 머물게)
   if (obje.place) rows.push(['장소', obje.place])
-  if (obje.location) rows.push(['좌표', formatGeo(obje.location)])
+  else if (obje.location) rows.push(['좌표', formatGeo(obje.location)])
   const surface = overPhoto ? 'photo' : 'marble'
 
   return (

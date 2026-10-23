@@ -4,10 +4,11 @@
   width: 44px;
   height: 26px;
   padding: 0;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--text-disabled);
   border-radius: 13px;
   background: transparent;
   cursor: pointer;
+  transition: border-color var(--dur-base) var(--ease-move);
 }
 .toggle::after {
   content: '';
@@ -17,11 +18,15 @@
   width: 20px;
   height: 20px;
   box-sizing: border-box;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--text-disabled);
   border-radius: 50%;
-  transition: transform var(--dur-quick) var(--ease-move), background var(--dur-quick) var(--ease-move);
+  transition: transform var(--dur-base) var(--ease-move), background var(--dur-base) var(--ease-move), border-color var(--dur-base) var(--ease-move);
+}
+.on {
+  border-color: var(--accent);
 }
 .on::after {
   transform: translateX(18px);
+  border-color: var(--accent);
   background: var(--accent);
 }
