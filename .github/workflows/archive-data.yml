@@ -31,3 +31,31 @@ jobs:
       - name: Probe
         if: inputs.step == 'probe'
         run: node scripts/archive/probe.mjs
+      - name: Collect (Wikidata → TSV)
+        if: inputs.step == 'collect'
+        env:
+          NODE_OPTIONS: --max-old-space-size=12288
+        run: node scripts/archive/collect.mjs archive-raw && ls -la archive-raw
+      - name: Compile (TSV → 정적 파일 묶음)
+        if: inputs.step == 'collect'
+        env:
+          NODE_OPTIONS: --max-old-space-size=12288
+        run: |
+          npm ci
+          npx vite-node scripts/archive/compile.ts archive-raw archive-out
+          find archive-out -type f | wc -l
+          du -sh archive-out
+      - name: Release (묶음 + 원자료)
+        if: inputs.step == 'collect'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="archive-$(date -u +%Y%m%d-%H%M)"
+          tar -czf athena-archive.tar.gz -C archive-out .
+          tar -czf athena-archive-raw.tar.gz -C archive-raw .
+          sha=$(sha256sum athena-archive.tar.gz | cut -d' ' -f1)
+          ls -la athena-archive*.tar.gz
+          gh release create "$tag" athena-archive.tar.gz athena-archive-raw.tar.gz \
+            --title "Art archive data $tag" \
+            --notes "Wikidata (CC0) visual artworks with creators. $(cat archive-out/manifest.json)"
+          echo "::notice::archive.lock.json → {\"tag\":\"$tag\",\"asset\":\"athena-archive.tar.gz\",\"sha256\":\"$sha\"}"

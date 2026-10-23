@@ -1,5 +1,6 @@
 // Wikidata SPARQL 클라이언트 (수집 스크립트 공용). 이 컨테이너가 아니라 GitHub Actions에서 돈다.
 // QLever(시간 제한 600초, 큰 결과에 강함)를 먼저 쓰고, 안 되면 Wikidata Query Service(60초)로.
+// WDQS는 큰 질의에서 504로 끊긴다 (2026-10-23 probe: 전체 개수 세기도 시간 초과). 예비로만 둔다
 const ENDPOINTS = [
   { name: 'qlever', url: 'https://qlever.cs.uni-freiburg.de/api/wikidata' },
   { name: 'wdqs', url: 'https://query.wikidata.org/sparql' },
