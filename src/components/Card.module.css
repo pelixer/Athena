@@ -143,8 +143,13 @@
 }
 .meta {
   display: block;
+  min-width: 0;
   margin-bottom: calc(-0.275em - 0.7px);
   font: var(--type-card-meta);
+  /* 두 줄 고정: 긴 장소는 줄마다 말줄임 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .logo {
   flex: none;

@@ -61,12 +61,12 @@ export function PreviewPage() {
 
       <Section no="01" title="대표 화면" note="예시 데이터로 렌더링한 실제 화면 · 프레임은 시안과 같은 390 × 844">
         <div className={styles.frames}>
-          <Frame label="01 촬영 · CapturePage" status="proposed" refs="R13 R14" path={`/visit/${SAMPLE.visitId}/capture`} still={samplePhotos.cliffSky} />
+          <Frame label="01 촬영 · CapturePage" path={`/visit/${SAMPLE.visitId}/capture`} still={samplePhotos.cliffSky} />
           <Frame label="01 촬영 · 캡션 모드" path={`/visit/${SAMPLE.visitId}/capture?mode=docent`} still={samplePhotos.marble} />
           <Frame label="02 오브제 상세 · ObjePage" path={`/obje/${SAMPLE.objeId}`} />
           <Frame label="03 컬렉션 · VisitPage" path={`/visit/${SAMPLE.visitId}`} />
-          <Frame label="04 공유 카드 · CardPage" path={`/obje/${SAMPLE.objeId}/card`} />
-          <Frame label="05 입장권 · TemplatePage" path={`/visit/${SAMPLE.visitId}/template`} />
+          <Frame label="04 공유 카드 · CardPage" status="proposed" refs="V1 V5" path={`/obje/${SAMPLE.objeId}/card`} />
+          <Frame label="05 입장권 · TemplatePage" status="proposed" refs="V2 V3 V4" path={`/visit/${SAMPLE.visitId}/template`} />
           <Frame label="홈 · HomePage" path="/" />
         </div>
       </Section>
