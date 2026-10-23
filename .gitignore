@@ -4,5 +4,6 @@ dist-preview
 *.tsbuildinfo
 .DS_Store
 public/ocr
+public/archive
 .wrangler
 .cache

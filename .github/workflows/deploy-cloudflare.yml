@@ -38,6 +38,11 @@ jobs:
         with:
           path: .cache/ocr-models
           key: ocr-models-${{ hashFiles('scripts/copy-ocr-assets.mjs') }}
+      - name: 아트 아카이브 캐시 (GitHub 릴리스, archive.lock.json의 판)
+        uses: actions/cache@v4
+        with:
+          path: .cache/archive
+          key: archive-${{ hashFiles('archive.lock.json') }}
       - run: npm test
       - run: npm run build # typecheck + OCR 파일 복사 + vite build
       - name: Deploy
@@ -72,6 +77,12 @@ jobs:
             code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/$f")
             [ "$code" = 200 ] || { echo "::error::OCR file not served: $f (HTTP $code)"; exit 1; }
           done
+          # 아트 아카이브: 지금 판과 그 목록이 열리는지 (archive.lock.json이 있을 때만)
+          if [ -f archive.lock.json ]; then
+            ver=$(curl -sf "$URL/archive/current.json" | sed -E 's/.*"version":"([^"]+)".*/\1/')
+            [ -n "$ver" ] || { echo "::error::archive/current.json not served"; exit 1; }
+            curl -sf "$URL/archive/$ver/manifest.json" | grep -q '"works"' || { echo "::error::archive manifest not served ($ver)"; exit 1; }
+          fi
           # 새 버전이 모든 엣지에 닿기까지 몇 초 걸린다
           for i in 1 2 3 4 5 6; do
             curl -sfI "$URL/?t=$(date +%s)" | tr -d '\r' > head.txt || true

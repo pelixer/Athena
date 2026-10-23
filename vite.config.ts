@@ -24,6 +24,8 @@ export default defineConfig(({ mode }) =>
             },
           },
         ],
+        // public/(OCR 모델·아트 아카이브 수천 파일)은 갤러리에 필요 없다
+        publicDir: false,
         build: { outDir: 'dist-preview', rollupOptions: { input: 'preview.html' } },
       }
     : {

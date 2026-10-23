@@ -188,3 +188,35 @@ export function formatLife(a: Pick<ArchiveArtist, 'b' | 'd'>): string {
 /** Qid 목록 → 용어 이름들 (한국어 우선) */
 export const labels = (ids: Qid[] | undefined, vocab: Vocab) =>
   (ids ?? []).map((id) => vocab[id]?.[0] || vocab[id]?.[1]).filter((x): x is string => !!x)
+
+const join = (xs: string[]) => [...new Set(xs)].join(' · ')
+
+/**
+ * 아카이브 항목의 표 줄: 작가 · 작업 기간 · 화법 · 화풍 · 근원지 · 분류.
+ * 작품에 값이 없으면 작가 쪽 값을 쓰고 어디서 왔는지 괄호로 밝힌다 (Wikidata 작품의 사조는 2%, 나라는 7%만 채워져 있다).
+ * 끝내 없으면 "기록 없음".
+ */
+export function entryRows(artist: ArchiveArtist, work: ArchiveWork, vocab: Vocab): [string, string][] {
+  const NONE = '기록 없음'
+  const life = formatLife(artist)
+  const period = formatPeriod(work.y) || (artist.a ? `${formatPeriod({ ...artist.a, c: undefined })} (작가 활동기)` : '')
+  const technique = join([...labels(work.mt, vocab), ...labels(work.me, vocab)])
+  const workStyle = labels(work.m, vocab)
+  const artistStyle = workStyle.length ? [] : labels(artist.m, vocab)
+  const style = join([...workStyle, ...(artistStyle.length ? [`${join(artistStyle)} (작가의 사조)`] : []), ...labels(work.g, vocab)])
+  const workOrigin = join([...labels(work.o, vocab), ...labels(work.l, vocab)])
+  const origin =
+    workOrigin ||
+    (labels(artist.wl, vocab).length ? `${join(labels(artist.wl, vocab))} (작가 활동지)` : '') ||
+    (labels(artist.c, vocab).length ? `${join(labels(artist.c, vocab))} (작가 국적)` : '')
+  const rows: [string, string][] = [
+    ['작가', life ? `${displayName(artist.n)} (${life})` : displayName(artist.n)],
+    ['작업 기간', period || NONE],
+    ['화법', technique || NONE],
+    ['화풍', style || NONE],
+    ['근원지', origin || NONE],
+  ]
+  const kind = join(labels(work.k, vocab))
+  if (kind) rows.push(['분류', kind])
+  return rows
+}

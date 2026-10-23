@@ -6,6 +6,7 @@ import { editDocent, updateNote, updateObje } from '../data/repo'
 import { sequenceOf } from '../domain/sequence'
 import { parseTagInput } from '../domain/tags'
 import { docentToText, textToBody } from '../domain/docent'
+import { parseCaption } from '../domain/captionParse'
 import { formatDateWeekday, formatGeo, formatIndex, formatTimeSeconds } from '../lib/format'
 import { useToast } from '../lib/toast'
 import { Screen } from '../components/Screen'
@@ -141,6 +142,14 @@ export function ObjePage() {
         )}
         <NoteBlock note={obje.note} updatedAt={obje.noteUpdatedAt} onWrite={() => edit('note', obje.note ?? '')} />
 
+        {/* 아카이브: 캡션에서 읽은 작품·작가를 들고 간다 (없으면 오브제 제목만) */}
+        <Link to={archiveLink(obje.title, obje.docent ? parseCaption(obje.docent) : undefined)} className={styles.visit}>
+          <span className={styles.visitText}>
+            <span className={styles.visitLabel}>아카이브</span>
+            <span className={styles.visitTitle}>작업 기간 · 화법 · 화풍 · 근원지</span>
+          </span>
+          <Icon name="forward" size={22} />
+        </Link>
         {visit && (
           <Link to={`/visit/${visit.id}`} className={styles.visit}>
             <span className={styles.visitText}>
@@ -182,4 +191,14 @@ export function ObjePage() {
       )}
     </Screen>
   )
+}
+
+function archiveLink(objeTitle: string | undefined, caption: { title?: string; artist?: string } | undefined) {
+  const q = new URLSearchParams()
+  const title = caption?.title ?? objeTitle
+  if (title) q.set('title', title)
+  // 캡션 작가 줄은 "한서윤 Han Seoyun"처럼 한글 + 로마자일 수 있다 — 그대로 넘기면 둘 다 맞춰 본다
+  if (caption?.artist) q.set('artist', caption.artist)
+  const s = q.toString()
+  return s ? `/archive?${s}` : '/archive'
 }

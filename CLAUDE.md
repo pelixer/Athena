@@ -27,12 +27,13 @@
 ## 코드 구조
 - `src/domain` 용어집 타입과 순수 로직 (태그 파싱, 관람 내 순번, 관람 통계) — 테스트: `src/domain/*.test.ts`
 - `src/data` IndexedDB(Dexie) 저장소. 로컬 우선, 계정 없음.
+- `src/domain/archive.ts` 아트 아카이브 형식·이름 맞추기·표 줄 / `src/lib/archive.ts` 정적 조각 읽기 / `scripts/archive` 수집(Actions)·묶기 — `docs/ARCHIVE.md`
 - `src/lib` 카메라, 사진 메타(EXIF/위치), OCR(기기 안 PaddleOCR PP-OCRv5 + ONNX Runtime wasm, 서버 없음 · 예비 Tesseract), 카드 내보내기, 포맷.
 - `src/components` 표시 전용 컴포넌트. DB를 모른다 (갤러리에서 샘플로 렌더링할 수 있어야 한다).
 - `src/pages` 화면. 데이터를 읽어 컴포넌트에 넘긴다.
 - `src/preview` 컴포넌트 갤러리 (preview.html)
 
 ## 명령
-- `npm run dev` 개발 서버 (먼저 OCR 엔진·한국어 모델을 `public/ocr`로 복사한다)
+- `npm run dev` 개발 서버 (먼저 OCR 엔진·한국어 모델을 `public/ocr`로, 아트 아카이브를 `public/archive`로 받아 둔다)
 - `npm test` 단위 테스트 / `npm run typecheck`
 - `npm run build` 앱 빌드 / `npm run build:preview` 갤러리를 단일 HTML로 빌드

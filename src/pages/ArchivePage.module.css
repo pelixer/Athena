@@ -1,0 +1,54 @@
+/* 아카이브: 위 112부터, 좌우 20, 간격 22 (오브제 상세 본문과 같은 리듬) */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: calc(var(--safe-top) + 65px) var(--space-5) 0;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.note {
+  margin: 0;
+  font: var(--type-body-s);
+  color: var(--text-secondary);
+  word-break: keep-all;
+}
+.section {
+  display: flex;
+  flex-direction: column;
+}
+.section > :first-child {
+  margin-bottom: var(--space-2);
+}
+.artistMeta {
+  margin: 0 0 var(--space-2);
+  font: 400 12px/1.5 var(--font-mono);
+  color: var(--text-secondary);
+}
+.more {
+  padding: 14px 0;
+  border: 0;
+  background: none;
+  color: var(--accent-text);
+  font: 500 14px/1 var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+}
+.artist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border-vein);
+  background: none;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+.artistName {
+  font: 600 16px/1.3 var(--font-serif);
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bucketOf, formatLife, formatPeriod, normalize, rankArtists, rankWorks, shardKey, shardKeysOf, similarity, type ArchiveArtist, type NameEntry } from './archive'
+import { bucketOf, entryRows, formatLife, formatPeriod, normalize, rankArtists, rankWorks, shardKey, shardKeysOf, similarity, type ArchiveArtist, type NameEntry } from './archive'
 
 describe('archive · 이름 맞추기', () => {
   it('정규화: 악센트·공백·괄호를 지운다', () => {
@@ -57,5 +57,41 @@ describe('archive · 이름 맞추기', () => {
   })
   it('묶음 번호', () => {
     expect(bucketOf('Q5582', 1024)).toBe(5582 % 1024)
+  })
+})
+
+describe('archive · 항목 표', () => {
+  const vocab = {
+    Q1: ['후기 인상주의', 'Post-Impressionism'],
+    Q2: ['', 'oil paint'],
+    Q3: ['풍경화', 'landscape'],
+    Q4: ['네덜란드', 'Netherlands'],
+    Q5: ['프랑스', 'France'],
+    Q6: ['회화', 'painting'],
+  } satisfies Record<string, [string, string]>
+  it('작품 값이 있으면 그대로', () => {
+    const rows = entryRows(
+      { id: 'A', n: { ko: '빈센트 반 고흐' }, b: 1853, d: 1890, w: [] },
+      { id: 'W', n: {}, y: { from: 1889, to: 1889 }, mt: ['Q2'], m: ['Q1'], g: ['Q3'], o: ['Q5'], k: ['Q6'] },
+      vocab,
+    )
+    expect(rows).toEqual([
+      ['작가', '빈센트 반 고흐 (1853–1890)'],
+      ['작업 기간', '1889'],
+      ['화법', 'oil paint'],
+      ['화풍', '후기 인상주의 · 풍경화'],
+      ['근원지', '프랑스'],
+      ['분류', '회화'],
+    ])
+  })
+  it('작품에 없으면 작가 쪽 값을 밝혀서, 끝내 없으면 기록 없음', () => {
+    const rows = entryRows({ id: 'A', n: { en: 'X' }, m: ['Q1'], c: ['Q4'], a: { from: 1880, to: 1890 }, w: [] }, { id: 'W', n: {} }, vocab)
+    expect(rows).toEqual([
+      ['작가', 'X'],
+      ['작업 기간', '1880–1890 (작가 활동기)'],
+      ['화법', '기록 없음'],
+      ['화풍', '후기 인상주의 (작가의 사조)'],
+      ['근원지', '네덜란드 (작가 국적)'],
+    ])
   })
 })
