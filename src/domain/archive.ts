@@ -154,11 +154,16 @@ export interface WorkHit {
   score: number
 }
 
+/** 한국어로 흔히 쓰는 제목 → Wikidata 제목 (대부분 영어) */
+const TITLE_SYNONYMS: Record<string, string> = { 무제: 'untitled', 제목없음: 'untitled', 자화상: 'selfportrait', 구성: 'composition' }
+
 /** 작가의 작품 가운데 제목이 맞는 것 (제목을 비우면 빈 배열) */
 export function rankWorks(title: string, artist: ArchiveArtist, limit = 5): WorkHit[] {
   if (!normalize(title)) return []
+  const alias = TITLE_SYNONYMS[normalize(title)]
+  const score = (n: string) => Math.max(similarity(title, n), alias ? similarity(alias, n) * 0.99 : 0)
   return artist.w
-    .map((work) => ({ artist, work, score: Math.max(0, ...namesOf(work.n).map((n) => similarity(title, n))) }))
+    .map((work) => ({ artist, work, score: Math.max(0, ...namesOf(work.n).map(score)) }))
     .filter((h) => h.score >= 0.6)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
@@ -199,7 +204,9 @@ const join = (xs: string[]) => [...new Set(xs)].join(' · ')
 export function entryRows(artist: ArchiveArtist, work: ArchiveWork, vocab: Vocab): [string, string][] {
   const NONE = '기록 없음'
   const life = formatLife(artist)
-  const period = formatPeriod(work.y) || (artist.a ? `${formatPeriod({ ...artist.a, c: undefined })} (작가 활동기)` : '')
+  // 작가 활동기는 시작과 끝을 다 알 때만 (끝만 있으면 작업 기간처럼 읽힌다)
+  const active = artist.a?.from !== undefined && artist.a.to !== undefined ? `${formatPeriod({ from: artist.a.from, to: artist.a.to })} (작가 활동기)` : ''
+  const period = formatPeriod(work.y) || active
   const technique = join([...labels(work.mt, vocab), ...labels(work.me, vocab)])
   const workStyle = labels(work.m, vocab)
   const artistStyle = workStyle.length ? [] : labels(artist.m, vocab)

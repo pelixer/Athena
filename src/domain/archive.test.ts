@@ -46,6 +46,11 @@ describe('archive · 이름 맞추기', () => {
     expect(rankWorks('론강의 별이 빛나는 밤', artist)[0].work.id).toBe('Q1')
     expect(rankWorks('', artist)).toEqual([])
   })
+  it('흔한 한국어 제목은 영어 제목과 같게: 무제 = Untitled', () => {
+    const artist: ArchiveArtist = { id: 'A', n: {}, w: [{ id: 'W1', n: { en: 'Untitled' } }, { id: 'W2', n: { en: 'Self-Portrait' } }] }
+    expect(rankWorks('무제', artist)[0].work.id).toBe('W1')
+    expect(rankWorks('자화상', artist)[0].work.id).toBe('W2')
+  })
   it('기간·생몰 표기', () => {
     expect(formatPeriod({ from: 1889, to: 1889 })).toBe('1889')
     expect(formatPeriod({ from: 1914, to: 1926 })).toBe('1914–1926')
@@ -83,6 +88,10 @@ describe('archive · 항목 표', () => {
       ['근원지', '프랑스'],
       ['분류', '회화'],
     ])
+  })
+  it('작가 활동기는 시작·끝을 다 알 때만', () => {
+    const rows = entryRows({ id: 'A', n: { en: 'X' }, a: { to: 1519 }, w: [] }, { id: 'W', n: {} }, vocab)
+    expect(rows[1]).toEqual(['작업 기간', '기록 없음'])
   })
   it('작품에 없으면 작가 쪽 값을 밝혀서, 끝내 없으면 기록 없음', () => {
     const rows = entryRows({ id: 'A', n: { en: 'X' }, m: ['Q1'], c: ['Q4'], a: { from: 1880, to: 1890 }, w: [] }, { id: 'W', n: {} }, vocab)
