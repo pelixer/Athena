@@ -62,11 +62,13 @@ console.log(`works ${works.size}, artists ${artists.size}`)
 for await (const r of rows('work-label')) work(r.w) && addName(work(r.w)!.n, r.l, r.lang)
 for await (const r of rows('work-alt')) work(r.w) && addName(work(r.w)!.n, r.l, r.lang, true)
 for await (const r of rows('work-class')) work(r.w) && isQ(r.v) && push(work(r.w)!, 'k', r.v)
-for await (const r of rows('work-date')) {
-  if (!work(r.w)) continue
-  const list = dates.get(r.w) ?? []
-  list.push({ prop: r.prop.replace(/.*\//, ''), t: r.t, p: Number(r.p) })
-  dates.set(r.w, list)
+for (const prop of ['P571', 'P580', 'P582', 'P1319', 'P1326']) {
+  for await (const r of rows(`work-date-${prop}`)) {
+    if (!work(r.w)) continue
+    const list = dates.get(r.w) ?? []
+    list.push({ prop, t: r.t, p: Number(r.p) })
+    dates.set(r.w, list)
+  }
 }
 for (const [id, claims] of dates) works.get(id)!.y = periodOf(claims)
 dates.clear()
@@ -100,6 +102,21 @@ for await (const r of rows('vocab')) {
   const e = (vocab[r.v] ??= ['', ''])
   if (r.lang === 'ko' && !e[0]) e[0] = r.l
   if (r.lang === 'en' && !e[1]) e[1] = r.l
+}
+
+// 채워진 비율 (수집이 잘렸는지 보는 눈금: 2026-10-23 probe 기준 날짜 68% · 재료 64%)
+{
+  const all = [...works.values()]
+  const pct = (f: (w: ArchiveWork) => unknown) => `${((100 * all.filter(f).length) / all.length).toFixed(1)}%`
+  console.log(
+    JSON.stringify({
+      date: pct((w) => w.y),
+      material: pct((w) => w.mt?.length || w.me?.length),
+      style: pct((w) => w.m?.length || w.g?.length),
+      origin: pct((w) => w.o?.length || w.l?.length),
+      ko: pct((w) => w.n.ko),
+    }),
+  )
 }
 
 // 작품을 작가에게 (공동 작업이면 모두에게)

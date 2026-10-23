@@ -25,7 +25,7 @@
 }
 .artistMeta {
   margin: 0 0 var(--space-2);
-  font: 400 12px/1.5 var(--font-mono);
+  font: 500 13px/1.5 var(--font-sans);
   color: var(--text-secondary);
 }
 .more {

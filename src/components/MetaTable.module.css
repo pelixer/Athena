@@ -21,3 +21,8 @@
 .row dd {
   color: var(--text-primary);
 }
+/* 말로 된 값 (아카이브): 머리 "작업 기간"이 한 줄에 들도록 64, 값은 sans 15 */
+.text {
+  grid-template-columns: 64px 1fr;
+  font: 400 15px/1.5 var(--font-sans);
+}

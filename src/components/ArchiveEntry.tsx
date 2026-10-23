@@ -17,7 +17,7 @@ export function ArchiveEntry({ artist, work, vocab }: { artist: ArchiveArtist; w
         {sub && <span className={styles.sub}>{sub}</span>}
       </header>
       <DoubleRule />
-      <MetaTable rows={entryRows(artist, work, vocab)} />
+      <MetaTable variant="text" rows={entryRows(artist, work, vocab)} />
       <a className={styles.source} href={`https://www.wikidata.org/wiki/${work.id}`} target="_blank" rel="noreferrer">
         출처 Wikidata {work.id} · CC0
       </a>

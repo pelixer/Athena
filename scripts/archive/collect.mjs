@@ -19,10 +19,14 @@ const jobs = {
   'work-class': `SELECT DISTINCT ?w ?v WHERE { ${WORKS} ?w wdt:P31 ?v }`,
   'work-label': `SELECT DISTINCT ?w ?l (LANG(?l) AS ?lang) WHERE { ${WORKS} ?w rdfs:label ?l ${LANG} }`,
   'work-alt': `SELECT DISTINCT ?w ?l (LANG(?l) AS ?lang) WHERE { ${WORKS} ?w skos:altLabel ?l ${LANG} }`,
-  // 날짜: 값 + 정밀도 (9 = 해, 8 = 10년, 7 = 100년). 시작·끝·가장 이른·가장 늦은 때도
-  'work-date': `SELECT DISTINCT ?w ?prop ?t ?p WHERE { ${WORKS}
-    VALUES (?prop ?ps ?psv) { ("P571" p:P571 psv:P571) ("P580" p:P580 psv:P580) ("P582" p:P582 psv:P582) ("P1319" p:P1319 psv:P1319) ("P1326" p:P1326 psv:P1326) }
-    ?w ?ps ?st . ?st ?psv ?tv . ?tv wikibase:timeValue ?t ; wikibase:timePrecision ?p }`,
+  // 날짜: 값 + 정밀도 (9 = 해, 8 = 10년, 7 = 100년). 제작·시작·끝·가장 이른·가장 늦은 때를 하나씩
+  // (한 질의에 묶고 DISTINCT를 걸면 QLever가 정렬하다 시간 초과 — 2026-10-23. 겹친 줄은 묶을 때 합쳐진다)
+  ...Object.fromEntries(
+    ['P571', 'P580', 'P582', 'P1319', 'P1326'].map((P) => [
+      `work-date-${P}`,
+      `SELECT ?w ?t ?p WHERE { ${WORKS} ?w p:${P} ?st . ?st psv:${P} ?tv . ?tv wikibase:timeValue ?t ; wikibase:timePrecision ?p }`,
+    ]),
+  ),
   ...Object.fromEntries(Object.keys(WORK_PROPS).map((P) => [`work-${P}`, `SELECT DISTINCT ?w ?v WHERE { ${WORKS} ?w wdt:${P} ?v }`])),
   // 작가
   'artist-label': `SELECT DISTINCT ?c ?l (LANG(?l) AS ?lang) WHERE { { SELECT DISTINCT ?c WHERE { ${WORKS} } } ?c rdfs:label ?l ${LANG} }`,
@@ -46,7 +50,8 @@ const only = process.argv.slice(3)
 for (const [name, q] of Object.entries(jobs)) {
   if (only.length && !only.includes(name)) continue
   console.error(`→ ${name}`)
-  const rows = await query(q)
+  // WDQS는 60초에서 결과를 자른 채 성공처럼 돌려줄 수 있어(2026-10-23: 날짜 91만 중 7.6만) 수집에는 QLever만 쓴다
+  const rows = await query(q, { only: 'qlever' })
   // TSV로 저장 (값 안의 탭·줄바꿈은 parseTsv가 이미 공백으로 바꿨다)
   const cols = Object.keys(rows[0] ?? {})
   writeFileSync(join(out, `${name}.tsv`), [cols.join('\t'), ...rows.map((r) => cols.map((c) => r[c]).join('\t'))].join('\n') + '\n')
