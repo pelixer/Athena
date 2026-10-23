@@ -1,3 +1,4 @@
+/* 01 촬영 (C1–C4). 프레임 기준 390×844, 상태바 47 */
 .screen {
   position: fixed;
   inset: 0;
@@ -12,6 +13,17 @@
   height: 100%;
   object-fit: cover;
 }
+/* 첨부한 사진 (C3): 좌우 28, 위 150, 높이 420, 반경 12 */
+.attached {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  top: calc(var(--safe-top) + 103px);
+  width: calc(100% - 56px);
+  height: min(420px, calc(100dvh - var(--safe-top) - 103px - 280px));
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
 .missing {
   position: absolute;
   left: var(--space-8);
@@ -23,32 +35,33 @@
   color: var(--text-on-dark-muted);
 }
 
-/* 프레임 — 오브제(세로로 크게)와 캡션(가로로 작게)이 같은 모양: 흰 둥근 모서리 */
+/* 프레임 — 오브제(세로로 크게)와 캡션(가로로 작게)이 같은 모양: 흰 2px 모서리 22, 반경 12 */
 .frame {
   position: absolute;
+  z-index: 3;
+  pointer-events: none;
   transition: all var(--dur-base) var(--ease-settle);
 }
 .frameObje {
   left: 36px;
   right: 36px;
-  top: calc(var(--safe-top) + 106px);
-  bottom: 270px;
+  top: calc(var(--safe-top) + 103px);
+  bottom: 300px;
 }
 .frameCaption {
-  left: 48px;
-  right: 48px;
-  top: 30%;
-  height: 170px;
+  left: 46px;
+  right: 46px;
+  top: calc(var(--safe-top) + 241px);
+  height: 194px;
 }
 .cornerTL,
 .cornerTR,
 .cornerBL,
 .cornerBR {
   position: absolute;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   border: 0 solid var(--text-on-dark);
-  opacity: 0.9;
 }
 .cornerTL {
   left: 0;
@@ -78,36 +91,13 @@
   border-bottom-width: 2px;
   border-bottom-right-radius: var(--radius-md);
 }
-.toast {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(32% + 170px);
-  display: flex;
-  justify-content: center;
-  padding: 0 var(--space-4);
-}
-.unavailable {
-  position: absolute;
-  left: var(--space-8);
-  right: var(--space-8);
-  top: 42%;
-  margin: 0;
-  text-align: center;
-  white-space: pre-line;
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
-  color: var(--text-on-dark-muted);
-}
-.attached {
-  object-fit: contain;
-}
 .flash {
   position: absolute;
+  z-index: 6;
   inset: 0;
   background: var(--text-on-dark);
   pointer-events: none;
-  animation: flash var(--dur-quick) var(--ease-settle) forwards;
+  animation: flash 80ms var(--ease-settle) forwards;
 }
 @keyframes flash {
   from {
@@ -118,48 +108,42 @@
   }
 }
 
-.top {
-  position: absolute;
-  left: var(--space-4);
-  right: var(--space-4);
-  top: calc(var(--safe-top) + var(--space-3));
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-}
-/* 상단 안내 — 관람 이름과 다음 순번. 버튼이 아니므로 유리 표면 없이 글자만 둔다. */
+/* 위: 스크림(T16) 170 + 44 · 안내 · 44 */
 .scrimTop {
   position: absolute;
+  z-index: 2;
   left: 0;
   right: 0;
   top: 0;
-  height: calc(var(--safe-top) + 120px);
-  background: var(--scrim-bottom); /* T16 --scrim-top 요청 중: 하단 스크림을 뒤집어 쓴다 */
-  transform: scaleY(-1);
-  opacity: 0.7;
+  height: calc(var(--safe-top) + 123px);
+  background: var(--scrim-top);
   pointer-events: none;
 }
+.top {
+  position: absolute;
+  z-index: 4;
+  left: var(--space-4);
+  right: var(--space-4);
+  top: calc(var(--safe-top) + 5px);
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+}
 .status {
-  flex: 1;
-  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
+  min-width: 0;
   text-align: center;
 }
 .eyebrow {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font: var(--type-label);
-  letter-spacing: var(--tracking-label);
+  font: 500 12px/1 var(--font-mono);
   color: var(--text-on-dark-muted);
 }
 .visitTitle {
   max-width: 100%;
-  font: var(--type-heading-s);
+  font: 600 15px/1.2 var(--font-sans);
   color: var(--text-on-dark);
   white-space: nowrap;
   overflow: hidden;
@@ -168,35 +152,36 @@
 .slot {
   width: 44px;
   height: 44px;
-  flex: none;
-}
-.dot {
-  width: 6px;
-  height: 6px;
-  flex: none;
-  border-radius: 50%;
-  background: var(--accent);
 }
 
+/* 아래: 스크림 300 + 아래 40부터 Toast · 안내 · ModeSwitch · [사진 | 셔터 | 썸네일], 간격 16 */
 .scrim {
   position: absolute;
+  z-index: 2;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 260px;
+  height: 300px;
   background: var(--scrim-bottom);
   pointer-events: none;
 }
 .bottom {
   position: absolute;
+  z-index: 4;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: calc(max(var(--safe-bottom), 34px) + 6px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-5);
-  padding: 0 var(--space-6) calc(var(--safe-bottom) + var(--space-6));
+  gap: var(--space-4);
+  padding: 0 var(--space-6);
+}
+.hint {
+  margin: 0;
+  font: 500 13px/1 var(--font-sans);
+  color: var(--text-on-dark-muted);
+  text-align: center;
 }
 .controls {
   width: 100%;
@@ -204,23 +189,28 @@
   align-items: center;
   justify-content: space-between;
 }
+/* 오른쪽 아래: 캡션이 붙을 오브제 + 그 아래 N° */
 .last,
 .lastEmpty {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 52px;
+  flex: none;
+}
+.lastPhoto {
+  display: block;
   width: 52px;
   height: 52px;
-  flex: none;
-  border-radius: var(--radius-xs);
-}
-.last {
   border: 1.5px solid var(--text-on-dark);
   background: var(--bg-inverse) center / cover no-repeat;
-  animation: settle var(--dur-slow) var(--ease-settle);
+  animation: settle var(--dur-slow) var(--ease-spring);
 }
-.lastBadge {
-  position: absolute;
-  right: -8px;
-  top: -8px;
+.lastIndex {
+  font: 600 12px/1 var(--font-roman);
+  letter-spacing: 0.06em;
+  color: var(--text-on-dark);
 }
 @keyframes settle {
   from {
@@ -228,11 +218,29 @@
     opacity: 0;
   }
 }
-/* 지금 사진이 어디로 가는지 (캡션 → No.03 등) */
-.hint {
-  margin: 0 0 calc(var(--space-2) * -1);
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
-  color: var(--text-on-dark-muted);
+
+/* 카메라를 열 수 없음 (C4) */
+.unavailable {
+  position: absolute;
+  z-index: 4;
+  left: 40px;
+  right: 40px;
+  top: calc(var(--safe-top) + 253px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
   text-align: center;
+}
+.unavailableMark {
+  color: var(--text-disabled);
+}
+.unavailableTitle {
+  margin: 0;
+  font: 600 19px/1.5 var(--font-serif);
+}
+.unavailableText {
+  margin: 0;
+  font: var(--type-body-s);
+  color: var(--text-on-dark-muted);
 }

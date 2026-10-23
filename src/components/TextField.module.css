@@ -1,30 +1,32 @@
+/* 입력칸 (v2.3): 높이 52 이상, 반경 12, 결 선 1px, 글자 16. 초점은 하늘 1.5px */
 .field {
   width: 100%;
-  min-height: var(--control-h);
-  padding: 0 var(--space-4);
+  min-height: 52px;
+  padding: 14px var(--space-4);
   border: 1px solid var(--border-vein);
   border-radius: var(--radius-md);
   background: var(--bg-base);
   color: var(--text-primary);
-  font: var(--type-body);
-  transition: border-color var(--dur-quick) var(--ease-move);
+  font: 400 16px/1.5 var(--font-sans);
+  transition:
+    border-color var(--dur-quick) var(--ease-move),
+    box-shadow var(--dur-quick) var(--ease-move);
 }
 .field::placeholder {
   color: var(--text-disabled);
 }
 .field:focus {
   outline: none;
-  border-color: var(--accent-bright);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.5px var(--accent);
 }
 .area {
-  padding: var(--space-3) var(--space-4);
   resize: none;
 }
+/* 노트 입력은 세리프 (D5) */
 .note {
-  font: var(--type-note);
+  font: 400 16px/1.5 var(--font-serif);
 }
 .heading {
-  font: var(--type-heading-s);
-  /* iOS는 16px보다 작은 입력칸에 초점이 가면 화면을 확대해 버린다 (DEVIATIONS) */
-  font-size: 16px;
+  font: 400 16px/1.5 var(--font-sans);
 }

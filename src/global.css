@@ -28,6 +28,20 @@
   font-display: swap;
 }
 
+/* Cormorant Garamond (OFL) — v2 roman: N°·로마 숫자·영문 눈썹·ATHENA. 라틴만 */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  src: url('./assets/fonts/CormorantGaramond-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  src: url('./assets/fonts/CormorantGaramond-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
 /* 기기 안전 영역. 갤러리의 휴대폰 프레임은 이 값을 시안의 상태바·홈 인디케이터 높이로 바꾼다. */
 :root {
   --safe-top: env(safe-area-inset-top, 0px);
@@ -85,10 +99,4 @@ button {
     transition-duration: 0ms !important;
     animation-duration: 0ms !important;
   }
-}
-
-/* Icon의 하늘 점. 표면마다 --icon-dot을 바꾼다 (glass.module.css) */
-.icon-dot {
-  fill: var(--icon-dot, var(--accent-bright));
-  stroke: none;
 }

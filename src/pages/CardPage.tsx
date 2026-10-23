@@ -1,14 +1,15 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, type CSSProperties } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { db } from '../data/db'
 import { useLive, usePhotoUrl } from '../data/hooks'
 import { sequenceOf } from '../domain/sequence'
-import { formatDate, formatIndex, formatTime } from '../lib/format'
+import { formatDate, formatIndex } from '../lib/format'
 import { renderCard, saveCard, shareCard } from '../lib/cardExport'
+import { useToast } from '../lib/toast'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
 import { DownloadSheet } from '../components/DownloadSheet'
-import { Card, type CardField, type CardStyle } from '../components/Card'
+import { Card, CARD_BGS, MARBLE_SRC, type CardBg, type CardField, type CardStyle } from '../components/Card'
 import { CardStylePicker } from '../components/CardStylePicker'
 import { OptionChip } from '../components/OptionChip'
 import styles from './CardPage.module.css'
@@ -20,16 +21,20 @@ const FIELDS: { field: CardField; label: string }[] = [
   { field: 'tags', label: '라벨' },
 ]
 
-/** 04 공유 카드 · CardPage */
+/**
+ * 04 공유 카드 · CardPage (v2.3 E1–E3). 벽(대리석 50) 위에 카드를 걸고,
+ * 아래로 스타일 4종 · 바탕 5종 · 항목 칩. 하단 좌대: 저장(→ E3 확인 시트) · 공유.
+ */
 export function CardPage() {
   const { objeId = '' } = useParams()
   const navigate = useNavigate()
+  const toast = useToast()
   const cardRef = useRef<HTMLDivElement>(null)
   const [style, setStyle] = useState<CardStyle>('sky')
+  const [bg, setBg] = useState<CardBg>()
   const [fields, setFields] = useState<Set<CardField>>(new Set(['note', 'meta']))
   const [pending, setPending] = useState<Blob>()
   const [busy, setBusy] = useState(false)
-  const [error, setError] = useState<string>()
 
   const data = useLive(async () => {
     const obje = await db.objes.get(objeId)
@@ -51,37 +56,51 @@ export function CardPage() {
       return next
     })
   }
+  function pickStyle(s: CardStyle) {
+    setStyle(s)
+    setBg(undefined)
+  }
+  // 바탕은 하늘·대리석 배치(사진 위 · 글 아래)에 깐다
+  function pickBg(b: CardBg | undefined) {
+    setBg(b)
+    if (b && (style === 'photo' || style === 'plate')) setStyle('sky')
+  }
 
   async function exportCard(action: 'save' | 'share') {
     if (!cardRef.current) return
     setBusy(true)
-    setError(undefined)
     try {
       const blob = await renderCard(cardRef.current)
-      // 저장은 먼저 묻는다. 다운로드는 시트의 버튼을 누르는 순간 일어난다 (DownloadSheet)
+      // 저장은 먼저 묻는다. 다운로드는 시트의 ✓를 누르는 순간 일어난다 (DownloadSheet)
       if (action === 'save') setPending(blob)
-      else await shareCard(blob, filename)
+      else if ((await shareCard(blob, filename)) === 'saved') toast({ text: '카드를 저장했어요', kind: 'done' })
     } catch (e) {
-      if ((e as Error).name !== 'AbortError') setError('카드를 만들지 못했어요. 잠시 후 다시 시도해 주세요.')
+      if ((e as Error).name !== 'AbortError') toast({ text: '카드를 만들지 못했어요' })
     } finally {
       setBusy(false)
     }
   }
 
+  const bgSrc = CARD_BGS.find((b) => b.bg === bg)?.src
+  const preview: CSSProperties = bgSrc
+    ? { backgroundImage: `url(${bgSrc})` }
+    : style === 'sky'
+      ? { backgroundImage: 'var(--gradient-sky)' }
+      : style === 'marble'
+        ? { backgroundImage: `url(${MARBLE_SRC})` }
+        : style === 'photo' && photo
+          ? { backgroundImage: `var(--gradient-photo), url(${photo})` }
+          : {}
+
   return (
     <Screen
-      tone="sunken"
-      top={
-        <>
-          <IconButton icon="close" surface="marble" aria-label="닫기" onClick={() => navigate(`/obje/${obje.id}`)} />
-          <span className={styles.heading}>카드 만들기</span>
-          <span className={styles.balance} />
-        </>
-      }
+      tone="wall"
+      left={<IconButton icon="close" aria-label="닫기" onClick={() => navigate(`/obje/${obje.id}`)} />}
+      title="카드 만들기"
       bottom={
         <>
           <IconButton icon="save" size={54} aria-label="저장" disabled={busy} onClick={() => exportCard('save')} />
-          <IconButton icon="share" surface="accent" size={54} aria-label="공유하기" disabled={busy} onClick={() => exportCard('share')} />
+          <IconButton icon="share" size={54} aria-label="공유하기" disabled={busy} onClick={() => exportCard('share')} />
         </>
       }
     >
@@ -89,27 +108,31 @@ export function CardPage() {
         <Card
           ref={cardRef}
           style={style}
+          bg={bg}
           fields={fields}
           photo={photo}
           note={obje.note}
-          stamp={`${formatIndex(index)} · ${formatDate(obje.takenAt)} ${formatTime(obje.takenAt)}`}
+          index={formatIndex(index)}
+          date={formatDate(obje.takenAt)}
           place={obje.place}
+          title={obje.title}
           docentHeading={obje.docent?.heading}
           tags={obje.tags}
         />
-        <CardStylePicker value={style} photo={photo} onChange={setStyle} />
+        <CardStylePicker value={style} bg={bg} photo={photo} onChange={pickStyle} onBg={pickBg} />
         <div className={styles.options}>
           {FIELDS.map(({ field, label }) => (
             <OptionChip key={field} label={label} on={fields.has(field)} onToggle={() => toggle(field)} />
           ))}
         </div>
-        {error && <p className={styles.error}>{error}</p>}
       </main>
       <DownloadSheet
         filename={pending && filename}
+        preview={preview}
         onDownload={() => {
           if (pending) saveCard(pending, filename)
           setPending(undefined)
+          toast({ text: '카드를 저장했어요', kind: 'done' })
         }}
         onClose={() => setPending(undefined)}
       />

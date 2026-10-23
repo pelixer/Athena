@@ -1,6 +1,6 @@
 import { db } from './db'
 import { bodyToText, toDocent, workTitle } from '../domain/docent'
-import type { Folder, GeoPoint, ID, Obje, Visit, VisitKind } from '../domain/types'
+import type { Folder, GeoPoint, ID, Obje, Photo, Visit, VisitKind } from '../domain/types'
 
 const newId = () => crypto.randomUUID()
 
@@ -72,7 +72,7 @@ export async function attachDocent(objeId: ID, photo: Blob): Promise<void> {
   const photoId = newId()
   await db.transaction('rw', db.objes, db.photos, async () => {
     await db.photos.add({ id: photoId, blob: photo })
-    await db.objes.update(objeId, { docent: { photoId, text: '' } })
+    await db.objes.update(objeId, { docent: { photoId, text: '', ocr: { state: 'reading', at: Date.now() } } })
   })
 }
 
@@ -82,18 +82,51 @@ export async function setDocentText(objeId: ID, raw: string): Promise<void> {
     const obje = await db.objes.get(objeId)
     if (!obje) return
     const docent = toDocent(raw, obje.docent?.photoId)
+    // 글자를 하나도 못 읽었으면 실패로 남겨 원본 사진과 고치기를 권한다 (D3)
+    if (!raw.trim()) docent.ocr = { state: 'failed', at: Date.now() }
     await db.objes.update(objeId, { docent, title: obje.title ?? workTitle(docent) })
   })
 }
 
 /** 관람을 지운다: 관람, 그 안의 오브제, 오브제·캡션 사진까지 모두. 되돌릴 수 없다. */
-export async function deleteVisit(visitId: ID): Promise<void> {
-  await db.transaction('rw', db.visits, db.objes, db.photos, async () => {
+export type DeletedVisit = { visit: Visit; objes: Obje[]; photos: Photo[] }
+
+/** 지운 것을 돌려받아 "되돌리기"(4초)에 쓴다 */
+export async function deleteVisit(visitId: ID): Promise<DeletedVisit | undefined> {
+  return db.transaction('rw', db.visits, db.objes, db.photos, async () => {
+    const visit = await db.visits.get(visitId)
+    if (!visit) return undefined
     const objes = await db.objes.where('visitId').equals(visitId).toArray()
     const photoIds = objes.flatMap((o) => [o.photoId, o.docent?.photoId]).filter((id): id is ID => !!id)
+    const photos = (await db.photos.bulkGet(photoIds)).filter((p): p is Photo => !!p)
     await db.photos.bulkDelete(photoIds)
     await db.objes.bulkDelete(objes.map((o) => o.id))
     await db.visits.delete(visitId)
+    return { visit, objes, photos }
+  })
+}
+
+/** 되돌리기: 지운 컬렉션을 그대로 돌려놓는다 */
+export async function restoreVisit(d: DeletedVisit): Promise<void> {
+  await db.transaction('rw', db.visits, db.objes, db.photos, async () => {
+    await db.photos.bulkPut(d.photos)
+    await db.objes.bulkPut(d.objes)
+    await db.visits.put(d.visit)
+  })
+}
+
+/** 마무리를 풀고 다시 모으기 (B4 ⋯ 시트) */
+export async function reopenVisit(id: ID): Promise<void> {
+  await db.visits.where('id').equals(id).modify((v) => {
+    delete v.endedAt
+  })
+}
+
+export async function updateVisit(id: ID, changes: { title: string; venue?: string }): Promise<void> {
+  await db.visits.where('id').equals(id).modify((v) => {
+    v.title = changes.title
+    if (changes.venue) v.venue = changes.venue
+    else delete v.venue
   })
 }
 

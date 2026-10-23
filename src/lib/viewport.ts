@@ -16,6 +16,8 @@ export function trackVisualViewport() {
     // 키보드가 떠 있으면 홈 표시줄 여백이 필요 없다 (시트 버튼이 키보드에 바로 붙는다)
     const keyboard = window.innerHeight - vv.height > 120
     root.style.setProperty('--vv-safe-bottom', keyboard ? '0px' : 'var(--safe-bottom)')
+    // 시트 아래 여백: 평소 42(16 + 홈 막대 자리 26), 키보드 위에서는 16 (v2.3 System VII)
+    root.style.setProperty('--vv-sheet-bottom', keyboard ? '0px' : '26px')
   }
   update()
   vv.addEventListener('resize', update)

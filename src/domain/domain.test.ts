@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { parseTagInput, parseTags, typeTagInput } from './tags'
 import { sequenceOf } from './sequence'
-import { orderCollections } from './collections'
+import { matchesQuery, orderCollections } from './collections'
 import { attachmentLabel, visitSpan, visitStats } from './visitStats'
 import { bodyToText, docentToText, textToBody, toDocent, workTitle } from './docent'
-import { defaultTemplateSelection, selectedInOrder } from './template'
+import { defaultTemplateSelection, selectedInOrder, togglePick } from './template'
 import type { Obje } from './types'
 
 const obje = (id: string, takenAt: number, extra: Partial<Obje> = {}): Obje => ({
@@ -65,7 +65,7 @@ describe('visit stats', () => {
   })
 
   it('labels what is attached to an obje', () => {
-    expect(objes.map(attachmentLabel)).toEqual(['캡션 · 노트', '캡션', '—'])
+    expect(objes.map(attachmentLabel)).toEqual(['캡션 · 노트', '캡션', ''])
   })
 })
 
@@ -108,28 +108,40 @@ describe('template selection', () => {
     obje('b', 200, { note: '두 번째' }),
   ]
 
-  it('selects every obje in capture order, with the first noted obje as cover', () => {
-    expect(defaultTemplateSelection(objes)).toEqual({ objeIds: ['a', 'b', 'c'], coverId: 'b' })
+  it('puts the first noted obje first, then the rest in capture order', () => {
+    expect(defaultTemplateSelection(objes)).toEqual(['b', 'a', 'c'])
   })
 
-  it('falls back to the first obje when none has a note', () => {
-    expect(defaultTemplateSelection([obje('x', 2), obje('y', 1)]).coverId).toBe('y')
+  it('falls back to capture order when none has a note', () => {
+    expect(defaultTemplateSelection([obje('x', 2), obje('y', 1)])).toEqual(['y', 'x'])
   })
 
-  it('keeps chosen objes in capture order', () => {
-    expect(selectedInOrder(objes, ['c', 'a']).map((o) => o.id)).toEqual(['a', 'c'])
+  it('keeps chosen objes in tap order and drops missing ones', () => {
+    expect(selectedInOrder(objes, ['c', 'gone', 'a']).map((o) => o.id)).toEqual(['c', 'a'])
+  })
+
+  it('toggles a pick, renumbering the rest', () => {
+    expect(togglePick(['a', 'b', 'c'], 'b')).toEqual(['a', 'c'])
+    expect(togglePick(['a'], 'c')).toEqual(['a', 'c'])
   })
 })
 
 describe('orderCollections', () => {
-  it('고정 → 모으는 중 → 나머지, 각각 최근 것부터', () => {
-    const vs = [
-      { id: 'old', startedAt: 1, endedAt: 2 },
-      { id: 'live', startedAt: 3 },
-      { id: 'pinOld', startedAt: 4, endedAt: 5, pinnedAt: 10 },
-      { id: 'new', startedAt: 6, endedAt: 7 },
-      { id: 'pinNew', startedAt: 0, endedAt: 1, pinnedAt: 20 },
-    ]
-    expect(orderCollections(vs).map((v) => v.id)).toEqual(['pinNew', 'pinOld', 'live', 'new', 'old'])
+  const vs = [
+    { id: 'old', title: '나', startedAt: 1, endedAt: 2, count: 9 },
+    { id: 'live', title: '가', startedAt: 3, count: 1 },
+    { id: 'new', title: '다', startedAt: 6, endedAt: 7, count: 4 },
+  ]
+  it('최근 추가: 모으는 중 → 나머지, 각각 최근 것부터', () => {
+    expect(orderCollections(vs).map((v) => v.id)).toEqual(['live', 'new', 'old'])
+  })
+  it('이름 · 오브제 수', () => {
+    expect(orderCollections(vs, 'name').map((v) => v.id)).toEqual(['live', 'old', 'new'])
+    expect(orderCollections(vs, 'count').map((v) => v.id)).toEqual(['old', 'new', 'live'])
+  })
+  it('검색은 이름·장소에서 띄어쓰기 무시', () => {
+    expect(matchesQuery({ title: '흰 절벽', venue: '국립현대미술관' }, '흰절')).toBe(true)
+    expect(matchesQuery({ title: '흰 절벽', venue: '국립현대미술관' }, '미술 관')).toBe(true)
+    expect(matchesQuery({ title: '흰 절벽' }, '교토')).toBe(false)
   })
 })

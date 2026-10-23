@@ -1,15 +1,60 @@
 .toast {
-  composes: accent from './glass.module.css';
-  display: inline-block;
-  padding: var(--space-2) var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--toast-border);
   border-radius: var(--radius-pill);
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
+  background: var(--toast-bg);
+  color: var(--text-on-dark);
+  font: 500 14px/1 var(--font-sans);
+  white-space: nowrap;
   animation: rise var(--dur-base) var(--ease-settle);
+}
+.dots {
+  display: flex;
+  gap: 3px;
+}
+.dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-on-dark);
+  animation: flow 900ms var(--ease-move) infinite;
+}
+.dots span:nth-child(2) {
+  animation-delay: 150ms;
+}
+.dots span:nth-child(3) {
+  animation-delay: 300ms;
+}
+.divider {
+  width: 1px;
+  height: 16px;
+  background: var(--rule-on-dark);
+  opacity: 0.6;
+}
+.action {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent-on-dark);
+  font: 600 14px/1 var(--font-sans);
+  cursor: pointer;
+}
+@keyframes flow {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(var(--space-2));
+    transform: translateY(8px);
   }
 }

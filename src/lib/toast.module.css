@@ -1,0 +1,15 @@
+.host {
+  position: fixed;
+  z-index: 40;
+  left: 0;
+  right: 0;
+  /* 좌대 막대의 버튼(위 여백 40 + 54) 바로 위 */
+  bottom: calc(max(var(--safe-bottom), 34px) + 54px + var(--space-6));
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-4);
+  pointer-events: none;
+}
+.host > * {
+  pointer-events: auto;
+}

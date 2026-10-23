@@ -1,85 +1,135 @@
+/* 홈 (A2): 머리 위 56(상태바 47 + 9), 좌우 20, 목록은 구획 사이 24 */
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
-  padding: calc(var(--safe-top) + var(--space-16)) var(--space-5) calc(var(--safe-bottom) + var(--control-h) + var(--space-16));
+  gap: var(--space-6);
+  padding: calc(var(--safe-top) + 9px) var(--space-5) 0;
 }
 .header {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 14px;
+  padding-bottom: var(--space-6);
 }
-.eyebrow,
-.label,
-.meta {
-  font: var(--type-label);
-  letter-spacing: var(--tracking-label);
+.headLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.date {
+  font: 400 12px/1 var(--font-mono);
   color: var(--text-secondary);
 }
-.wordmark {
-  margin: 0;
-  font: var(--type-display-xl);
-  letter-spacing: var(--tracking-display);
+.tools {
+  display: flex;
+  gap: var(--space-2);
+}
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.logo {
+  color: var(--accent);
+}
+.tagline {
+  font: 500 14px/1.4 var(--font-sans);
+  color: var(--text-secondary);
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-vein);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+}
+.search:focus-within {
+  border-color: var(--accent);
+}
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--text-primary);
+  font: 400 16px/1.5 var(--font-sans);
+  outline: none;
 }
 .list {
   display: flex;
   flex-direction: column;
 }
-.list .label {
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--border-strong);
-}
-.folderRow {
-  display: grid;
-  -webkit-user-drag: none;
-  grid-template-columns: 56px 1fr;
-  gap: var(--space-4);
-  align-items: center;
-  padding: var(--space-3) 0;
-}
-.folderIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 44px;
-  border-radius: var(--radius-xs);
-  background: var(--bg-sunken);
-  color: var(--text-secondary);
-}
-.folderText {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  min-width: 0;
-}
-.folderName {
-  font: var(--type-title);
-}
-.tagline {
-  font: var(--type-label);
-  letter-spacing: var(--tracking-label);
-  color: var(--text-secondary);
-}
-.folderTitle {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--text-primary);
-  font: var(--type-display-xl);
-  letter-spacing: var(--tracking-display);
-  text-align: left;
-  cursor: pointer;
-}
-.empty,
-.note {
+.none {
   margin: 0;
   font: var(--type-body-s);
   color: var(--text-secondary);
-  word-break: keep-all;
 }
-.missing {
-  padding: var(--space-8);
-  font: var(--type-body-s);
+
+/* 정렬 시트 */
+.sorts {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-vein);
+}
+.sort {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--border-vein);
+  background: none;
+  color: var(--text-primary);
+  font: 500 15px/1 var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+}
+.sort[aria-checked='true'] {
+  color: var(--accent);
+}
+
+/* 첫 실행 (A1): 대리석 바탕이 아래로 갈수록 살짝 가라앉는다 */
+.first {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, var(--bg-base) 0%, var(--bg-sunken) 100%);
+}
+.firstBody {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--safe-top) + 103px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 0 36px;
+  text-align: center;
+}
+.lead {
+  margin: 0;
+  font: 600 22px/1.5 var(--font-serif);
+  text-wrap: balance;
+}
+.sublead {
+  margin: 0;
+  font: 400 15px/1.7 var(--font-sans);
   color: var(--text-secondary);
+  text-wrap: pretty;
+}
+.firstAction {
+  position: absolute;
+  left: var(--space-5);
+  right: var(--space-5);
+  bottom: calc(max(var(--safe-bottom), 34px) + 22px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
 }

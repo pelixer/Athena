@@ -1,10 +1,12 @@
+/* 캡션 카드 (D2): 흰 바탕 + 결 선 + 가벼운 그림자, 안쪽 18, 간격 12 */
 .block {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-4);
-  background: var(--bg-sunken);
-  border-radius: var(--radius-xs);
+  padding: 18px;
+  border: 1px solid var(--border-vein);
+  background: var(--bg-base);
+  box-shadow: var(--shadow-rest);
 }
 .header {
   display: flex;
@@ -12,35 +14,81 @@
   align-items: center;
 }
 .label {
-  font: var(--type-label);
-  letter-spacing: var(--tracking-label);
+  font: 600 13px/1 var(--font-sans);
   color: var(--text-secondary);
 }
 .actions {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 .action {
   padding: 0;
   border: 0;
   background: none;
-  font: var(--type-label);
-  letter-spacing: var(--tracking-badge);
   color: var(--accent-text);
+  font: 600 13px/1 var(--font-sans);
   cursor: pointer;
 }
-.heading {
-  margin: 0;
-  font: var(--type-heading-s);
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
-.text,
-.empty {
+.title {
+  margin: 0;
+  font: 600 16px/1.45 var(--font-sans);
+  color: var(--text-primary);
+}
+.artist {
+  font: 500 14px/1.5 var(--font-sans);
+  color: var(--text-body);
+}
+.table {
+  margin: 0;
+  font: 400 13px/1.7 var(--font-sans);
+  color: var(--text-body);
+}
+.row {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+}
+.row dt {
+  color: var(--text-secondary);
+}
+.row dd {
+  margin: 0;
+}
+.mono {
+  font-family: var(--font-mono);
+}
+.text {
   margin: 0;
   font: var(--type-body-s);
   color: var(--text-body);
-  text-wrap: pretty;
   white-space: pre-wrap;
 }
-.empty {
-  color: var(--text-secondary);
+.note {
+  margin: 0;
+  font: 400 12px/1.5 var(--font-sans);
+  color: var(--text-disabled);
+}
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bar {
+  display: block;
+  height: 10px;
+  background: var(--color-marble-100);
+  animation: pulse 1.4s var(--ease-move) infinite;
+}
+.reading {
+  font: 400 12px/1 var(--font-mono);
+  color: var(--accent-text);
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
 }

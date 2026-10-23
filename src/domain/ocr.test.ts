@@ -68,3 +68,31 @@ describe('cleanCaption', () => {
     expect(toDocent(prose).text).toBe('국민대학교 회화전공 제25회 졸업전시는 정리되지 않은 감정과 의미, 다 표현되지 못한 태도와')
   })
 })
+
+import { parseCaption } from './captionParse'
+describe('parseCaption', () => {
+  it('제목·작가·재료·크기·연도로 나눈다', () => {
+    const c = parseCaption({ text: "Survivors' Scriptures of a Waning World\n김민지 Minji Kim\n혼합매체 Mixed media\n30 X 120 X 60mm\n2020" })
+    expect(c).toEqual({
+      title: "Survivors' Scriptures of a Waning World",
+      artist: '김민지 Minji Kim',
+      rows: [
+        ['재료', '혼합매체 Mixed media'],
+        ['크기', '30 × 120 × 60mm'],
+        ['연도', '2020'],
+      ],
+    })
+  })
+  it('꺾쇠 제목과 한 줄에 묶인 값', () => {
+    const c = parseCaption({ text: '무제 No title\n갤러리피플 Gallery People\n2020 | 24 X 54 | 아크릴에 유화' })
+    expect(c?.rows).toEqual([
+      ['연도', '2020'],
+      ['크기', '24 × 54'],
+      ['재료', '아크릴에 유화'],
+    ])
+    expect(parseCaption({ text: '임상선\n〈Peaceful space〉, 2014\nAcrylic and wood stick on canvas\n65.1X53' })?.title).toBe('Peaceful space')
+  })
+  it('설명문은 나누지 않는다', () => {
+    expect(parseCaption({ text: '국민대학교 회화전공 제25회 졸업전시는 정리되지 않은 감정과 의미를 다룬다.\n우리는 무엇인가를 먹고 삼키며 에너지를 얻는다. 삼킨다는 것은 외부의 것을 받아들이는 일이다.' })).toBeUndefined()
+  })
+})

@@ -1,49 +1,50 @@
+/* 입장권 만들기 (E4): 위 108부터 입장권 300×533 · 형식, 간격 8 → 설정 줄 (좌우 20) */
 .page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-  padding: calc(var(--safe-top) + var(--space-3) + var(--hit-min) + var(--space-4)) var(--space-5) calc(var(--safe-bottom) + var(--control-h) + var(--space-16));
+  gap: 31px;
+  padding: calc(var(--safe-top) + 61px) 0 0;
 }
-.heading {
-  font: var(--type-tab);
-  letter-spacing: var(--tracking-control);
-}
-.balance {
-  width: 44px;
-}
-/* 입장권(360×640)을 0.65배로 보여 준다. 내보내기는 원래 크기로 */
 .preview {
-  width: 234px;
-  height: 416px;
-  overflow: hidden;
-  border-radius: var(--radius-xs);
-  box-shadow: var(--shadow-lift);
-}
-.scale {
-  width: 360px;
-  height: 640px;
-  transform: scale(0.65);
-  transform-origin: 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 .format {
-  font: var(--type-label);
-  letter-spacing: var(--tracking-badge);
+  font: 400 12px/1 var(--font-mono);
   color: var(--text-secondary);
 }
-.options {
+.settings {
+  margin: 0 var(--space-5);
+  border-top: 1px solid var(--border-vein);
+}
+.setting {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-2);
-  margin-top: var(--space-2);
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border-vein);
+  background: none;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
 }
-.primary {
-  flex: 1;
+.settingToggle {
+  padding: 10px 0;
+  border-bottom: 0;
+  cursor: default;
 }
-.error {
-  margin: 0;
-  font: var(--type-body-s);
+.settingName {
+  font: 500 15px/1 var(--font-sans);
+}
+.settingValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 400 13px/1 var(--font-mono);
   color: var(--text-secondary);
 }
 .missing {

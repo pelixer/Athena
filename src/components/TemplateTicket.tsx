@@ -1,32 +1,36 @@
 import { forwardRef } from 'react'
+import { AthenaLogo } from './AthenaLogo'
+import { DoubleRule } from './Stoa'
 import styles from './TemplateTicket.module.css'
 
 export interface TemplateTicketProps {
   title: string
   /** 날짜 · 시간 · 장소 · 기록 */
   rows: [label: string, value: string][]
-  /** "No.01—12" */
+  /** "N° 01—04" */
   range: string
-  /** 고른 오브제 앞 4장 */
+  /** 고른 순서대로 앞 4장 */
   thumbs: (string | undefined)[]
   note?: string
-  /** "No.07 · 나의 노트" */
+  /** "N° 04 · 나의 노트" */
   noteLabel?: string
 }
 
 /**
- * 1b 입장권 · TemplateTicket (9:16, 360×640 → 내보낼 때 1080×1920).
- * 하늘 바탕 위 대리석 입장권. 절취선 위는 관람 기록, 아래 그루터기는 표지 오브제의 나의 노트.
+ * 입장권 · TemplateTicket (v2.3 E4, 9:16 · 300×533 → 내보낼 때 1080×1920).
+ * 하늘 바탕 위 대리석 입장권: ADMIT ONE · N° 범위 → 제목(serif 21) → 이중 박공선 → 표 → 사진 4장.
+ * 절취선(양옆 반원 파냄) 아래 그루터기는 1번 오브제의 나의 노트와 서명.
  */
 export const TemplateTicket = forwardRef<HTMLDivElement, TemplateTicketProps>(function TemplateTicket(p, ref) {
   return (
     <div ref={ref} className={styles.ticket}>
       <div className={styles.main}>
         <div className={styles.eyebrow}>
-          <span>입장권 · 미감 기록</span>
+          <span>ADMIT ONE</span>
           <span>{p.range}</span>
         </div>
         <div className={styles.title}>{p.title}</div>
+        <DoubleRule />
         <dl className={styles.table}>
           {p.rows.map(([label, value]) => (
             <div key={label} className={styles.row}>
@@ -47,7 +51,7 @@ export const TemplateTicket = forwardRef<HTMLDivElement, TemplateTicketProps>(fu
         {p.note && <div className={styles.note}>{p.note}</div>}
         <div className={styles.footer}>
           <span className={styles.noteLabel}>{p.note ? p.noteLabel : ''}</span>
-          <span className={styles.wordmark}>Athena</span>
+          <AthenaLogo size={16} />
         </div>
       </div>
     </div>

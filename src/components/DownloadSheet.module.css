@@ -1,7 +1,31 @@
 .file {
-  margin: 0;
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid var(--border-vein);
+  background: var(--bg-sunken);
+}
+.preview {
+  flex: none;
+  width: 40px;
+  height: 60px;
+  background: var(--bg-base) center / cover no-repeat;
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.name {
+  font: 400 13px/1 var(--font-mono);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.size {
+  font: 400 12px/1 var(--font-mono);
   color: var(--text-secondary);
-  word-break: break-all;
 }

@@ -1,82 +1,102 @@
 import { useCallback, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { db } from '../data/db'
-import { useLive } from '../data/hooks'
 import { createVisit, deleteFolder, renameFolder } from '../data/repo'
+import { usePhotoUrls } from '../data/hooks'
 import { formatCount } from '../lib/format'
+import { useToast } from '../lib/toast'
 import { Screen } from '../components/Screen'
 import { IconButton } from '../components/IconButton'
-import { Sheet } from '../components/Sheet'
+import { Field, Sheet } from '../components/Sheet'
 import { TextField } from '../components/TextField'
 import { NewCollectionSheet } from '../components/NewCollectionSheet'
-import { CollectionList, useCollections } from './CollectionList'
-import styles from './HomePage.module.css'
+import { DeleteSheet } from '../components/DeleteSheet'
+import { MenuList } from '../components/MenuList'
+import { SectionHead } from '../components/Stoa'
+import { CollectionRows, useLibrary } from './CollectionList'
+import styles from './FolderPage.module.css'
 
-type Editing = 'rename' | 'delete' | 'new' | undefined
+type Editing = 'more' | 'rename' | 'delete' | 'new' | undefined
 
-/** 폴더 — 홈의 컬렉션 목록과 같은 모양. 이름을 누르면 바꾸고, 휴지통은 폴더만 지운다(안의 컬렉션은 홈으로). 단계 2. */
+/** 폴더 (A6): 대표 사진 3장 표지 · FOLDER · 이름 · 컬렉션/오브제 수 · I 컬렉션 목록. 이름 바꾸기·지우기는 ⋯ 시트로. 단계 2 */
 export function FolderPage() {
   const { folderId = '' } = useParams()
   const navigate = useNavigate()
+  const toast = useToast()
   const [editing, setEditing] = useState<Editing>()
   const [name, setName] = useState('')
   const close = useCallback(() => setEditing(undefined), [])
-  const folder = useLive(() => db.folders.get(folderId), [folderId])
-  const folders = useLive(() => db.folders.orderBy('createdAt').toArray(), [])
-  const rows = useCollections(folderId)
+  const library = useLibrary()
+  const folder = library?.folders.find((f) => f.id === folderId)
+  const covers = usePhotoUrls(folder?.mosaic.slice(0, 3) ?? [])
 
-  if (folder === undefined && !folders) return null
+  if (!library) return null
   if (!folder) return <p className={styles.missing}>폴더를 찾을 수 없어요.</p>
+  const rows = library.rows.filter((r) => r.folderId === folder.id)
 
   return (
     <Screen
-      top={
-        <>
-          <IconButton icon="back" surface="marble" aria-label="뒤로" onClick={() => navigate('/')} />
-          <IconButton icon="delete" surface="marble" aria-label="폴더 지우기" onClick={() => setEditing('delete')} />
-        </>
-      }
-      bottom={<IconButton icon="add" surface="accent" size={54} aria-label="이 폴더에 새 컬렉션" onClick={() => setEditing('new')} />}
+      left={<IconButton icon="back" aria-label="뒤로" onClick={() => navigate('/')} />}
+      right={<IconButton icon="more" aria-label="더 보기" onClick={() => setEditing('more')} />}
+      bottom={<IconButton icon="add" size={54} aria-label="이 폴더에 새 컬렉션" onClick={() => setEditing('new')} />}
     >
       <main className={styles.page}>
-        <header className={styles.header}>
-          <span className={styles.eyebrow}>폴더 · 컬렉션 {formatCount(rows?.length ?? 0)}</span>
-          <button
-            type="button"
-            className={styles.folderTitle}
-            onClick={() => {
-              setName(folder.name)
-              setEditing('rename')
-            }}
-          >
-            {folder.name}
-          </button>
+        <div className={styles.hero} aria-hidden>
+          {[0, 1, 2].map((i) => (
+            <span key={i} className={styles.heroTile} style={covers[i] ? { backgroundImage: `url(${covers[i]})` } : undefined} />
+          ))}
+        </div>
+        <header className={styles.head}>
+          <span className={styles.eyebrow}>FOLDER</span>
+          <h1 className={styles.title}>{folder.name}</h1>
+          <span className={styles.data}>
+            컬렉션 {formatCount(folder.count)} · 오브제 {formatCount(folder.objes)}
+          </span>
         </header>
-        {rows && rows.length > 0 ? (
+        {rows.length > 0 ? (
           <section className={styles.list}>
-            <span className={styles.label}>컬렉션</span>
-            <CollectionList rows={rows} folders={folders ?? []} folderId={folder.id} />
+            <SectionHead numeral="I" name="컬렉션" count={formatCount(rows.length)} />
+            <CollectionRows rows={rows} folders={library.folders} folderId={folder.id} />
           </section>
         ) : (
           <p className={styles.empty}>비어 있어요. 홈에서 컬렉션을 왼쪽으로 밀어 이 폴더로 옮기거나, + 로 새로 시작하세요.</p>
         )}
       </main>
 
-      <Sheet open={editing === 'rename'} title="폴더 이름" onClose={close} confirmDisabled={!name.trim()} onConfirm={async () => (await renameFolder(folder.id, name), close())}>
-        <TextField id="folder-rename" autoFocus value={name} onChange={(e) => setName(e.target.value)} />
+      <Sheet open={editing === 'more'} eyebrow="FOLDER" title={folder.name} onClose={close}>
+        <MenuList
+          items={[
+            {
+              icon: 'write',
+              label: '이름 바꾸기',
+              onSelect: () => {
+                setName(folder.name)
+                setEditing('rename')
+              },
+            },
+            { icon: 'delete', label: '폴더 지우기', onSelect: () => setEditing('delete') },
+          ]}
+        />
       </Sheet>
-      <Sheet
+      <Sheet open={editing === 'rename'} eyebrow="FOLDER" title="폴더 이름" onClose={close} confirmLabel="저장" confirmDisabled={!name.trim()} onConfirm={async () => (await renameFolder(folder.id, name), close())}>
+        <Field label="이름" htmlFor="folder-rename">
+          <TextField id="folder-rename" autoFocus value={name} onChange={(e) => setName(e.target.value)} />
+        </Field>
+      </Sheet>
+      <DeleteSheet
         open={editing === 'delete'}
         title="폴더를 지울까요?"
-        confirmLabel="지우기"
+        description={`〈${folder.name}〉 폴더만 지워져요. 안의 컬렉션은 홈으로 옮겨져요.`}
+        stats={[
+          [folder.count, '컬렉션'],
+          [folder.objes, '오브제'],
+        ]}
         onClose={close}
         onConfirm={async () => {
           await deleteFolder(folder.id)
+          toast({ kind: 'done', text: '폴더를 지웠어요' })
           navigate('/', { replace: true })
         }}
-      >
-        <p className={styles.note}>폴더만 지워져요. 안의 컬렉션 {rows?.length ?? 0}개는 홈으로 옮겨져요.</p>
-      </Sheet>
+      />
       <NewCollectionSheet
         open={editing === 'new'}
         onClose={close}

@@ -36,6 +36,8 @@ export interface Docent {
   /** 첫 줄: 작가, 〈작품명〉, 연도 */
   heading?: string
   text: string
+  /** 기기 안 OCR 상태: 읽는 중(시작 시각) · 실패. 다 읽으면 없앤다 */
+  ocr?: { state: 'reading' | 'failed'; at: number }
 }
 
 /** 사진 한 장으로 기록되는 대상. */

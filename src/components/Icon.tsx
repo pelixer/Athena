@@ -1,113 +1,41 @@
 /**
- * Icon — 안 C "하늘 점" (2026-10-18 사용자 선택).
- * 1.5 선, 90° 꺾임(곡선·둥근 모서리 없음, 2026-10-18 사용자 요청) + 하늘색 점 하나. 점은 "나의 노트" 앞 점, 촬영 화면 관람 알약의 점과 같은 서명이다.
- * 선 색은 글자색(currentColor)을, 점 색은 --icon-dot을 따른다 (표면마다 glass.module.css가 정한다).
+ * Icon — v2.3 (design/icons, 디자인 System "아이콘"). 24 격자, 선 1.25, 끝 자름(butt), 90° 꺾임(miter), 점 없음.
+ * 선 색은 글자색(currentColor)을 따른다.
  */
-export type IconName = 'back' | 'forward' | 'close' | 'add' | 'share' | 'save' | 'flip' | 'write' | 'card' | 'ticket' | 'photo' | 'tag' | 'check' | 'delete' | 'pin' | 'folder'
+export type IconName = 'back' | 'forward' | 'close' | 'add' | 'share' | 'save' | 'flip' | 'write' | 'card' | 'ticket' | 'photo' | 'tag' | 'check' | 'delete' | 'pin' | 'folder' | 'more' | 'search' | 'sort' | 'undo' | 'info' | 'grid' | 'list' | 'seal' | 'unfolder'
 
-const dot = (cx: number, cy: number, r = 1.6) => <circle className="icon-dot" cx={cx} cy={cy} r={r} />
-
-const PATHS: Record<IconName, React.ReactNode> = {
-  back: (
-    <>
-      <path d="M16.5 12H5.5M9.5 8l-4 4 4 4" />
-      {dot(20, 12)}
-    </>
-  ),
-  forward: (
-    <>
-      <path d="M7.5 12h11M14.5 8l4 4-4 4" />
-      {dot(4, 12)}
-    </>
-  ),
-  close: <path d="M7 7l10 10M17 7L7 17" />,
-  check: (
-    <>
-      <path d="M8 12.5l3 3 6.5-7" />
-      {dot(4.5, 12.5, 1.5)}
-    </>
-  ),
-  add: <path d="M12 5v14M5 12h14" />,
-  pin: (
-    <>
-      <path d="M9 4h6l-1 6 3.5 3.5h-11L10 10zM12 13.5V20" />
-      {dot(12, 7, 1.4)}
-    </>
-  ),
-  folder: (
-    <>
-      <path d="M3.5 6h6l2 2.5h9V18.5h-17z" />
-      {dot(16.5, 13.5, 1.6)}
-    </>
-  ),
-  delete: (
-    <>
-      <path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 12.5h9l1-12.5" />
-      {dot(12, 13.5, 1.5)}
-    </>
-  ),
-  share: (
-    <>
-      <path d="M6 19v-8h12.5M14.5 7l4 4-4 4" />
-      {dot(6, 4.8, 1.6)}
-    </>
-  ),
-  save: <path d="M12 4.5v10M8 10.5l4 4 4-4M5.5 19h13" />,
-  flip: (
-    <>
-      <path d="M5 11V7h13.5M15.5 4l3 3-3 3M19 13v4H5.5M8.5 20l-3-3 3-3" />
-      {dot(12, 12, 1.6)}
-    </>
-  ),
-  write: (
-    <>
-      <path d="M6 18v-4L15.5 4.5l4 4L10 18zM13 7l4 4" />
-      {dot(4.5, 20.5, 1.4)}
-    </>
-  ),
-  card: (
-    <>
-      <rect x="5.5" y="3.5" width="13" height="17" />
-      <path d="M10.5 15.5h5M8.5 18h7" />
-      {dot(8.6, 15.5, 1.3)}
-    </>
-  ),
-  ticket: (
-    <>
-      <path d="M4 6.5h16V10h-2v4h2v3.5H4V14h2v-4H4z" />
-      {dot(9.5, 12, 1.4)}
-    </>
-  ),
-  photo: (
-    <>
-      <rect x="4" y="5" width="16" height="14" />
-      <path d="M4 17l5-5 4 4 2.5-2.5L20 18" />
-      {dot(15.5, 9.5, 1.7)}
-    </>
-  ),
-  tag: (
-    <>
-      <path d="M4 4h8.5l7.5 7.5-8.5 8.5L4 12.5z" />
-      {dot(8.5, 8.5, 1.7)}
-    </>
-  ),
+const PATHS: Record<IconName, string> = {
+  back: 'M19 12H5M11 6L5 12L11 18',
+  forward: 'M5 12H19M13 6L19 12L13 18',
+  close: 'M6 6L18 18M18 6L6 18',
+  add: 'M12 5V19M5 12H19',
+  share: 'M5 20V11H18M14 7L18 11L14 15',
+  save: 'M12 4V15M7 10L12 15L17 10M5 20H19',
+  flip: 'M5 9H18M15 6L18 9L15 12M19 15H6M9 12L6 15L9 18',
+  write: 'M5 19V15L15 5L19 9L9 19ZM13 7L17 11',
+  card: 'M5 3H19V21H5ZM8 6H16V12H8ZM8 16H16',
+  ticket: 'M3 6H21V10H19V14H21V18H3V14H5V10H3Z',
+  photo: 'M3 5H21V19H3ZM3 16L9 10L14 15L16 13L21 18',
+  tag: 'M4 4H12L20 12L12 20L4 12Z',
+  check: 'M5 12L10 17L19 7',
+  delete: 'M4 6H20M9 6V3H15V6M6 6V21H18V6',
+  pin: 'M9 3H15M10 3V10L6 14H18L14 10V3M12 14V21',
+  folder: 'M3 6H10L12 8H21V19H3Z',
+  more: 'M4 12H6M11 12H13M18 12H20',
+  search: 'M4 4H15V15H4ZM15 15L20 20',
+  sort: 'M7 4V20M3 16L7 20L11 16M14 6H21M14 11H19M14 16H17',
+  undo: 'M9 4L4 9L9 14M4 9H16V20H8',
+  info: 'M4 4H20V20H4ZM12 11V17M12 7V8.5',
+  grid: 'M4 4H10V10H4ZM14 4H20V10H14ZM4 14H10V20H4ZM14 14H20V20H14Z',
+  list: 'M8 6H20M8 12H20M8 18H20M3 6H5M3 12H5M3 18H5',
+  seal: 'M5 3H19V21L12 16L5 21Z',
+  unfolder: 'M3 6H10L12 8H21V19H3ZM9 13.5H15',
 }
 
 export function Icon({ name, size = 22 }: { name: IconName; size?: number }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      width={size}
-      height={size}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="square"
-      strokeLinejoin="miter"
-      aria-hidden="true"
-      focusable="false"
-    >
-      {PATHS[name]}
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth={1.25} strokeLinecap="butt" strokeLinejoin="miter" aria-hidden="true" focusable="false">
+      <path d={PATHS[name]} />
     </svg>
   )
 }

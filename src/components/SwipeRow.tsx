@@ -3,9 +3,9 @@ import { IconButton } from './IconButton'
 import type { IconName } from './Icon'
 import styles from './SwipeRow.module.css'
 
-export type SwipeAction = { icon: IconName; label: string; onAction: () => void; accent?: boolean }
+export type SwipeAction = { icon: IconName; label: string; onAction: () => void }
 
-const SLOT = 60 // 동작 버튼 하나의 자리 너비
+const SLOT = 56 // 동작 버튼 하나의 자리 너비 (R21)
 const FLICK = 0.4 // px/ms — 이보다 빠르게 튕기면 절반을 넘지 않아도 연다/닫는다
 
 type Side = 'start' | 'end' | undefined
@@ -107,14 +107,14 @@ export function SwipeRow({ start = [], end = [], children }: { start?: SwipeActi
       {start.length > 0 && (
         <div ref={startRef} className={`${styles.actions} ${styles.start}`} style={{ width: startW }} aria-hidden={open !== 'start'}>
           {start.map((a) => (
-            <IconButton key={a.label} icon={a.icon} surface={a.accent ? 'accent' : 'marble'} aria-label={a.label} tabIndex={open === 'start' ? 0 : -1} onClick={() => run(a)} />
+            <IconButton key={a.label} icon={a.icon} aria-label={a.label} tabIndex={open === 'start' ? 0 : -1} onClick={() => run(a)} />
           ))}
         </div>
       )}
       {end.length > 0 && (
         <div ref={endRef} className={`${styles.actions} ${styles.end}`} style={{ width: endW }} aria-hidden={open !== 'end'}>
           {end.map((a) => (
-            <IconButton key={a.label} icon={a.icon} surface={a.accent ? 'accent' : 'marble'} aria-label={a.label} tabIndex={open === 'end' ? 0 : -1} onClick={() => run(a)} />
+            <IconButton key={a.label} icon={a.icon} aria-label={a.label} tabIndex={open === 'end' ? 0 : -1} onClick={() => run(a)} />
           ))}
         </div>
       )}

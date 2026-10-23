@@ -1,0 +1,14 @@
+{
+  "name": "Athena — 나만의 미감 저장소",
+  "short_name": "Athena",
+  "lang": "ko",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBFAF7",
+  "theme_color": "#FBFAF7",
+  "icons": [
+    { "src": "/icons/athena-app-icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/athena-app-icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/athena-app-icon-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}

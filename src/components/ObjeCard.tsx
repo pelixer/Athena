@@ -1,21 +1,16 @@
-import { IndexBadge } from './IndexBadge'
 import styles from './ObjeCard.module.css'
 
-/** ObjeCard — 관람 보기 그리드의 한 칸: 사진 + 순번 · 시각 · 붙은 것 · 제목 */
-export function ObjeCard({ src, index, time, attachment, title }: { src?: string; index: number; time: string; attachment: string; title: string }) {
+/** ObjeCard (B2) — 컬렉션 격자의 한 칸: 사진 4:5(반경 2) → N° + 붙은 것(하늘) → 제목 한 줄. 검은 순번 배지는 없앴다 */
+export function ObjeCard({ src, index, attachment, title }: { src?: string; index: string; attachment?: string; title?: string }) {
   return (
     <figure className={styles.card}>
-      <div className={styles.photo} style={src ? { backgroundImage: `url(${src})` } : undefined}>
-        <span className={styles.badge}>
-          <IndexBadge index={index} variant="small" />
-        </span>
-      </div>
+      <div className={styles.photo} style={src ? { backgroundImage: `url(${src})` } : undefined} />
       <figcaption className={styles.caption}>
         <span className={styles.meta}>
-          <span>{time}</span>
-          <span className={attachment === '—' ? undefined : styles.attached}>{attachment}</span>
+          <span className={styles.index}>{index}</span>
+          <span className={styles.attached}>{attachment}</span>
         </span>
-        <span className={styles.title}>{title}</span>
+        <span className={title ? styles.title : `${styles.title} ${styles.untitled}`}>{title ?? '제목 없음'}</span>
       </figcaption>
     </figure>
   )

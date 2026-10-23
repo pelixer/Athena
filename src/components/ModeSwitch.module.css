@@ -1,21 +1,24 @@
+/* ModeSwitch (v2.3) — 사진 위 2단 전환. 어두운 알약 + 고른 쪽은 대리석 */
 .switch {
-  composes: dark from './glass.module.css';
   display: flex;
   gap: 2px;
   padding: 3px;
+  border: 1px solid var(--toast-border);
   border-radius: var(--radius-pill);
+  background: var(--glass);
 }
 .option {
-  height: 34px;
-  padding: 0 18px;
+  height: 36px;
+  padding: 0 var(--space-5);
   border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
   color: var(--text-on-dark);
-  font: var(--type-tab);
-  letter-spacing: var(--tracking-control);
+  font: 600 14px/1 var(--font-sans);
   cursor: pointer;
-  transition: background var(--dur-base) var(--ease-move), color var(--dur-base) var(--ease-move);
+  transition:
+    background var(--dur-base) var(--ease-move),
+    color var(--dur-base) var(--ease-move);
 }
 .active {
   background: var(--text-on-dark);

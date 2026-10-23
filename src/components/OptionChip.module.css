@@ -1,19 +1,19 @@
 .chip {
   display: inline-flex;
   align-items: center;
-  height: 30px;
-  padding: 0 var(--space-3);
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
   border: 1px solid var(--border-vein);
   border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--text-body);
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
+  background: var(--bg-base);
+  color: var(--text-secondary);
+  font: 500 14px/1 var(--font-sans);
   cursor: pointer;
-  transition: background var(--dur-quick) var(--ease-move), border-color var(--dur-quick) var(--ease-move);
+  transition: border-color var(--dur-quick) var(--ease-move), color var(--dur-quick) var(--ease-move);
 }
 .on {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  border-color: var(--border-strong);
+  background: transparent;
   color: var(--accent-text);
 }

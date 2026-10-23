@@ -22,7 +22,8 @@ export const formatTime = (t: number) => {
 export const formatTimeSeconds = (t: number) => `${formatTime(t)}:${pad(new Date(t).getSeconds())}`
 
 /** 순번: 7 → "No.07" */
-export const formatIndex = (n: number) => `No.${pad(n)}`
+/** 고전 순번 표기 (v2): N° 04 */
+export const formatIndex = (n: number) => `N° ${pad(n)}`
 
 /** 숫자 칸: 5 → "05" */
 export const formatCount = (n: number) => pad(n)

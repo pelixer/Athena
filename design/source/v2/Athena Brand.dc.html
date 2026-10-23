@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Cormorant+Garamond:wght@600&display=swap">
+<style>
+@font-face{font-family:'Monoplex KR';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+body{margin:0;background:#E8E5DF;color:#17181B;font-family:"Pretendard",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1F4FA3;text-decoration:none}a:hover{color:#163A7A;text-decoration:underline}
+</style>
+</helmet>
+<section style="padding:64px;display:flex;flex-direction:column;gap:64px;width:max-content">
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#6B6964">로고 · 확정 · 8a · 2026.10.18</div>
+    <div style="font:600 34px/1.22 'Noto Serif KR',serif;letter-spacing:-.01em">Athena 로고</div>
+    <p style="margin:0;max-width:680px;font:400 16px/1.6 'Pretendard',sans-serif;color:#2E2F33;text-wrap:pretty">기둥 셋, 이중 박공선의 신전과 새김 대문자 ATHENA. 기준은 하늘 배경 가로형입니다. 모든 크기에서 같은 도면을 그대로 확대·축소하고, 선이 0.75px보다 얇아질 때만 굵기를 보정합니다. 컴포넌트: <a href="AthenaLogo.dc.html">AthenaLogo</a> · 원본: design/logo/</p>
+  </header>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#2E2F33">01 기준 · 하늘 배경 가로형</div>
+    <div style="width:1200px;height:420px;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%);display:flex;align-items:center;justify-content:center">
+      <dc-import name="AthenaLogo" variant="lockup" size="160" color="#FBFAF7" hint-size="560px,160px"></dc-import>
+    </div>
+    <div style="display:flex;gap:32px;font:500 12px/1.5 'Monoplex KR',monospace;letter-spacing:.04em;color:#2E2F33">
+      <span>글자 = 심볼 높이 × 0.4</span><span>간격 = 심볼 높이 × 0.28</span><span>글자 기준선 아래로 × 0.06</span><span>선 = 1.6 / 152 폭 (최소 0.75px)</span><span>여백 = 심볼 높이 × 0.5 이상</span>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#2E2F33">02 조합 · 색상</div>
+    <div style="display:grid;grid-template-columns:420px 260px 300px 200px;gap:8px">
+      <div style="height:220px;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%);display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="lockup" size="80" color="#FBFAF7" hint-size="280px,80px"></dc-import></div>
+      <div style="height:220px;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%);display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="stacked" size="110" color="#FBFAF7" hint-size="140px,140px"></dc-import></div>
+      <div style="height:220px;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%);display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="wordmark" size="30" color="#FBFAF7" hint-size="200px,30px"></dc-import></div>
+      <div style="height:220px;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%);display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="mark" size="110" color="#FBFAF7" hint-size="128px,110px"></dc-import></div>
+      <div style="height:220px;background:#FBFAF7;display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="lockup" size="80" color="#17181B" hint-size="280px,80px"></dc-import></div>
+      <div style="height:220px;background:#FBFAF7;display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="stacked" size="110" color="#17181B" hint-size="140px,140px"></dc-import></div>
+      <div style="height:220px;background:#FBFAF7;display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="wordmark" size="30" color="#17181B" hint-size="200px,30px"></dc-import></div>
+      <div style="height:220px;background:#FBFAF7;display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="mark" size="110" color="#17181B" hint-size="128px,110px"></dc-import></div>
+      <div style="height:220px;background:#17181B;display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="lockup" size="80" color="#FBFAF7" hint-size="280px,80px"></dc-import></div>
+      <div style="height:220px;background:#17181B;display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="stacked" size="110" color="#FBFAF7" hint-size="140px,140px"></dc-import></div>
+      <div style="height:220px;background:#17181B;display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="wordmark" size="30" color="#FBFAF7" hint-size="200px,30px"></dc-import></div>
+      <div style="height:220px;background:#17181B;display:flex;align-items:center;justify-content:center"><dc-import name="AthenaLogo" variant="mark" size="110" color="#FBFAF7" hint-size="128px,110px"></dc-import></div>
+    </div>
+    <div style="display:grid;grid-template-columns:420px 260px 300px 200px;gap:8px;font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964"><span>가로형 · 기본</span><span>세로형 · 스플래시</span><span>레터링만 · 좁은 곳</span><span>심볼만 · 워터마크</span></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#2E2F33">03 앱 아이콘 · 기본 = 하늘</div>
+    <div style="width:1200px;height:240px;background:#F3F1EC;display:flex;align-items:center;justify-content:center;gap:40px">
+      <div style="border-radius:40px;box-shadow:0 1px 2px rgba(23,24,27,.08),0 12px 32px -14px rgba(22,58,122,.45)"><dc-import name="AthenaLogo" variant="appicon" size="180" color="#FBFAF7" hint-size="180px,180px"></dc-import></div>
+      <div style="border-radius:27px;box-shadow:0 1px 2px rgba(23,24,27,.08),0 8px 24px -12px rgba(22,58,122,.45)"><dc-import name="AthenaLogo" variant="appicon" size="120" color="#FBFAF7" hint-size="120px,120px"></dc-import></div>
+      <div style="border-radius:14px;box-shadow:0 8px 24px -12px rgba(22,58,122,.45)"><dc-import name="AthenaLogo" variant="appicon" size="60" color="#FBFAF7" hint-size="60px,60px"></dc-import></div>
+      <div style="width:1px;height:120px;background:#D6D3CD"></div>
+      <div style="border-radius:27px;box-shadow:0 1px 2px rgba(23,24,27,.08),0 8px 24px -12px rgba(23,24,27,.32)"><dc-import name="AthenaLogo" variant="appicon" size="120" color="#17181B" bg="#FBFAF7" hint-size="120px,120px"></dc-import></div>
+      <div style="border-radius:27px;box-shadow:0 1px 2px rgba(23,24,27,.08),0 8px 24px -12px rgba(23,24,27,.32)"><dc-import name="AthenaLogo" variant="appicon" size="120" color="#FBFAF7" bg="#17181B" hint-size="120px,120px"></dc-import></div>
+    </div>
+    <div style="font:500 12px/1.5 'Monoplex KR',monospace;letter-spacing:.04em;color:#2E2F33">신전 폭 = 아이콘 × 0.5 · 글자 = 아이콘 × 0.115 · 모서리 0.225 · 원본 design/logo/athena-app-icon-1024.svg</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#2E2F33">04 앱 안에서</div>
+    <div style="display:flex;gap:24px;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="width:234px;height:506px;border-radius:32px;overflow:hidden;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%);position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 24px 60px -24px rgba(22,58,122,.45)">
+          <dc-import name="AthenaLogo" variant="stacked" size="96" color="#FBFAF7" hint-size="120px,136px"></dc-import>
+          <span style="position:absolute;bottom:36px;font:500 10px 'Monoplex KR',monospace;letter-spacing:.12em;color:#E8E5DF">관람 기록 · 2026</span>
+        </div>
+        <span style="font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964">스플래시 · 세로형 96</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="width:390px;height:112px;box-sizing:border-box;padding:0 16px 16px;background:#FBFAF7;display:flex;align-items:flex-end;justify-content:space-between">
+            <dc-import name="AthenaLogo" variant="lockup" size="30" color="#17181B" hint-size="106px,30px"></dc-import>
+            <span style="width:44px;height:44px;border-radius:50%;box-sizing:border-box;background:linear-gradient(180deg,rgba(255,255,255,.65) 0%,rgba(255,255,255,.1) 60%),rgba(243,241,236,.55);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 1px rgba(23,24,27,.06),0 8px 24px -12px rgba(23,24,27,.28);display:flex;align-items:center;justify-content:center;font:300 24px 'Pretendard',sans-serif">+</span>
+          </div>
+          <span style="font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964">홈 상단 · 가로형 30</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="width:390px;height:112px;box-sizing:border-box;padding:0 20px 20px;background:linear-gradient(180deg,#163A7A 0%,#1F4FA3 55%,#2E6BD1 100%);display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+            <span style="font:500 11px/1.6 'Monoplex KR',monospace;letter-spacing:.06em;color:#FBFAF7">No.07 · 2026.10.17 14:32<br>국립현대미술관 서울</span>
+            <dc-import name="AthenaLogo" variant="lockup" size="26" color="#FBFAF7" hint-size="92px,26px"></dc-import>
+          </div>
+          <span style="font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964">공유 카드·템플릿 하단 · 가로형 26 (기존 세리프 "Athena" 대체)</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="width:240px;height:240px;background:#F3F1EC;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+          <dc-import name="AthenaLogo" variant="mark" size="48" color="#A3A09A" hint-size="56px,48px"></dc-import>
+          <span style="font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964">불러오는 중</span>
+        </div>
+        <span style="font:500 11px 'Monoplex KR',monospace;letter-spacing:.06em;color:#6B6964">로딩 · 심볼 48 · stone-400</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1200px">
+    <div style="font:500 11px/1.4 'Monoplex KR',monospace;letter-spacing:.08em;color:#2E2F33">05 반영한 곳</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font:500 12px/1.6 'Monoplex KR',monospace;letter-spacing:.04em">
+      <a href="Athena Screens v0.dc.html">CardPage 카드 하단</a><a href="Athena Template v1.dc.html">템플릿 도록 표지·마무리 · 입장권 · 벽면</a><a href="Athena Design System v0.dc.html">디자인 시스템 표지</a><span style="color:#6B6964">tokens.css --logo-* · --type-wordmark 폐기</span>
+    </div>
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

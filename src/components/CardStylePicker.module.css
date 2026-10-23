@@ -1,13 +1,19 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
 .picker {
   display: flex;
   justify-content: center;
-  gap: var(--space-5);
+  gap: 18px;
 }
 .option {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
   padding: 0;
   border: 0;
   background: none;
@@ -28,11 +34,49 @@
   display: block;
   width: 100%;
   height: 100%;
+  border: 1px solid var(--border-vein);
   border-radius: 50%;
   background: var(--bg-sunken) center / cover no-repeat;
 }
-.label {
-  font: var(--type-label);
-  letter-spacing: var(--tracking-badge);
-  color: var(--text-body);
+/* 도록 견본: 흰 바탕에 건 작은 사진 */
+.plate {
+  display: block;
+  margin: 12px;
+  height: 18px;
+  background: var(--bg-sunken) center / cover no-repeat;
+}
+.label,
+.labelOn {
+  font: 500 13px/1 var(--font-sans);
+  color: var(--text-secondary);
+}
+.labelOn {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 바탕 줄: 30 원 · 간격 10, 고른 것 = 하늘 이중 원 */
+.bgs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.bgLabel {
+  font: 600 13px/1 var(--font-sans);
+  color: var(--text-secondary);
+}
+.bg {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--border-vein);
+  border-radius: 50%;
+  background: var(--bg-sunken) center / cover no-repeat;
+  cursor: pointer;
+}
+.bgOn {
+  border-color: var(--accent);
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
 }

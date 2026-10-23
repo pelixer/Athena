@@ -36,21 +36,21 @@
   max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-3) var(--space-5) calc(var(--space-5) + var(--vv-safe-bottom, var(--safe-bottom)));
+  gap: var(--space-5);
+  /* 아래 42 = 홈 막대 자리. 키보드가 떠 있으면 16 (R20) */
+  padding: var(--space-3) var(--space-5) calc(var(--space-4) + var(--vv-sheet-bottom, 26px));
   max-height: calc(var(--vv-height) - var(--safe-top) - var(--space-3));
   overflow-y: auto;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   background: var(--bg-base);
-  box-shadow: var(--shadow-lift);
-  animation: rise var(--dur-slow) var(--ease-settle);
+  animation: rise var(--dur-base) var(--ease-settle);
 }
 .handle {
   align-self: center;
+  flex: none;
   width: 36px;
   height: 4px;
-  margin-bottom: calc(var(--space-3) - var(--space-4));
-  border-radius: var(--radius-pill);
+  border-radius: 2px;
   background: var(--border-vein);
 }
 .header {
@@ -59,21 +59,45 @@
   justify-content: space-between;
   gap: var(--space-3);
 }
-.title {
-  font: var(--type-label);
-  letter-spacing: var(--tracking-label);
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.eyebrow {
+  font: var(--type-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
   color: var(--text-secondary);
+}
+.title {
+  font: var(--type-sheet-title);
+  color: var(--text-primary);
+}
+.description {
+  font: var(--type-body-s);
+  color: var(--text-secondary);
+  text-wrap: pretty;
 }
 .actions {
   display: flex;
   gap: var(--space-3);
 }
-.cancel {
-  flex: 0 0 124px;
-  padding: 0;
-}
 .confirm {
-  flex: 1;
+  margin-left: auto;
+}
+/* IconButton은 span으로 감싸져 있어 그 감싸개를 오른쪽 끝으로 */
+.actions > :last-child:not(:first-child) {
+  margin-left: auto;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fieldLabel {
+  font: var(--type-section);
+  color: var(--text-secondary);
 }
 @keyframes fade {
   from {

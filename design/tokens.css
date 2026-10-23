@@ -1,6 +1,7 @@
 /* Athena Design System — tokens (contract between Design ↔ Code)
-   v1 · 2026-10-17 · 라운드 1 반영 (T1–T15 승인, 템플릿 D1 토큰 추가)
-   Fonts: Pretendard (sans), Noto Serif KR (serif), Monoplex KR (mono · jsDelivr noonfonts_Monoplex-kr@1.0) */
+   v2.1 · 2026-10-19 · 라운드 2 "Stoa" + 먹 버튼
+   Fonts: Pretendard (sans) · Noto Serif KR (serif) · Monoplex KR (mono) · Cormorant Garamond 500/600 (roman — NEW, OFL, woff2 동봉 필요)
+   표시: [v2] 새 토큰 · [v2Δ] 값/용도 변경 · [DEL] 지울 것 · [KEEP] 남기되 새로 쓰지 않음 */
 :root {
   /* color / primitives — Marble */
   --color-marble-0:   #FBFAF7;
@@ -18,105 +19,164 @@
   --color-sky-500: #2E6BD1;
   --color-sky-300: #8DB6EC;
   --color-sky-100: #E3EDFA;
+  /* color / primitives — Terracotta (그리스 적회식 도기의 흙색) [v2] */
+  --color-terracotta-600: #A4432A;   /* 흰 글자 대비 5.9:1 */
+  --color-terracotta-100: #F5E6DF;
+  --color-terracotta-500: #C4573A;   /* [v2.1] 휴지통 점(먹 바탕 위에서도 보이게) */
 
   /* color / semantic */
   --bg-base:        var(--color-marble-0);
   --bg-sunken:      var(--color-marble-50);
+  --bg-wall:        var(--color-marble-50);    /* [v2] 카드·입장권 만들기 화면 바탕(작품이 걸리는 벽) */
   --bg-inverse:     var(--color-ink-900);
   --border-vein:    var(--color-marble-200);
   --border-strong:  var(--color-ink-900);
   --text-primary:   var(--color-ink-900);
-  --text-body:      var(--color-ink-800);    /* T1 도슨트 본문, 라벨 글자, 표 값 */
+  --text-body:      var(--color-ink-800);
   --text-secondary: var(--color-stone-600);
   --text-disabled:  var(--color-stone-400);
   --text-on-dark:   var(--color-marble-0);
-  --text-on-dark-muted: var(--color-marble-100); /* T2 사진·하늘 위 보조 텍스트 */
-  --rule-on-dark:   rgba(251, 250, 247, 0.5);  /* NEW 하늘 위 구분선 (도록 마무리) */
-  --rule-perforation: var(--color-stone-400);  /* NEW 입장권 절취선 (1px dashed) */
-  --accent:         var(--color-sky-300);   /* 버튼 유리 틴트 */
-  --accent-text:    var(--color-sky-700);   /* 텍스트 강조(대비 확보) */
-  --on-accent:      var(--color-sky-900);
-  --accent-bright:  var(--color-sky-500);
-  --accent-soft:    var(--color-sky-100);
+  --text-on-dark-muted: var(--color-marble-100);
+  --rule-on-dark:   rgba(251, 250, 247, 0.5);
+  --rule-perforation: var(--color-stone-400);
+  --ornament:       var(--color-stone-400);    /* [v2] 메안더·장식선 */
+
+  --accent:         var(--color-sky-700);      /* [v2.1Δ] 글자·로고 강조 전용. 바탕에 칠하지 않는다 */
+  --button-bg:      transparent;               /* [v2.2Δ] 모든 버튼은 바탕 없음 */
+  --on-button:      var(--color-sky-700);      /* [v2.3Δ] 아이콘 선 = 테두리 색. 사진 위는 marble-0 */
+  --button-outline: var(--color-sky-700);      /* [v2.3Δ] 1b 이중 원: border 1px + 안쪽 원 1px(outline-offset -4.5px) · 글자 없음 · 확인=check 오른쪽, 취소=close 왼쪽 */
+  --button-ring-inset: 4.5px;                  /* [v2.3] 안쪽 원 위치 */
+  --on-accent:      var(--color-marble-0);     /* [v2Δ] sky-900 → marble-0 */
+  --accent-text:    var(--color-sky-700);      /* 글자 강조·링크·"모으는 중" */
+  --accent-bright:  var(--color-sky-500);      /* 아이콘 점, 상태 점 */
+  --accent-soft:    var(--color-sky-100);      /* 켜진 칩, 상태 알약 바탕 */
+  --accent-on-dark: var(--color-sky-300);      /* [v2] 사진·어두운 바탕 위 강조(캡션 셔터, Toast 점) */
+  --danger:         var(--color-terracotta-500); /* [v2.2] 쓰는 곳 없음(점 삭제). 남겨 둠 */
+  --on-danger:      var(--color-marble-0);       /* [v2] T17 */
+  --danger-soft:    var(--color-terracotta-100); /* [v2] 위험 버튼 위 아이콘 점 */
 
   /* color / overlays */
-  --scrim:          rgba(23, 24, 27, 0.55);
-  --scrim-dim:      rgba(23, 24, 27, 0.35);  /* T5 도슨트 인식 프레임 바깥 */
-  --glass:          rgba(23, 24, 27, 0.32);
-  --scrim-bottom:   linear-gradient(180deg, rgba(23,24,27,0) 0%, rgba(23,24,27,.72) 45%, rgba(23,24,27,.86) 100%); /* T4 촬영 하단 */
-  --fade-top:       linear-gradient(180deg, var(--bg-base) 70%, rgba(251,250,247,0)); /* T6 관람 보기 상단 */
-  --gradient-sky:   linear-gradient(180deg, #163A7A 0%, #1F4FA3 55%, #2E6BD1 100%); /* white text stays ≥4.5:1 */
-  --gradient-photo: linear-gradient(180deg, rgba(23,24,27,0) 35%, rgba(23,24,27,.78) 100%); /* T7 카드 '사진', 템플릿 사진 위 글 */
+  --scrim:          rgba(23, 24, 27, 0.45);    /* [v2Δ] .55 → .45 시트 뒤 */
+  --scrim-dim:      rgba(23, 24, 27, 0.35);    /* [KEEP] R17로 쓰는 곳 없음 */
+  --glass:          rgba(23, 24, 27, 0.32);    /* 사진 위 버튼 바탕 */
+  --toast-bg:       rgba(23, 24, 27, 0.72);    /* [v2] Toast */
+  --toast-border:   rgba(251, 250, 247, 0.24); /* [v2] Toast, ModeSwitch 테두리 */
+  --scrim-top:      linear-gradient(0deg, rgba(23,24,27,0) 0%, rgba(23,24,27,.55) 55%, rgba(23,24,27,.7) 100%); /* [v2] T16 촬영 상단 · 높이 170 */
+  --scrim-bottom:   linear-gradient(180deg, rgba(23,24,27,0) 0%, rgba(23,24,27,.72) 45%, rgba(23,24,27,.86) 100%);
+  --fade-top:       linear-gradient(180deg, var(--bg-base) 70%, rgba(251,250,247,0));
+  --fade-plinth:    linear-gradient(180deg, rgba(251,250,247,0) 0%, rgba(251,250,247,.94) 34%, #FBFAF7 60%); /* [v2] 하단 좌대 막대 */
+  --gradient-sky:   linear-gradient(180deg, #163A7A 0%, #1F4FA3 55%, #2E6BD1 100%);
+  --gradient-photo: linear-gradient(180deg, rgba(23,24,27,0) 30%, rgba(23,24,27,.8) 100%); /* [v2Δ] 35%/.78 → 30%/.8 */
+
+  /* ornament [v2] */
+  --rule-double:    3px;   /* [v2.3 복구] 이중 박공선: 높이 3, 위아래 1px --border-strong. 구획 머리·제목 아래 */
+  /* --ornament-meander [DEL v2.3] 메안더 띠 삭제 */
 
   /* type — families */
   --font-sans:  "Pretendard", system-ui, sans-serif;
   --font-serif: "Noto Serif KR", serif;
   --font-mono:  "Monoplex KR", ui-monospace, monospace;
-  /* type — serif */
-  --type-display-xxl: 600 40px/1.15 var(--font-serif);  /* NEW 템플릿 표지 제목 · tracking-display */
-  --type-display-xl:  600 34px/1.22 var(--font-serif);  /* tracking-display */
-  --type-display-l:   600 26px/1.3  var(--font-serif);
-  --type-card-note:   400 19px/1.6  var(--font-serif);  /* T13 카드·템플릿 위 나의 노트 */
-  --type-note:        400 17px/1.8  var(--font-serif);
-  --type-wordmark:    600 15px/1    var(--font-serif);  /* T14 'Athena' · tracking-wordmark */
-  --type-title-serif: 600 19px/1.4  var(--font-serif);  /* NEW 템플릿 플레이트·벽면 제목 */
-  /* type — sans */
-  --type-title:       600 19px/1.4  var(--font-sans);
-  --type-body:        400 16px/1.6  var(--font-sans);
-  --type-heading-s:   600 15px/1.5  var(--font-sans);   /* T12 도슨트 첫 줄 */
-  --type-item:        500 14px/1.4  var(--font-sans);   /* T11 Tag, ObjeCard 제목 */
-  --type-body-s:      400 14px/1.6  var(--font-sans);
-  /* type — mono */
-  --type-numeral:     500 28px/1.1  var(--font-mono);
-  --type-label-l:     500 15px/1    var(--font-mono);   /* 버튼·내비 제목 · tracking-control */
-  --type-tab:         500 13px/1    var(--font-mono);   /* T10 탭, ModeSwitch, "No.07 / 12" · tracking-control */
-  --type-meta:        500 12px/1.5  var(--font-mono);   /* T9 표, 옵션 칩, Toast · tracking-control */
-  --type-label:       500 11px/1.4  var(--font-mono);   /* tracking-label (대문자) 또는 tracking-badge */
-  --type-badge:       500 10px/1    var(--font-mono);   /* T8 ObjeCard 위 순번 · tracking-badge */
-  /* type — tracking (T15) */
-  --tracking-display: -0.01em;
-  --tracking-label:    0.08em;
-  --tracking-badge:    0.06em;
-  --tracking-control:  0.04em;
-  --tracking-wordmark: 0.02em;
+  --font-roman: "Cormorant Garamond", serif;   /* [v2] 라틴 대문자·N°·로마 숫자 전용. 한글에 쓰지 않음 */
+  --font-logo:  var(--font-roman);
 
-  /* space (4pt) — 10·14·18·22·28은 의도된 값이 아님. DEVIATIONS의 반올림을 승인한다. */
+  /* type — 규칙 [v2]
+     serif  = 이름 붙은 것(화면 제목, 컬렉션·오브제 이름, 시트 제목, 나의 노트)
+     sans   = 조작과 설명(버튼, 탭, 칩, 구획 이름, 표 머리, 본문, 캡션)
+     mono   = 기록된 값만(날짜, 시각, 개수, 좌표, 파일 이름). 한글 낱말에 넓은 자간 금지
+     roman  = 고전 표기(N° 04, 구획 로마 숫자 I·II, 시트 눈썹 NEW·DELETE, ATHENA) */
+  --type-display-xxl: 600 40px/1.15 var(--font-serif);  /* 템플릿 표지 */
+  --type-display-xl:  600 32px/1.25 var(--font-serif);  /* [v2Δ] 34/1.22 → 32/1.25 화면 제목 · tracking-display */
+  --type-display-l:   600 26px/1.3  var(--font-serif);  /* 오브제 제목 */
+  --type-sheet-title: 600 21px/1.35 var(--font-serif);  /* [v2] 시트 제목 (작은 모노 라벨 대체) */
+  --type-row-title:   600 19px/1.35 var(--font-serif);  /* [v2] 목록 줄 제목 — 한 줄, 말줄임 */
+  --type-title-serif: 600 19px/1.4  var(--font-serif);
+  --type-note:        400 18px/1.85 var(--font-serif);  /* [v2Δ] 17/1.8 → 18/1.85 */
+  --type-card-note:   400 13px/1.75 var(--font-serif);  /* [v2.3Δ] 16 → 13 (사진 스타일 14, 도록 11) */
+  --type-card-meta:   400 12px/1.55 var(--font-mono);   /* [v2.3] 10 → 12 · 카드 서명 로고 가로형 24 */
+  --type-wordmark:    600 15px/1    var(--font-serif);  /* [DEL] → AthenaLogo */
+  --type-title:       600 19px/1.4  var(--font-sans);
+  --type-body:        400 16px/1.6  var(--font-sans);   /* 입력칸 최소 16px */
+  --type-button:      600 16px/1    var(--font-serif);  /* [DEL v2.2] 버튼에 글자 없음 */
+  --type-heading-s:   600 15px/1.5  var(--font-sans);
+  --type-item:        500 14px/1.4  var(--font-sans);
+  --type-body-s:      400 14px/1.6  var(--font-sans);
+  --type-section:     600 13px/1.4  var(--font-sans);   /* [v2] 구획 이름 "컬렉션" "캡션" "나의 노트" · tracking 0.02em */
+  --type-status:      600 12px/1    var(--font-sans);   /* [v2] "모으는 중" "마무리" "고정" */
+  --type-data:        400 12px/1.5  var(--font-mono);   /* [v2] 날짜·개수·메타 한 줄 (tracking 0) */
+  --type-data-m:      400 13px/1.5  var(--font-mono);   /* [v2] 표 값 */
+  --type-data-l:      500 22px/1    var(--font-mono);   /* [v2] 지우기 시트 숫자 */
+  --type-index:       600 16px/1    var(--font-roman);  /* [v2] N° 04 (격자) · tracking 0.04em */
+  --type-index-l:     600 17px/1    var(--font-roman);  /* [v2] N° 04 / 04 (오브제 상세) */
+  --type-eyebrow:     600 15px/1    var(--font-roman);  /* [v2] NEW · DELETE · FOLDER · tracking 0.14em */
+  --type-roman:       600 15px/1    var(--font-roman);  /* [v2] 구획 로마 숫자 */
+  --type-numeral:     500 28px/1.1  var(--font-mono);   /* [DEL] 통계 줄 → --type-data 한 줄 */
+  --type-label-l:     500 15px/1    var(--font-mono);   /* [DEL] 버튼 글자는 sans */
+  --type-tab:         500 13px/1    var(--font-mono);   /* [DEL] 탭은 sans 15 */
+  --type-meta:        500 12px/1.5  var(--font-mono);   /* [DEL] → --type-data */
+  --type-label:       500 11px/1.4  var(--font-mono);   /* [DEL] 한글 넓은 자간 라벨 폐기 */
+  --type-badge:       500 10px/1    var(--font-mono);   /* [DEL] 검은 순번 배지 → --type-index */
+  --tracking-display: -0.01em;
+  --tracking-section:  0.02em;  /* [v2] */
+  --tracking-index:    0.04em;  /* [v2] */
+  --tracking-eyebrow:  0.14em;  /* [v2] */
+  --tracking-label:    0.08em;  /* [DEL] */
+  --tracking-badge:    0.06em;  /* [DEL] */
+  --tracking-control:  0.04em;  /* [DEL] */
+  --tracking-wordmark: 0.02em;  /* [DEL] */
+
+  /* space (4pt) */
   --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
   --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
+  --plinth-h: 128px;   /* [v2] 하단 좌대 막대 높이(안전 영역 제외) = 스크롤 끝 여백 */
 
   /* radius */
   --radius-none: 0;
   --radius-xs: 2px;     /* 오브제 사진 */
-  --radius-sm: 6px;     /* 작은 칸 */
-  --radius-md: 12px;    /* 입력칸, 카드, 템플릿 */
-  --radius-lg: 28px;    /* NEW 시트 위 모서리 (R2) */
-  --radius-pill: 999px; /* 버튼, 라벨, 칩 */
+  --radius-sm: 6px;
+  --radius-md: 12px;    /* 입력칸, 카드, 촬영 프레임 모서리 */
+  --radius-lg: 28px;    /* 시트 위 모서리 */
+  --radius-device: 44px;
+  --radius-card: 32px;  /* [v2.3] 카드 바깥 */
+  --radius-card-inner: 6px; /* [v2.3] = card 32 − 안쪽 여백 26 (동심) */
+  --card-padding: 26px;   /* [v2.3] 20 → 26 */
+  --radius-pill: 999px; /* 버튼, 칩, Toast */
 
-  /* shadow — gallery light */
+  /* frame — 작품 액자 [v2] */
+  --frame-mat:    3px;  /* 목록 표지 64×80의 흰 매트 (+1px --border-vein) */
+  --frame-plate:  14px; /* 도록 매트 반경 12 → 사진 3 */
+  --engrave: 0 1px 0 rgba(255,255,255,.85), 0 -1px 0 rgba(23,24,27,.28); /* [v2.3] 음각 text-shadow · 글자 #5F5C56 500 */
+  --card-bg-textures: stucco shadow silk-beige water silk-white; /* [v2.3] assets/t-*.jpg · stucco만 음각 */ /* 카드 '도록' 매트 */
+
+  /* shadow */
   --shadow-rest:  0 1px 2px rgba(23, 24, 27, 0.06);
   --shadow-lift:  0 1px 2px rgba(23, 24, 27, 0.06), 0 16px 36px -14px rgba(22, 58, 122, 0.28);
+  --shadow-hang:  0 1px 3px rgba(23, 24, 27, 0.18);  /* [v2] 매트 위에 건 사진 */
 
-  /* glass — liquid glass 버튼/칩. accent·neutral은 --glass-blur, dark는 --glass-dark-blur (T3: 둘 다 의도된 값) */
-  --glass-blur:      blur(20px) saturate(180%);
-  --glass-dark-blur: blur(16px) saturate(160%);
-  --glass-accent-bg:  linear-gradient(180deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,0) 55%), rgba(141,182,236,.62);
-  --glass-accent-border: 1px solid rgba(255,255,255,.6);
-  --glass-accent-shadow: inset 0 1px 0 rgba(255,255,255,.8), inset 0 -1px 1px rgba(22,58,122,.12), 0 10px 28px -12px rgba(22,58,122,.45);
-  --glass-neutral-bg: linear-gradient(180deg, rgba(255,255,255,.65) 0%, rgba(255,255,255,.1) 60%), rgba(243,241,236,.55);
-  --glass-neutral-border: 1px solid rgba(255,255,255,.75);
-  --glass-neutral-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 1px rgba(23,24,27,.06), 0 8px 24px -12px rgba(23,24,27,.28);
-  --glass-dark-bg: linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 60%), rgba(23,24,27,.28);
-  --glass-dark-border: 1px solid rgba(255,255,255,.24);
-  --glass-dark-shadow: inset 0 1px 0 rgba(255,255,255,.32), 0 6px 18px -8px rgba(0,0,0,.35);
+  /* glass — [DEL] 전부. I3 단색 표면 승인 */
+  /* --glass-blur --glass-dark-blur --glass-accent-* --glass-neutral-* --glass-dark-* */
 
-  /* motion */
-  --ease-settle: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --ease-move:   cubic-bezier(0.4, 0, 0.2, 1);
-  --dur-quick: 120ms;
-  --dur-base:  240ms;
-  --dur-slow:  480ms;
+  /* motion [v2Δ] */
+  --ease-settle: cubic-bezier(0.2, 0.7, 0.2, 1);   /* 들어옴: 시트, 화면, Toast */
+  --ease-move:   cubic-bezier(0.4, 0, 0.2, 1);     /* 자리 옮김: 탭 밑줄, 줄 밀기 되돌아감 */
+  --ease-exit:   cubic-bezier(0.4, 0, 1, 1);       /* [v2] 나감 */
+  --ease-spring: cubic-bezier(0.34, 1.3, 0.64, 1); /* [v2] 셔터 눌림 복귀, 추가 완료 썸네일 */
+  --dur-quick: 120ms;   /* 누름, 셔터 플래시 */
+  --dur-base:  240ms;   /* 시트, 줄 밀기, 칩 */
+  --dur-screen: 320ms;  /* [v2] 화면 전환(밀어 들어오기 24px + 페이드) */
+  --dur-slow:  480ms;   /* 오브제가 격자에 걸리는 순간 */
+  --dur-toast: 2400ms;  /* [v2] Toast 머무름(되돌리기 있으면 4000) */
+  --press-scale: 0.96;  /* [v2] 누름 */
 
   /* size */
   --hit-min: 44px;
-  --control-h: 54px;   /* 버튼: radius-pill */
+  --control-h: 54px;
+  --icon-size: 22px;    /* 버튼 안 아이콘(54 버튼은 24) */
+  --icon-stroke: 1.25;  /* [v2.1Δ] 1.5 → 1.25, linecap butt, miter */
+
+  /* logo — 8a 신전 + 새김 대문자 (Athena Brand.dc.html) */
+  --logo-tracking: 0.28em;  --logo-stroke: 1.6;  --logo-stroke-min: 0.75px;
+  --logo-lockup-type: 0.4;  --logo-lockup-gap: 0.28;  --logo-lockup-shift: 0.06;
+  --logo-stacked-type: 0.22; --logo-stacked-gap: 0.16;
+  --logo-icon-mark: 0.5;    --logo-icon-type: 0.115;  --logo-icon-radius: 0.225;
+  --logo-min-lockup: 24px;  --logo-min-mark: 16px;
 }

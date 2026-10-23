@@ -16,8 +16,8 @@ export function visitSpan(objes: Obje[], endedAt?: number): { start: number; end
   return { start: Math.min(...times), end: Math.max(endedAt ?? 0, ...times) }
 }
 
-/** 오브제에 무엇이 붙어 있는지: "캡션 · 노트" / "캡션" / "노트" / "—" */
+/** 오브제에 무엇이 붙어 있는지: "캡션 · 노트" / "캡션" / "노트" / "" */
 export function attachmentLabel(obje: Pick<Obje, 'docent' | 'note'>): string {
   const parts = [obje.docent && '캡션', obje.note?.trim() && '노트'].filter(Boolean)
-  return parts.length ? parts.join(' · ') : '—'
+  return parts.join(' · ')
 }

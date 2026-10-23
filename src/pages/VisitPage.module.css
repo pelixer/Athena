@@ -1,18 +1,23 @@
+/* 컬렉션 (B2): 위 112, 좌우 20, 머리 간격 12 → 탭 → 격자(간격 28/16) */
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
-  padding: calc(var(--safe-top) + var(--space-3) + var(--hit-min) + var(--space-3)) var(--space-5) calc(var(--safe-bottom) + var(--control-h) + var(--space-16));
+  gap: var(--space-6);
+  padding: calc(var(--safe-top) + 65px) var(--space-5) 0;
 }
 .header {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
-.eyebrow {
-  margin: 0;
-  font: var(--type-label);
-  letter-spacing: var(--tracking-label);
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.date,
+.data {
+  font: 400 12px/1.4 var(--font-mono);
   color: var(--text-secondary);
 }
 .title {
@@ -22,51 +27,107 @@
   text-wrap: balance;
 }
 .where {
-  margin: 0;
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.venue {
+  font: 500 14px/1.4 var(--font-sans);
   color: var(--text-body);
 }
-.groupLabel {
+
+/* 순번·노트 격자 */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px var(--space-4);
+}
+.thumb {
+  min-width: 0;
+  color: inherit;
+}
+
+/* 라벨 보기 (B3) */
+.tagGroups {
   display: flex;
-  justify-content: space-between;
-  margin: 0;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--border-strong);
-  font: var(--type-label);
-  letter-spacing: var(--tracking-label);
-  color: var(--text-primary);
+  flex-direction: column;
+  gap: var(--space-5);
 }
-.groupCount {
-  color: var(--text-secondary);
-}
-.group {
+.tagGroup {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-5) var(--space-3);
+.tagHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-strong);
+  font: 600 15px/1 var(--font-sans);
 }
-.empty {
+.hash {
+  color: var(--accent-bright);
+}
+.count {
+  font: 400 12px/1 var(--font-mono);
+  color: var(--text-secondary);
+}
+.strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 calc(var(--space-5) * -1);
+  padding: 0 var(--space-5);
+}
+.stripPhoto {
+  flex: none;
+  width: 104px;
+  height: 130px;
+  border-radius: var(--radius-xs);
+  background: var(--bg-sunken) center / cover no-repeat;
+}
+
+/* 빈 컬렉션 (B1): 점선 좌대 + N° 01 */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-8);
+  text-align: center;
+}
+.plinth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 150px;
+  height: 188px;
+  padding-bottom: 18px;
+  border: 1px dashed var(--text-disabled);
+  background: var(--bg-sunken);
+  color: var(--text-disabled);
+}
+.plinthIndex {
+  font: 600 14px/1 var(--font-roman);
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+.emptyTitle {
+  margin: 0;
+  font: 600 18px/1.5 var(--font-serif);
+}
+.emptyText {
   margin: 0;
   font: var(--type-body-s);
   color: var(--text-secondary);
 }
 .missing {
-  padding: var(--space-16) var(--space-5);
-  text-align: center;
-  color: var(--text-secondary);
-}
-.topActions {
-  display: flex;
-  gap: var(--space-2);
-}
-.deleteNote {
-  margin: 0;
+  padding: var(--space-8);
   font: var(--type-body-s);
-  color: var(--text-body);
-  word-break: keep-all;
+  color: var(--text-secondary);
 }

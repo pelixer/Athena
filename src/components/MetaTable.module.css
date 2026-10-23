@@ -1,23 +1,23 @@
+/* 작품 라벨 표 (D1): 머리 sans 500 13 돌색 / 값 mono 13, 열 48 · 나머지, 행 아래 결 선 */
 .table {
+  display: grid;
+  grid-template-columns: 48px 1fr;
   margin: 0;
-  border-top: 1px solid var(--border-strong);
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
+  font: var(--type-data-m);
 }
 .row {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  border-bottom: 1px solid var(--border-vein);
+  display: contents;
 }
 .row dt,
 .row dd {
   margin: 0;
-  padding: var(--space-2) 0;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-vein);
 }
 .row dt {
+  font: 500 13px/1.5 var(--font-sans);
   color: var(--text-secondary);
 }
 .row dd {
   color: var(--text-primary);
-  overflow-wrap: anywhere;
 }

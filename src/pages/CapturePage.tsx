@@ -11,10 +11,10 @@ import { currentPosition, readPhotoMeta } from '../lib/photoMeta'
 import { extractText, warmUpOcr } from '../lib/ocr'
 import { formatIndex, formatTime } from '../lib/format'
 import { IconButton } from '../components/IconButton'
-import { IndexBadge } from '../components/IndexBadge'
+import { AthenaLogo } from '../components/AthenaLogo'
 import { ModeSwitch } from '../components/ModeSwitch'
 import { ShutterButton } from '../components/ShutterButton'
-import { Toast } from '../components/Toast'
+import { Toast, type ToastKind } from '../components/Toast'
 import styles from './CapturePage.module.css'
 
 type Mode = 'obje' | 'docent'
@@ -34,7 +34,8 @@ export function CapturePage() {
   const [mode, setMode] = useState<Mode>(params.get('mode') === 'docent' ? 'docent' : 'obje')
   const [busy, setBusy] = useState(false)
   const [flash, setFlash] = useState(0)
-  const [toast, setToast] = useState<string>()
+  const [toast, setToastState] = useState<{ text: string; kind: ToastKind }>()
+  const setToast = (text: string | undefined, kind: ToastKind = 'done') => setToastState(text ? { text, kind } : undefined)
   const [position, setPosition] = useState<GeoPoint>()
   const [attached, setAttached] = useState<{ file: File; url: string }>()
   const now = useClock()
@@ -62,7 +63,9 @@ export function CapturePage() {
 
   useEffect(() => {
     if (!toast) return
-    const t = setTimeout(() => setToast(undefined), 2600)
+    // 글자 읽는 중은 끝날 때까지, 나머지는 2400ms (--dur-toast)
+    if (toast.kind === 'busy') return
+    const t = setTimeout(() => setToast(undefined), 2400)
     return () => clearTimeout(t)
   }, [toast])
 
@@ -78,19 +81,19 @@ export function CapturePage() {
       } else {
         const target = await latestObje(visitId)
         if (!target) {
-          setToast('캡션을 붙일 오브제가 없어요 · 먼저 오브제를 추가하세요')
+          setToast('캡션을 붙일 오브제가 없어요', 'plain')
           return
         }
         await attachDocent(target.id, photo)
         const n = await indexLabel(target.id)
-        setToast(`${n} 오브제에 캡션을 붙였어요 · 글자 읽는 중`)
+        setToast(`${n} · 글자 읽는 중`, 'busy')
         // 글자 읽기는 촬영을 막지 않는다. 화면을 떠나도 끝까지 읽고 저장한다.
         extractText(photo)
           .then(async (text) => {
             await setDocentText(target.id, text)
-            setToast(text.trim() ? `${n} 캡션 글자를 읽었어요` : `글자를 읽지 못했어요 · 사진은 ${n}에 붙였어요`)
+            setToast(text.trim() ? `${n} 캡션을 붙였어요` : `${n} 글자를 읽지 못했어요 · 사진은 붙였어요`, text.trim() ? 'done' : 'plain')
           })
-          .catch(() => setToast(`글자를 읽지 못했어요 · 사진은 ${n}에 붙였어요`))
+          .catch(() => setToast(`${n} 글자를 읽지 못했어요 · 사진은 붙였어요`, 'plain'))
       }
     } finally {
       setBusy(false)
@@ -142,18 +145,20 @@ export function CapturePage() {
         ? '새 오브제로 추가해요'
         : undefined
 
+  const unavailable = !still && !attached && camera.status === 'unavailable'
+
   return (
     <div className={styles.screen}>
       {attached ? (
-        <img className={`${styles.viewfinder} ${styles.attached}`} src={attached.url} alt="첨부한 사진" />
+        <img className={styles.attached} src={attached.url} alt="첨부한 사진" />
       ) : still ? (
         <img className={styles.viewfinder} src={still} alt="" />
       ) : (
         <video ref={camera.videoRef} className={styles.viewfinder} autoPlay playsInline muted />
       )}
 
-      {!attached && (
-        // 오브제(세로로 크게)와 캡션(가로로 작게) 프레임은 같은 모양 — 흰 둥근 모서리
+      {!attached && !unavailable && (
+        // 오브제(세로로 크게)와 캡션(가로로 작게) 프레임은 같은 모양 — 흰 2px · 반경 12 모서리 (R17)
         <div className={`${styles.frame} ${mode === 'obje' ? styles.frameObje : styles.frameCaption}`} aria-hidden>
           <span className={styles.cornerTL} />
           <span className={styles.cornerTR} />
@@ -166,70 +171,63 @@ export function CapturePage() {
       <div className={styles.scrimTop} />
       <div className={styles.top}>
         <IconButton icon="close" surface="photo" aria-label="닫기" onClick={() => navigate(`/visit/${visitId}`)} />
-        {/* 지금 관람 중인 전시, 이번에 찍힐 순번과 시각. 누르는 버튼이 아니라 안내다. */}
+        {/* 지금 모으는 컬렉션, 이번에 찍힐 순번과 시각. 누르는 버튼이 아니라 안내다. */}
         <div className={styles.status}>
-          <span className={styles.eyebrow}>
-            <span className={styles.dot} />
-            {attached ? '첨부한 사진' : mode === 'obje' ? `다음 ${formatIndex(data.count + 1)} · ${formatTime(now)}` : `캡션 · ${formatTime(now)}`}
-          </span>
+          <span className={styles.eyebrow}>{attached ? '첨부한 사진' : mode === 'obje' ? `다음 ${formatIndex(data.count + 1)}${unavailable ? '' : ` · ${formatTime(now)}`}` : `캡션 · ${formatTime(now)}`}</span>
           <span className={styles.visitTitle}>{data.visit.title}</span>
         </div>
-        {live && !attached ? (
-          <IconButton icon="flip" surface="photo" aria-label="카메라 전환" onClick={camera.flip} />
-        ) : (
-          <span className={styles.slot} />
-        )}
+        {!attached ? <IconButton icon="flip" surface="photo" aria-label="카메라 전환" onClick={camera.flip} disabled={!live} /> : <span className={styles.slot} />}
       </div>
 
-      {toast ? (
-        <div className={styles.toast}>
-          <Toast>{toast}</Toast>
+      {unavailable ? (
+        <div className={styles.unavailable}>
+          <AthenaLogo variant="mark" size={56} className={styles.unavailableMark} />
+          <p className={styles.unavailableTitle}>카메라를 열 수 없어요</p>
+          <p className={styles.unavailableText}>
+            설정에서 카메라 접근을 허용하거나,
+            <br />
+            사진첩에서 골라 담을 수 있어요.
+          </p>
+          <IconButton icon="photo" size={54} aria-label="사진에서 고르기" onClick={pick} />
+          {toast && <Toast kind={toast.kind}>{toast.text}</Toast>}
         </div>
       ) : (
-        !still &&
-        !attached &&
-        camera.status === 'unavailable' && <p className={styles.unavailable}>카메라를 열 수 없어요{'\n'}왼쪽 아래에서 사진을 고르세요</p>
+        <>
+          <div className={styles.scrim} />
+          <div className={styles.bottom}>
+            {toast && <Toast kind={toast.kind}>{toast.text}</Toast>}
+            {hint && <p className={styles.hint}>{hint}</p>}
+            <ModeSwitch
+              options={[
+                { value: 'obje', label: '오브제' },
+                { value: 'docent', label: '캡션' },
+              ]}
+              value={mode}
+              onChange={setMode}
+            />
+            <div className={styles.controls}>
+              {attached ? (
+                <IconButton icon="close" surface="photo" size={52} aria-label="첨부 취소" onClick={detach} disabled={busy} />
+              ) : (
+                <IconButton icon="photo" surface="photo" size={52} aria-label="사진에서 고르기" onClick={pick} />
+              )}
+              {attached ? (
+                <ShutterButton mode={mode} icon="check" label={mode === 'obje' ? '새 오브제로 추가' : '캡션으로 추가'} onPress={confirm} disabled={busy || !canAdd} />
+              ) : (
+                <ShutterButton mode={mode} onPress={shoot} disabled={busy || !canAdd} />
+              )}
+              {data.target ? (
+                <Link key={data.target.id} to={`/obje/${data.target.id}`} className={styles.last} aria-label={`${targetLabel} 오브제 보기`}>
+                  <span className={styles.lastPhoto} style={targetSrc ? { backgroundImage: `url(${targetSrc})` } : undefined} />
+                  <span className={styles.lastIndex}>{targetLabel}</span>
+                </Link>
+              ) : (
+                <span className={styles.lastEmpty} />
+              )}
+            </div>
+          </div>
+        </>
       )}
-
-      <div className={styles.scrim} />
-      <div className={styles.bottom}>
-        {hint && <p className={styles.hint}>{hint}</p>}
-        <ModeSwitch
-          options={[
-            { value: 'obje', label: '오브제' },
-            { value: 'docent', label: '캡션' },
-          ]}
-          value={mode}
-          onChange={setMode}
-        />
-        <div className={styles.controls}>
-          {attached ? (
-            <IconButton icon="close" surface="photo" size={52} aria-label="첨부 취소" onClick={detach} disabled={busy} />
-          ) : (
-            <IconButton icon="photo" surface="photo" size={52} aria-label="사진에서 고르기" onClick={pick} />
-          )}
-          {attached ? (
-            <ShutterButton mode={mode} icon="check" label={mode === 'obje' ? '새 오브제로 추가' : '캡션으로 추가'} onPress={confirm} disabled={busy || !canAdd} />
-          ) : (
-            <ShutterButton mode={mode} onPress={shoot} disabled={busy || !canAdd} />
-          )}
-          {data.target ? (
-            <Link
-              key={data.target.id}
-              to={`/obje/${data.target.id}`}
-              className={styles.last}
-              style={targetSrc ? { backgroundImage: `url(${targetSrc})` } : undefined}
-              aria-label={`${targetLabel} 오브제 보기`}
-            >
-              <span className={styles.lastBadge}>
-                <IndexBadge index={data.targetIndex ?? data.count} variant="corner" short />
-              </span>
-            </Link>
-          ) : (
-            <span className={styles.lastEmpty} />
-          )}
-        </div>
-      </div>
 
       <input
         ref={fileRef}

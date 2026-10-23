@@ -15,22 +15,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-primary);
-  --icon-dot: currentColor; /* 셔터 안 아이콘은 한 색 */
   width: 62px;
   height: 62px;
   border-radius: 50%;
   background: var(--text-on-dark);
-  transition: transform var(--dur-quick) var(--ease-settle), background var(--dur-base) var(--ease-move);
+  color: var(--text-primary);
+  transition:
+    transform 240ms var(--ease-spring),
+    background var(--dur-base) var(--ease-move);
 }
 .docent {
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--accent-on-dark);
+  color: var(--color-sky-900);
 }
 .shutter:active:not(:disabled) .fill {
-  transform: scale(0.9);
+  transform: scale(0.92);
+  transition-duration: var(--dur-quick);
 }
 .shutter:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: default;
 }

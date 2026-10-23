@@ -1,60 +1,45 @@
 .block {
+  position: relative;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: var(--space-3);
-  padding: 0 2px;
+  width: 100%;
+  min-height: 200px;
+  padding: 18px 0;
+  border: 0;
+  border-top: 1px solid var(--border-vein);
+  border-bottom: 1px solid var(--border-vein);
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
-.header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-bright);
+section.block {
+  cursor: default;
 }
 .label {
-  font: var(--type-label);
-  letter-spacing: var(--tracking-label);
+  font: 600 13px/1 var(--font-sans);
   color: var(--accent-text);
 }
-.text,
-.empty {
-  margin: 0;
+.quote {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  font: 500 64px/1 var(--font-roman);
+  color: var(--accent-on-dark);
+}
+.text {
   font: var(--type-note);
   color: var(--text-primary);
   text-wrap: pretty;
   white-space: pre-wrap;
 }
 .empty {
+  font: 400 18px/1.8 var(--font-serif);
   color: var(--text-disabled);
 }
-.area {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  padding: 0;
-  border: 0;
-  background: none;
-  text-align: left;
-  color: inherit;
-  cursor: pointer;
-}
-/* 오브제 상세: 짧아도 자리를 차지한다 — 위아래 결 선 사이의 여백이 쓰는 칸이 된다 */
-.roomy {
-  min-height: 260px;
-  padding: var(--space-5) 2px;
-  border-top: 1px solid var(--border-vein);
-  border-bottom: 1px solid var(--border-vein);
-}
-.roomy .area {
-  flex: 1;
-}
 .time {
-  font: var(--type-label);
-  letter-spacing: var(--tracking-badge);
+  font: 400 12px/1 var(--font-mono);
   color: var(--text-disabled);
 }

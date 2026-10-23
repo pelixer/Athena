@@ -1,39 +1,42 @@
+/* 라벨 (D1): 높이 32, 결 선 알약, sans 500 14, # 은 하늘 */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
 .tag {
   display: inline-flex;
   align-items: center;
-  height: 30px;
+  height: 32px;
   padding: 0 var(--space-3);
+  border: 1px solid var(--border-vein);
   border-radius: var(--radius-pill);
-  font: var(--type-item);
-  background: transparent;
+  background: var(--bg-base);
+  color: var(--text-body);
+  font: 500 14px/1 var(--font-sans);
   white-space: nowrap;
 }
 button.tag {
   cursor: pointer;
 }
-.default {
-  border: 1px solid var(--border-vein);
-  color: var(--text-body);
-}
 .hash {
   color: var(--accent-bright);
 }
-.selected {
-  border: 1px solid var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent-text);
+.default {
 }
-.add {
-  border: 1px dashed var(--text-disabled);
-  color: var(--text-secondary);
+.selected {
+  border-color: var(--border-strong);
 }
 .onPhoto {
-  border: 0;
+  border-color: var(--rule-on-dark);
   background: var(--glass);
   color: var(--text-on-dark);
 }
-.list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+/* + 라벨: 높이 34, 태그 아이콘 16 */
+.add {
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  color: var(--text-secondary);
+  cursor: pointer;
 }

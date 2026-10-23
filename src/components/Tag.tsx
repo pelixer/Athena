@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react'
+import { Icon } from './Icon'
 import styles from './Tag.module.css'
 
 export type TagVariant = 'default' | 'selected' | 'onPhoto'
@@ -28,7 +29,8 @@ export function Tag({ tag, variant = 'default', onClick }: { tag: string; varian
 export function AddTag(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button type="button" className={`${styles.tag} ${styles.add}`} {...props}>
-      + 라벨
+      <Icon name="tag" size={16} />
+      라벨
     </button>
   )
 }

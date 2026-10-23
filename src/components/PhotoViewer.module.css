@@ -3,6 +3,7 @@
   inset: 0;
   z-index: 30;
   background: var(--bg-inverse);
+  color: var(--text-on-dark);
   animation: fade var(--dur-base) var(--ease-settle);
 }
 .stage {
@@ -20,23 +21,76 @@
   object-fit: contain;
   user-select: none;
   transition: transform var(--dur-quick) var(--ease-move);
+  animation: fade var(--dur-base) var(--ease-settle);
 }
-.close {
+.top {
   position: absolute;
   left: var(--space-4);
-  top: calc(var(--safe-top) + var(--space-3));
+  right: var(--space-4);
+  top: calc(var(--safe-top) + 5px);
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+}
+.count {
+  text-align: center;
+  font: 400 13px/1 var(--font-mono);
+}
+.info {
+  position: absolute;
+  left: var(--space-5);
+  right: var(--space-5);
+  top: calc(var(--safe-top) + 65px);
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--toast-border);
+  border-radius: var(--radius-md);
+  background: var(--toast-bg);
+  font: var(--type-body-s);
+  white-space: pre-wrap;
+  max-height: 40dvh;
+  overflow-y: auto;
+}
+.bottom {
+  position: absolute;
+  left: var(--space-6);
+  right: var(--space-6);
+  bottom: calc(max(var(--safe-bottom), 34px) + 22px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  pointer-events: none;
+}
+.dots {
+  display: flex;
+  gap: 6px;
+}
+.dot,
+.dotOn {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--rule-on-dark);
+  opacity: 0.8;
+  transition: width var(--dur-base) var(--ease-move);
+}
+.dotOn {
+  width: 18px;
+  background: var(--text-on-dark);
+  opacity: 1;
 }
 .caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(var(--safe-bottom) + var(--space-6));
-  margin: 0;
-  text-align: center;
-  font: var(--type-meta);
-  letter-spacing: var(--tracking-control);
-  color: var(--text-on-dark-muted);
-  pointer-events: none;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.index {
+  font: var(--type-index);
+  letter-spacing: var(--tracking-index);
+}
+.title {
+  font: 500 15px/1.3 var(--font-sans);
 }
 @keyframes fade {
   from {
