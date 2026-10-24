@@ -6,7 +6,6 @@ import { VisitPage } from './pages/VisitPage'
 import { CardPage } from './pages/CardPage'
 import { TemplatePage } from './pages/TemplatePage'
 import { FolderPage } from './pages/FolderPage'
-import { ArchivePage } from './pages/ArchivePage'
 
 export function App() {
   return (
@@ -18,7 +17,6 @@ export function App() {
       <Route path="/visit/:visitId/template" element={<TemplatePage />} />
       <Route path="/obje/:objeId" element={<ObjePage />} />
       <Route path="/obje/:objeId/card" element={<CardPage />} />
-      <Route path="/archive" element={<ArchivePage />} />
     </Routes>
   )
 }

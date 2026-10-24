@@ -9,7 +9,8 @@ import { OptionChip } from '../components/OptionChip'
 import { AthenaLogo } from '../components/AthenaLogo'
 import { CoverFrame, DoubleRule, RowStatus, SectionHead, StatusPill } from '../components/Stoa'
 import { Toggle } from '../components/Toggle'
-import { ArchiveEntry, ArchiveWorkRow } from '../components/ArchiveEntry'
+import { ArchiveTag } from '../components/ArchiveTag'
+import { ArchiveMeta } from '../components/ArchiveMeta'
 import { MetaTable } from '../components/MetaTable'
 import { ObjeCard } from '../components/ObjeCard'
 import { DocentBlock } from '../components/DocentBlock'
@@ -200,7 +201,7 @@ export function PreviewPage() {
           </Item>
         </div>
 
-        <Item name="ArchiveEntry · ArchiveWorkRow" note="아카이브: 작가 · 작업 기간 · 화법 · 화풍 · 근원지. 작가 쪽에서 보탠 값은 괄호" status="proposed" refs="A1">
+        <Item name="ArchiveTag · ArchiveMeta" note="사진 오른쪽 위에 매달린 꼬리표(해 / 후보만 있으면 ?) → 누르면 메타 시트: 작가 · 작업 기간 · 화법 · 화풍 · 근원지" status="proposed" refs="A2">
           <ArchiveDemo />
         </Item>
 
@@ -300,15 +301,22 @@ function TabDemo() {
 }
 
 function ArchiveDemo() {
-  const vocab = { Q1: ['후기인상주의', 'Post-Impressionism'], Q2: ['유채', 'oil paint'], Q3: ['캔버스', 'canvas'], Q4: ['풍경화', 'landscape'], Q5: ['프랑스', 'France'], Q6: ['생레미드프로방스', 'Saint-Rémy'], Q7: ['회화', 'painting'], Q8: ['네덜란드', 'Netherlands'] } satisfies Record<string, [string, string]>
-  const starry = { id: 'Q45585', n: { ko: '별이 빛나는 밤', en: 'The Starry Night' }, y: { from: 1889, to: 1889 }, mt: ['Q3', 'Q2'], m: ['Q1'], g: ['Q4'], o: ['Q5'], l: ['Q6'], k: ['Q7'] }
-  const rhone = { id: 'Q1', n: { en: 'Starry Night Over the Rhône' }, y: { from: 1888, to: 1888 } }
-  const artist = { id: 'Q5582', n: { ko: '빈센트 반 고흐', en: 'Vincent van Gogh' }, b: 1853, d: 1890, c: ['Q8'], m: ['Q1'], w: [starry, rhone] }
+  const rows: [string, string][] = [
+    ['작가', '빈센트 반 고흐 (1853–1890)'],
+    ['작업 기간', '1889'],
+    ['화법', '캔버스 · 유채'],
+    ['화풍', '후기인상주의 · 풍경화'],
+    ['근원지', '프랑스 · 생레미드프로방스'],
+    ['분류', '회화'],
+  ]
+  const candidates = [{ workId: 'Q1', artistId: 'Q5582', title: 'Starry Night Over the Rhône', meta: '빈센트 반 고흐 · 1888' }]
   return (
     <div className={styles.narrow}>
-      <ArchiveEntry artist={artist} work={starry} vocab={vocab} />
-      <ArchiveEntry artist={artist} work={rhone} vocab={vocab} />
-      <ArchiveWorkRow work={rhone} artist={artist} onSelect={() => {}} />
+      <div className={styles.onPhoto} style={{ justifyContent: 'flex-end', gap: 24, alignItems: 'flex-start', minHeight: 140 }}>
+        <ArchiveTag label="1889" onClick={() => {}} />
+        <ArchiveTag tentative onClick={() => {}} />
+      </div>
+      <ArchiveMeta rows={rows} workId="Q45585" candidates={candidates} onPick={() => {}} />
     </div>
   )
 }

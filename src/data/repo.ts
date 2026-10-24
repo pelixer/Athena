@@ -141,7 +141,7 @@ export function latestAdded<T extends { createdAt: number }>(objes: T[]): T | un
   return objes.reduce<T | undefined>((a, o) => (!a || o.createdAt >= a.createdAt ? o : a), undefined)
 }
 
-export async function updateObje(id: ID, changes: Partial<Pick<Obje, 'title' | 'place' | 'tags' | 'docent'>>): Promise<void> {
+export async function updateObje(id: ID, changes: Partial<Pick<Obje, 'title' | 'artist' | 'place' | 'tags' | 'docent' | 'archive'>>): Promise<void> {
   await db.objes.update(id, changes)
 }
 

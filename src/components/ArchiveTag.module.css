@@ -1,0 +1,86 @@
+/* 매달린 꼬리표: 실(위 끝이 회전 축) + 대리석 종이 표 46×60, 구멍 6, 해는 roman, 아래 META 눈썹 */
+.tag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform-origin: 50% 0;
+  animation: swing 1400ms var(--ease-settle) both;
+  -webkit-tap-highlight-color: transparent;
+}
+.tag:active .card {
+  transform: scale(var(--press-scale));
+}
+.string {
+  display: block;
+  width: 1px;
+  height: var(--tag-string, 28px);
+  background: var(--rule-on-dark);
+}
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 46px;
+  padding: 13px 4px 8px;
+  border-radius: 6px 6px 10px 10px;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-hang);
+  transition: transform var(--dur-quick) var(--ease-move);
+}
+.hole {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border: 1px solid var(--border-vein);
+  border-radius: 50%;
+}
+.label {
+  font: 600 16px/1 var(--font-roman);
+  letter-spacing: var(--tracking-index);
+}
+.meta {
+  font: 600 9px/1 var(--font-roman);
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--text-secondary);
+}
+/* 후보만 있을 때: 점선 테두리, 흐리게 */
+.tentative .card {
+  background: var(--bg-sunken);
+  outline: 1px dashed var(--text-disabled);
+  outline-offset: -3px;
+}
+.tentative .label {
+  color: var(--text-secondary);
+}
+@keyframes swing {
+  0% {
+    transform: rotate(9deg);
+  }
+  30% {
+    transform: rotate(-6deg);
+  }
+  55% {
+    transform: rotate(3deg);
+  }
+  78% {
+    transform: rotate(-1.2deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tag {
+    animation: none;
+  }
+}

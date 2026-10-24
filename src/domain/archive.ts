@@ -5,6 +5,7 @@
  * 이 파일은 수집 스크립트(scripts/archive/compile.ts)와 앱이 함께 쓴다.
  */
 import { foldedSimilarity, HANGUL_SHARD_GROUPS, nameSimilarity, prepareName, type Folded } from './fuzzyName'
+import type { ArchiveCandidate, ObjeArchive } from './types'
 
 /** Wikidata 항목 번호 (예: "Q45585") */
 export type Qid = string
@@ -209,7 +210,11 @@ export function formatLife(a: Pick<ArchiveArtist, 'b' | 'd'>): string {
 export const labels = (ids: Qid[] | undefined, vocab: Vocab) =>
   (ids ?? []).map((id) => vocab[id]?.[0] || vocab[id]?.[1]).filter((x): x is string => !!x)
 
-const join = (xs: string[]) => [...new Set(xs)].join(' · ')
+/** 겹치지 않게 잇되 넷까지만 ("… 외 9") — 작가 활동지처럼 긴 목록이 표를 덮지 않게 */
+const join = (xs: string[]) => {
+  const u = [...new Set(xs)]
+  return u.length > 4 ? `${u.slice(0, 4).join(' · ')} 외 ${u.length - 4}` : u.join(' · ')
+}
 
 /**
  * 아카이브 항목의 표 줄: 작가 · 작업 기간 · 화법 · 화풍 · 근원지 · 분류.
@@ -241,4 +246,55 @@ export function entryRows(artist: ArchiveArtist, work: ArchiveWork, vocab: Vocab
   const kind = join(labels(work.k, vocab))
   if (kind) rows.push(['분류', kind])
   return rows
+}
+
+/* ── 오브제에 붙이는 아카이브 메타 ─────────────────────────────────────── */
+
+/** 자동으로 붙일 만큼 확실한 점수 (그보다 낮으면 후보만 보여 주고 사용자가 고른다) */
+export const AUTO_LINK = 0.75
+
+/** 오브제의 제목·작가 → 맞출 열쇠. 둘 중 하나라도 비면 맞추지 않는다 */
+export function objeArchiveKey(title?: string, artist?: string): string | undefined {
+  const t = normalize(title ?? '')
+  const a = normalize(artist ?? '')
+  return t && a ? `${t}|${a}` : undefined
+}
+
+export function candidateOf(artist: ArchiveArtist, work: ArchiveWork): ArchiveCandidate {
+  return {
+    workId: work.id,
+    artistId: artist.id,
+    title: displayName(work.n) || '제목 없음',
+    meta: [displayName(artist.n), formatPeriod(work.y)].filter(Boolean).join(' · '),
+  }
+}
+
+/** 맞춘 작품 → 오브제에 담을 메타 (표 줄까지 지금 만들어 둔다) */
+export function snapshotOf(artist: ArchiveArtist, work: ArchiveWork, vocab: Vocab, version: string, query: string, at: number): ObjeArchive {
+  const p = work.y ?? (artist.a?.from !== undefined && artist.a.to !== undefined ? artist.a : undefined)
+  return {
+    query,
+    state: 'linked',
+    workId: work.id,
+    artistId: artist.id,
+    version,
+    title: displayName(work.n) || '제목 없음',
+    subtitle: secondaryName(work.n),
+    short: p?.from !== undefined ? (p.from < 0 ? `BC ${-p.from}` : String(p.from)) : undefined,
+    rows: entryRows(artist, work, vocab),
+    at,
+  }
+}
+
+/** 작품은 못 찾고 작가만 맞았을 때: 작가 쪽 값으로 만든 메타 (state none · 꼬리표는 "?") */
+export function artistSnapshotOf(artist: ArchiveArtist, vocab: Vocab, version: string, query: string, at: number, title: string): ObjeArchive {
+  return {
+    query,
+    state: 'none',
+    artistId: artist.id,
+    version,
+    title,
+    rows: entryRows(artist, { id: '', n: {} }, vocab),
+    at,
+  }
 }

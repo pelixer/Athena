@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { db } from '../data/db'
 import { useLive, usePhotoUrl, usePhotoUrls } from '../data/hooks'
@@ -7,6 +7,9 @@ import { sequenceOf } from '../domain/sequence'
 import { parseTagInput } from '../domain/tags'
 import { docentToText, textToBody } from '../domain/docent'
 import { parseCaption } from '../domain/captionParse'
+import { objeArchiveKey } from '../domain/archive'
+import type { ArchiveCandidate, Obje } from '../domain/types'
+import { linkCandidate, matchArchive } from '../lib/archiveLink'
 import { formatDateWeekday, formatGeo, formatIndex, formatTimeSeconds } from '../lib/format'
 import { useToast } from '../lib/toast'
 import { Screen } from '../components/Screen'
@@ -21,14 +24,23 @@ import { PhotoViewer } from '../components/PhotoViewer'
 import { TagInput } from '../components/TagInput'
 import { Icon } from '../components/Icon'
 import { DoubleRule } from '../components/Stoa'
+import { ArchiveTag } from '../components/ArchiveTag'
+import { ArchiveMeta } from '../components/ArchiveMeta'
 import styles from './ObjePage.module.css'
 
-type Editing = 'note' | 'tags' | 'title' | 'docent' | 'docentPhoto' | 'photo' | undefined
+type Editing = 'note' | 'tags' | 'title' | 'docent' | 'docentPhoto' | 'photo' | 'archive' | undefined
+
+/** 아카이브를 맞출 입력: 사용자가 쓴 제목·작가, 없으면 캡션에서 읽은 것 */
+function archiveInput(obje: Obje): { title?: string; artist?: string } {
+  const caption = obje.docent && obje.docent.ocr?.state !== 'reading' ? parseCaption(obje.docent) : undefined
+  return { title: obje.title ?? caption?.title, artist: obje.artist ?? caption?.artist }
+}
 
 /**
  * 02 오브제 · ObjePage (D1–D6) — 사진을 걸고 아래에 작품 라벨을 붙인다.
  * N° 04 / 04 · 시각 → 제목(serif 26) → 이중 박공선 → 표(날짜·장소·좌표) → 라벨 → 캡션 카드 → 나의 노트 → 컬렉션.
  * 위 버튼은 사진 위에서 흰 이중 원, 본문으로 내려오면 하늘 이중 원. 하단 좌대: 노트 쓰기 · 카드 만들기.
+ * 제목과 작가가 있으면(없으면 캡션에서) 아트 아카이브를 맞춰, 사진 오른쪽 위에 꼬리표(ArchiveTag)로 매단다.
  */
 export function ObjePage() {
   const { objeId = '' } = useParams()
@@ -37,6 +49,7 @@ export function ObjePage() {
   const [editing, setEditing] = useState<Editing>()
   const [draft, setDraft] = useState('')
   const [draftHeading, setDraftHeading] = useState('')
+  const [draftArtist, setDraftArtist] = useState('')
   const [overPhoto, setOverPhoto] = useState(true)
   const close = useCallback(() => setEditing(undefined), [])
 
@@ -68,6 +81,25 @@ export function ObjePage() {
     return () => clearInterval(t)
   }, [data?.obje.docent?.ocr?.state])
 
+  // 아카이브: 제목·작가가 바뀌면 다시 맞춘다 (사용자가 뗀 메타는 같은 입력이면 그대로 둔다)
+  const matching = useRef<string>()
+  useEffect(() => {
+    const obje = data?.obje
+    if (!obje) return
+    const { title, artist } = archiveInput(obje)
+    const key = objeArchiveKey(title, artist)
+    if (!key) {
+      if (obje.archive) updateObje(obje.id, { archive: undefined })
+      return
+    }
+    if (obje.archive?.query === key || matching.current === key) return
+    matching.current = key
+    matchArchive(title!, artist!)
+      .then((archive) => archive && updateObje(obje.id, { archive }))
+      .catch(() => {}) // 데이터를 못 받으면 다음에 다시
+      .finally(() => (matching.current = undefined))
+  }, [data?.obje])
+
   if (data === undefined) return null
   if (data === null) return <p className={styles.missing}>오브제를 찾을 수 없어요.</p>
   const { obje, visit, index, total } = data
@@ -79,7 +111,7 @@ export function ObjePage() {
   async function save() {
     if (editing === 'note') await updateNote(obje.id, draft)
     if (editing === 'docent') await editDocent(obje.id, draftHeading, draft)
-    if (editing === 'title') await updateObje(obje.id, { title: draft.trim() || undefined })
+    if (editing === 'title') await updateObje(obje.id, { title: draft.trim() || undefined, artist: draftArtist.trim() || undefined })
     if (editing === 'tags') await updateObje(obje.id, { tags: [...new Set([...obje.tags, ...parseTagInput(draft)])] })
     close()
   }
@@ -100,6 +132,20 @@ export function ObjePage() {
   if (obje.place) rows.push(['장소', obje.place])
   else if (obje.location) rows.push(['좌표', formatGeo(obje.location)])
   const surface = overPhoto ? 'photo' : 'marble'
+  const archive = obje.archive
+  const showTag = archive && (archive.state === 'linked' || (archive.state === 'none' && (!!archive.rows || !!archive.candidates?.length)))
+
+  async function pick(c: ArchiveCandidate) {
+    if (!archive) return
+    const current = archive.state === 'linked' && archive.workId ? [{ workId: archive.workId, artistId: archive.artistId!, title: archive.title ?? '', meta: archive.rows?.[0]?.[1] ?? '' }] : []
+    const next = await linkCandidate(c, archive.query, [...current, ...(archive.candidates ?? [])])
+    if (next) await updateObje(obje.id, { archive: next })
+    else toast({ text: '이 작품을 불러오지 못했어요' })
+  }
+  function editTitle() {
+    setDraftArtist(obje.artist ?? archiveInput(obje).artist ?? '')
+    edit('title', obje.title ?? archiveInput(obje).title ?? '')
+  }
 
   return (
     <Screen
@@ -112,7 +158,14 @@ export function ObjePage() {
         </>
       }
     >
-      <button type="button" className={styles.hero} style={src ? { backgroundImage: `url(${src})` } : undefined} aria-label="사진 크게 보기" onClick={() => src && setEditing('photo')} />
+      <div className={styles.heroWrap}>
+        <button type="button" className={styles.hero} style={src ? { backgroundImage: `url(${src})` } : undefined} aria-label="사진 크게 보기" onClick={() => src && setEditing('photo')} />
+        {showTag && (
+          <span className={styles.tag}>
+            <ArchiveTag key={archive.workId ?? 'candidates'} label={archive.short} tentative={archive.state !== 'linked'} onClick={() => setEditing('archive')} />
+          </span>
+        )}
+      </div>
       <main className={styles.body}>
         <section className={styles.label}>
           <div className={styles.indexLine}>
@@ -121,9 +174,10 @@ export function ObjePage() {
             </span>
             <span className={styles.time}>{formatTimeSeconds(obje.takenAt)}</span>
           </div>
-          <button type="button" className={obje.title ? styles.title : `${styles.title} ${styles.untitled}`} onClick={() => edit('title', obje.title ?? '')}>
+          <button type="button" className={obje.title ? styles.title : `${styles.title} ${styles.untitled}`} onClick={editTitle}>
             {obje.title ?? '제목 붙이기'}
           </button>
+          {obje.artist && <span className={styles.artist}>{obje.artist}</span>}
           <DoubleRule />
           <MetaTable rows={rows} />
           <TagList tags={obje.tags} onAdd={() => edit('tags', '')} />
@@ -142,14 +196,6 @@ export function ObjePage() {
         )}
         <NoteBlock note={obje.note} updatedAt={obje.noteUpdatedAt} onWrite={() => edit('note', obje.note ?? '')} />
 
-        {/* 아카이브: 캡션에서 읽은 작품·작가를 들고 간다 (없으면 오브제 제목만) */}
-        <Link to={archiveLink(obje.title, obje.docent ? parseCaption(obje.docent) : undefined)} className={styles.visit}>
-          <span className={styles.visitText}>
-            <span className={styles.visitLabel}>아카이브</span>
-            <span className={styles.visitTitle}>작업 기간 · 화법 · 화풍 · 근원지</span>
-          </span>
-          <Icon name="forward" size={22} />
-        </Link>
         {visit && (
           <Link to={`/visit/${visit.id}`} className={styles.visit}>
             <span className={styles.visitText}>
@@ -164,9 +210,35 @@ export function ObjePage() {
       <Sheet open={editing === 'note'} eyebrow="NOTE" title="나의 노트" onClose={close} confirmLabel="저장" onConfirm={save}>
         <TextArea id="note" variant="note" rows={5} autoFocus value={draft} placeholder="이 앞에서 무엇을 느꼈나요?" onChange={(e) => setDraft(e.target.value)} />
       </Sheet>
-      <Sheet open={editing === 'title'} eyebrow="TITLE" title="제목" onClose={close} confirmLabel="저장" onConfirm={save}>
-        <TextField id="title" autoFocus value={draft} placeholder="남쪽 해안, 오후 세 시" onChange={(e) => setDraft(e.target.value)} />
+      <Sheet open={editing === 'title'} eyebrow="TITLE" title="제목 · 작가" description="작품이면 작가도 써 주세요. 작업 기간 · 화법 · 화풍 · 근원지를 찾아 사진에 매달아 둬요." onClose={close} confirmLabel="저장" onConfirm={save}>
+        <Field label="제목" htmlFor="title">
+          <TextField id="title" autoFocus value={draft} placeholder="별이 빛나는 밤" onChange={(e) => setDraft(e.target.value)} />
+        </Field>
+        <Field label="작가 · 선택" htmlFor="artist">
+          <TextField id="artist" value={draftArtist} placeholder="빈센트 반 고흐" onChange={(e) => setDraftArtist(e.target.value)} />
+        </Field>
       </Sheet>
+      {archive && (
+        <Sheet
+          open={editing === 'archive'}
+          eyebrow="ARCHIVE"
+          title={archive.title ?? '이 작품인가요?'}
+          description={archive.state === 'linked' ? archive.subtitle : archive.rows ? '이 작품은 찾지 못해 작가 기준으로 보여 줘요.' : '제목이 정확히 맞는 작품을 찾지 못했어요.'}
+          onClose={close}
+          confirmIcon="delete"
+          confirmLabel="메타 떼기"
+          onConfirm={
+            archive.state !== 'off'
+              ? async () => {
+                  await updateObje(obje.id, { archive: { ...archive, state: 'off' } })
+                  close()
+                }
+              : undefined
+          }
+        >
+          <ArchiveMeta rows={archive.rows} workId={archive.state === 'linked' ? archive.workId : undefined} candidates={archive.candidates} linked={archive.state === 'linked'} onPick={pick} />
+        </Sheet>
+      )}
       <Sheet open={editing === 'tags'} eyebrow="LABEL" title="라벨 추가" description="띄어 쓰면 #이 붙어요." onClose={close} onConfirm={save} confirmLabel="추가">
         <TagInput id="tags" autoFocus value={draft} placeholder="#흰절벽 #바다" onValue={setDraft} onKeyDown={(e) => e.key === 'Enter' && save()} />
       </Sheet>
@@ -193,12 +265,3 @@ export function ObjePage() {
   )
 }
 
-function archiveLink(objeTitle: string | undefined, caption: { title?: string; artist?: string } | undefined) {
-  const q = new URLSearchParams()
-  const title = caption?.title ?? objeTitle
-  if (title) q.set('title', title)
-  // 캡션 작가 줄은 "한서윤 Han Seoyun"처럼 한글 + 로마자일 수 있다 — 그대로 넘기면 둘 다 맞춰 본다
-  if (caption?.artist) q.set('artist', caption.artist)
-  const s = q.toString()
-  return s ? `/archive?${s}` : '/archive'
-}

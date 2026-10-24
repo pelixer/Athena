@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bucketOf, entryRows, formatLife, formatPeriod, normalize, rankArtists, rankWorks, shardKey, shardKeysOf, similarity, type ArchiveArtist, type NameEntry } from './archive'
+import { bucketOf, candidateOf, entryRows, formatLife, objeArchiveKey, snapshotOf, formatPeriod, normalize, rankArtists, rankWorks, shardKey, shardKeysOf, similarity, type ArchiveArtist, type NameEntry } from './archive'
 
 describe('archive · 이름 맞추기', () => {
   it('정규화: 악센트·공백·괄호를 지운다', () => {
@@ -89,6 +89,11 @@ describe('archive · 항목 표', () => {
       ['분류', '회화'],
     ])
   })
+  it('긴 목록은 넷까지 + 외 N', () => {
+    const v = Object.fromEntries(['A', 'B', 'C', 'D', 'E', 'F'].map((k) => [k, [k, k] as [string, string]]))
+    const rows = entryRows({ id: 'X', n: { en: 'X' }, wl: ['A', 'B', 'C', 'D', 'E', 'F'], w: [] }, { id: 'W', n: {} }, v)
+    expect(rows[4]).toEqual(['근원지', 'A · B · C · D 외 2 (작가 활동지)'])
+  })
   it('작가 활동기는 시작·끝을 다 알 때만', () => {
     const rows = entryRows({ id: 'A', n: { en: 'X' }, a: { to: 1519 }, w: [] }, { id: 'W', n: {} }, vocab)
     expect(rows[1]).toEqual(['작업 기간', '기록 없음'])
@@ -102,5 +107,21 @@ describe('archive · 항목 표', () => {
       ['화풍', '후기 인상주의 (작가의 사조)'],
       ['근원지', '네덜란드 (작가 국적)'],
     ])
+  })
+})
+
+describe('archive · 오브제 메타', () => {
+  it('열쇠: 제목과 작가가 다 있어야', () => {
+    expect(objeArchiveKey('별이 빛나는 밤', '고흐')).toBe('별이빛나는밤|고흐')
+    expect(objeArchiveKey('별이 빛나는 밤', ' ')).toBeUndefined()
+    expect(objeArchiveKey(undefined, '고흐')).toBeUndefined()
+  })
+  it('스냅숏: 표 줄 · 짧은 해 · 원어 제목', () => {
+    const artist: ArchiveArtist = { id: 'Q5582', n: { ko: '빈센트 반 고흐' }, b: 1853, d: 1890, w: [] }
+    const work = { id: 'Q45585', n: { ko: '별이 빛나는 밤', en: 'The Starry Night' }, y: { from: 1889, to: 1889 } }
+    const s = snapshotOf(artist, work, {}, 'archive-x', 'k', 1)
+    expect(s).toMatchObject({ state: 'linked', workId: 'Q45585', artistId: 'Q5582', title: '별이 빛나는 밤', subtitle: 'The Starry Night', short: '1889', version: 'archive-x' })
+    expect(s.rows?.[0]).toEqual(['작가', '빈센트 반 고흐 (1853–1890)'])
+    expect(candidateOf(artist, work)).toEqual({ workId: 'Q45585', artistId: 'Q5582', title: '별이 빛나는 밤', meta: '빈센트 반 고흐 · 1889' })
   })
 })

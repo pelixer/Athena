@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { createVisit } from '../data/repo'
 import { matchesQuery, type CollectionSort } from '../domain/collections'
 import { formatCount, formatDateWeekday } from '../lib/format'
@@ -13,7 +13,7 @@ import { Icon } from '../components/Icon'
 import { CollectionRows, FolderRows, useLibrary } from './CollectionList'
 import styles from './HomePage.module.css'
 
-const ROMAN = ['I', 'II', 'III', 'IV']
+const ROMAN = ['I', 'II', 'III']
 const SORTS: [CollectionSort, string][] = [
   ['recent', '최근 추가'],
   ['name', '이름'],
@@ -127,18 +127,6 @@ export function HomePage() {
           </section>
         )}
         {query && sections.length === 0 && <p className={styles.none}>〈{query}〉에 맞는 컬렉션이 없어요.</p>}
-        {!query && (
-          <section className={styles.list}>
-            <SectionHead numeral={ROMAN[sections.length]} name="아카이브" />
-            <Link to="/archive" className={styles.archive}>
-              <span className={styles.archiveText}>
-                <span className={styles.archiveTitle}>작품 이름과 작가로 찾기</span>
-                <span className={styles.archiveSub}>작업 기간 · 화법 · 화풍 · 근원지</span>
-              </span>
-              <Icon name="forward" size={22} />
-            </Link>
-          </section>
-        )}
       </main>
 
       {sheet}

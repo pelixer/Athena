@@ -1,4 +1,14 @@
 /* 02 오브제 (D1–D3): 사진 470(상태바 포함), 본문 위 22 · 좌우 20 */
+.heroWrap {
+  position: relative;
+}
+/* 아카이브 꼬리표: 공유 버튼(오른쪽 16, 44) 밑으로 실이 내려와 매달린다 (단계 2 · REVIEW A2) */
+.tag {
+  position: absolute;
+  top: calc(var(--safe-top) + 49px); /* 공유 버튼 아래 끝(위 5 + 44)에서 실이 시작 */
+  right: 15px;
+  --tag-string: 14px;
+}
 .hero {
   display: block;
   width: 100%;
@@ -43,6 +53,11 @@
   font: var(--type-display-l);
   color: var(--text-primary);
   cursor: pointer;
+}
+.artist {
+  margin-top: -6px;
+  font: 500 15px/1.4 var(--font-sans);
+  color: var(--text-secondary);
 }
 .untitled {
   color: var(--text-disabled);
