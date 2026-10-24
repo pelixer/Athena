@@ -4,6 +4,7 @@
  * 보여 주는 것: 작가 · 작업 기간 · 화법(재료·기법) 및 화풍(사조·장르) · 근원지(지역).
  * 이 파일은 수집 스크립트(scripts/archive/compile.ts)와 앱이 함께 쓴다.
  */
+import { foldedSimilarity, HANGUL_SHARD_GROUPS, nameSimilarity, prepareName, type Folded } from './fuzzyName'
 
 /** Wikidata 항목 번호 (예: "Q45585") */
 export type Qid = string
@@ -113,15 +114,19 @@ export function shardKeysOf(name: string): string[] {
   return [...new Set([normalize(name), ...words(name)].filter(Boolean).map(shardKey))]
 }
 
-/** 이름 유사도 0–1: 같음 1, 한쪽이 다른 쪽을 품으면 길이 비율로 (짧은 쪽이 2글자 미만이면 0) */
-export function similarity(query: string, candidate: string): number {
-  const q = normalize(query)
-  const c = normalize(candidate)
-  if (!q || !c) return 0
-  if (q === c) return 1
-  const [short, long] = q.length <= c.length ? [q, c] : [c, q]
-  if (short.length < 2 || !long.includes(short)) return 0
-  return 0.5 + (0.45 * short.length) / long.length
+/** 이름 유사도 0–1 — 틀리게 써도 비슷하면 맞춘다 (src/domain/fuzzyName.ts) */
+export const similarity = nameSimilarity
+
+/**
+ * 찾을 때 받을 이름 색인 조각: 가장 긴 낱말의 첫 글자 조각 하나 (이름은 낱말마다 색인돼 있어 하나면 된다).
+ * 한글은 초성을 헷갈리기 쉬운 갈래(ㄱ·ㅋ, ㄷ·ㅌ, ㅂ·ㅍ, ㅈ·ㅊ)까지 함께 받는다.
+ */
+export function queryShardKeys(query: string): string[] {
+  const ws = words(query)
+  if (!ws.length) return []
+  const longest = ws.reduce((a, b) => (b.length > a.length ? b : a))
+  const key = shardKey(longest)
+  return HANGUL_SHARD_GROUPS[key] ?? [key]
 }
 
 const namesOf = (n: Names) => [n.ko, n.en, ...(n.alt ?? [])].filter((x): x is string => !!x)
@@ -137,15 +142,25 @@ export interface ArtistHit {
  * "반 고흐"는 "테오 반 고흐"보다 짧게 겹쳐도 작품이 많은 빈센트 반 고흐가 먼저.
  */
 export function rankArtists(query: string, entries: NameEntry[], limit = 5): ArtistHit[] {
+  const q = prepareName(query)
   const best = new Map<Qid, ArtistHit>()
-  for (const [name, id, works] of entries) {
-    const match = similarity(query, name)
+  for (const e of entries) {
+    const match = foldedSimilarity(q, prepared(e))
     if (match < 0.6) continue
+    const [, id, works] = e
     const score = match + 0.05 * Math.log10(1 + works)
     const prev = best.get(id)
     if (!prev || score > prev.score) best.set(id, { id, score, works })
   }
   return [...best.values()].sort((a, b) => b.score - a.score || b.works - a.works).slice(0, limit)
+}
+
+/** 색인 줄마다 접은 이름을 한 번만 만든다 (같은 조각을 다시 찾을 때 빠르게) */
+const preparedCache = new WeakMap<NameEntry, Folded>()
+function prepared(e: NameEntry): Folded {
+  let f = preparedCache.get(e)
+  if (!f) preparedCache.set(e, (f = prepareName(e[0])))
+  return f
 }
 
 export interface WorkHit {

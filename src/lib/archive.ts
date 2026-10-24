@@ -2,7 +2,7 @@ import {
   bucketOf,
   rankArtists,
   rankWorks,
-  shardKeysOf,
+  queryShardKeys,
   type ArchiveArtist,
   type ArchiveManifest,
   type ArchiveWork,
@@ -56,10 +56,10 @@ export class ArchiveUnavailable extends Error {
   }
 }
 
-/** 작가 이름 → 후보 (이름의 첫 글자·낱말 첫 글자 조각을 받아 맞춘다) */
+/** 작가 이름 → 후보 (가장 긴 낱말의 첫 글자 조각을 받아 흐리게 맞춘다 — 틀리게 써도) */
 export async function findArtists(query: string, limit = 5): Promise<ArtistHit[]> {
   const { root: r } = await root()
-  const keys = shardKeysOf(query)
+  const keys = queryShardKeys(query)
   const shards = await Promise.all(keys.map((k) => get<NameEntry[]>(`${r}/names/${k}.json`).catch(() => [] as NameEntry[])))
   return rankArtists(query, shards.flat(), limit)
 }
